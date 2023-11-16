@@ -14,7 +14,6 @@ const ClientHomeInterface = () => {
 
   return (
     <div>
-
       <div className="p-4 flex items-center justify-between">
         <p>Preview mode</p>
         <Select
