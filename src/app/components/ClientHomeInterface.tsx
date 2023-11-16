@@ -2,9 +2,12 @@
 
 import ImagePicker from "@/components/ImagePicker/ImagePicker"
 import Select from "@/components/select/Select"
+import { useAppState } from "@/hooks/useAppState"
+import { ImagePickerUtils } from "@/utils/imagePickerUtils"
 import { useState } from "react"
 
 const ClientHomeInterface = () => {
+  const appState = useAppState()
 
   const clients = ["Jimbo", "Beanie dude", "Beach guy"]
   const defaultValue = "Preview mode off"
@@ -42,8 +45,9 @@ const ClientHomeInterface = () => {
 
       <hr />
 
-      <ImagePicker getImage={(file) => {
-        console.log(file)
+      <ImagePicker getImage={async (file) => {
+        const imagePickerUtils = new ImagePickerUtils()
+        appState?.setBannerImg(await imagePickerUtils.imageUrl(file as File) as string)
       }} />
     </div>
   )

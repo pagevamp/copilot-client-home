@@ -41,7 +41,7 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
 
   const onDrop = useCallback(async (acceptedFiles: Array<File>) => {
     const file = acceptedFiles[0]
-    if (file) {
+    if (!!file) {
       const imgUrl = await imagePickerUtils.imageUrl(file)
       setImgUrl(imgUrl as string)
     }
