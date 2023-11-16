@@ -21,14 +21,14 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className="hover:bg-slate-50 py-2 px-3"
+                className={`hover:bg-slate-50 py-2 px-3 ${selected === defaultValue ? "bg-slate-50" : ""}`}
                 onClick={() => setSelected(defaultValue)}
               >{defaultValue}</div>
               {
                 clients.map((val, key) => {
                   return (
                     <div key={key}
-                      className="hover:bg-slate-50 py-2 px-3"
+                      className={`hover:bg-slate-50 py-2 px-3 ${selected === val ? "bg-slate-50" : ""}`}
                       onClick={() => setSelected(val)}
                     >{val}</div>
                   )
@@ -40,7 +40,7 @@ const ClientHomeInterface = () => {
         />
       </div>
 
-      <hr className="h-px bg-slate-300 border-0" />
+      <hr />
 
       <div className="p-4 flex items-center justify-between">
         <p>Banner image</p>
