@@ -42,10 +42,9 @@ const ClientHomeInterface = () => {
 
       <hr />
 
-      <div className="p-4 flex items-center justify-between">
-        <p>Banner image</p>
-        <ImagePicker />
-      </div>
+      <ImagePicker getImage={(file) => {
+        console.log(file)
+      }} />
     </div>
   )
 }
