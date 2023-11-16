@@ -1,4 +1,5 @@
 import ClientHomeInterface from "./components/ClientHomeInterface";
+import EditorInterface from "./components/EditorInterface";
 
 export default async function Page() {
   return (
@@ -7,11 +8,8 @@ export default async function Page() {
         <p className="font-medium">Home</p>
       </div>
       <div className="flex flex-row">
-        <div className="basis-3/4 px-5" style={{
-          background: "#f8f9fb",
-          height: "90vh"
-        }}>
-          EDITOR
+        <div className="basis-3/4">
+          <EditorInterface />
         </div>
         <div className="basis-1/4 border-t-2 border-l-2 border-slate-300">
           <ClientHomeInterface />

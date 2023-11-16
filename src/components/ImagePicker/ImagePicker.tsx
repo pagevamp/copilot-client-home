@@ -1,5 +1,5 @@
 import { ImagePickerUtils } from "@/utils/imagePickerUtils";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const PlusIcon = () => {
