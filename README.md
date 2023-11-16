@@ -1,3 +1,3 @@
-## This is the repository for Copilot custom apps. 
+## Client Home App
 
-Note: For now each custom apps are defined by the individual folder. This may be changed to a monorepo structure in the near future.
+This is the client home app built with NextJS.
