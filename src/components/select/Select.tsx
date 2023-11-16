@@ -1,15 +1,16 @@
 "use client"
 
-import { FC, useState } from "react";
-import When from "./hoc/When";
+import { FC, ReactNode, useState } from "react";
+import When from "../hoc/When";
+
 
 interface IDropDown {
-  values: string[];
+  customOptions: ReactNode;
   name: string;
-  getOnChange: (val: string) => void;
+  selected: string | null;
 }
 
-interface ISelectOptions extends Pick<IDropDown, 'values' | 'getOnChange'> {
+interface ISelectOptions extends Pick<IDropDown, 'customOptions'> {
 }
 
 const ArrowIcon = () => {
@@ -20,30 +21,22 @@ const ArrowIcon = () => {
   )
 }
 
-const SelectOptions: FC<ISelectOptions> = ({ values, getOnChange }) => {
+const SelectOptions: FC<ISelectOptions> = ({ customOptions }) => {
 
   return (
     <div className="absolute top-10 right-0 w-full py-2 cursor-pointer">
-      {
-        values.map((val, key) => {
-          return (
-            <div key={key} onClick={() => getOnChange(val)}
-              className="hover:bg-slate-50 py-2 px-3"
-            >{val}</div>
-          )
-        })
-      }
+      <div>
+        {
+          customOptions
+        }
+      </div>
     </div>
   )
 }
 
-const Select: FC<IDropDown> = ({ values, name, getOnChange }) => {
+const Select: FC<IDropDown> = ({ customOptions, name, selected }) => {
 
   const [showDropDown, setShowDropDown] = useState(false)
-
-  const [selected, setSelected] = useState("")
-
-  const defaultValue = values[0]
 
   return (
     <form>
@@ -55,16 +48,14 @@ const Select: FC<IDropDown> = ({ values, name, getOnChange }) => {
       >
 
         <When condition={showDropDown}>
-          <SelectOptions values={values} getOnChange={(val) => {
-            getOnChange(val)
-            setSelected(val)
-          }}
+          <SelectOptions
+            customOptions={customOptions}
           />
         </When>
 
         <div className="absolute top-2.5 right-2"><ArrowIcon /></div>
 
-        <div>{selected ? selected : defaultValue}</div>
+        <div>{selected}</div>
 
       </div>
     </form>

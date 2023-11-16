@@ -24,12 +24,15 @@ import ClientHomeInterface from "./components/ClientHomeInterface";
 
 export default async function Page() {
   return (
-    <div className="flex flex-row">
-      <div className="basis-3/4">
-        EDITOR
-      </div>
-      <div className="basis-1/4">
-        <ClientHomeInterface />
+    <div>
+      <p>Home</p>
+      <div className="flex flex-row">
+        <div className="basis-3/4">
+          EDITOR
+        </div>
+        <div className="basis-1/4 border-t-2 border-l-2 border-slate-300">
+          <ClientHomeInterface />
+        </div>
       </div>
     </div>
   )
