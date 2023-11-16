@@ -24,9 +24,8 @@ const ArrowIcon = () => {
 const SelectOptions: FC<ISelectOptions> = ({ customOptions }) => {
 
   return (
-    <div className="absolute z-100 top-12 right-0 w-full py-2 cursor-pointer border border-slate-300 rounded" style={{
+    <div className="bg-white absolute top-12 right-0 w-full py-2 cursor-pointer border border-slate-300 rounded" style={{
       boxShadow: "0px 6px 20px 0px rgba(0, 0, 0, 0.12)",
-      zIndex: 1
     }}>
       {
         customOptions

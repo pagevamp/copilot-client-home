@@ -1,3 +1,5 @@
+"use client"
+
 import { ImagePickerUtils } from "@/utils/imagePickerUtils";
 import { FC, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -53,7 +55,7 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
   })
 
   return (
-    <div className="p-4 flex items-center justify-between"
+    <div className="p-4 flex items-center justify-between cursor-pointer"
       {...getRootProps()}
     >
       <input {...getInputProps()} />
