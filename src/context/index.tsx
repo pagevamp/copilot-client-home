@@ -1,40 +1,39 @@
-"use client"
+'use client'
 
-import { FC, ReactNode, useState, createContext } from "react";
+import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  bannerImg: string;
+  bannerImg: string
 }
 
 export interface IAppContext {
-  appState: IAppState;
-  setBannerImg: (imgUrl: string) => void;
+  appState: IAppState
+  setBannerImg: (imgUrl: string) => void
 }
 
 interface IAppCoreProvider {
-  children: ReactNode;
+  children: ReactNode
 }
-
 
 export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
-
   const [state, setState] = useState<IAppState>({
-    bannerImg: "",
+    bannerImg: '',
   })
 
   const setBannerImg = (imgUrl: string) => {
-    setState(prev => ({ ...prev, bannerImg: imgUrl }))
+    setState((prev) => ({ ...prev, bannerImg: imgUrl }))
   }
 
-
-  return <AppContext.Provider value={{
-    appState: state,
-    setBannerImg
-  }}>
-    {children}
-  </AppContext.Provider>
-
+  return (
+    <AppContext.Provider
+      value={{
+        appState: state,
+        setBannerImg,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  )
 }
-

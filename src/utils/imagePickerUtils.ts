@@ -1,48 +1,47 @@
 interface IImagePickerUtils {
-  selectImageFromLocalDrive(): Promise<File | null>;
-  imageUrl(file: File): Promise<string | null> | null;
+  selectImageFromLocalDrive(): Promise<File | null>
+  imageUrl(file: File): Promise<string | null> | null
 }
 
 export class ImagePickerUtils implements IImagePickerUtils {
-
-  image: HTMLInputElement;
+  image: HTMLInputElement
 
   constructor() {
     this.image = document.createElement('input')
-    this.image.type = "file"
-    this.image.accept = "image/png, image/jpg"
+    this.image.type = 'file'
+    this.image.accept = 'image/png, image/jpg'
   }
 
   selectImageFromLocalDrive(): Promise<File | null> {
     return new Promise((resolve) => {
       this.image.onchange = (event) => {
-        const target = event.target as HTMLInputElement;
+        const target = event.target as HTMLInputElement
         if (target?.files && target.files.length > 0) {
-          const selectedFile = target.files[0];
-          resolve(selectedFile);
+          const selectedFile = target.files[0]
+          resolve(selectedFile)
         } else {
-          resolve(null);
+          resolve(null)
         }
-      };
+      }
 
-      this.image.click();
-    });
+      this.image.click()
+    })
   }
 
   imageUrl(file: File): Promise<string | null> | null {
     if (!file.type.startsWith('image/')) {
-      console.error('Selected file is not an image.');
+      console.error('Selected file is not an image.')
       return null
     }
 
     // Using FileReader to read the file and generate a data URL
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
     return new Promise((resolve) => {
       reader.onload = () => {
-        const dataURL = reader.result as string;
-        resolve(dataURL);
-      };
-    });
+        const dataURL = reader.result as string
+        resolve(dataURL)
+      }
+    })
   }
 }

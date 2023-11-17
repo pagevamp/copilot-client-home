@@ -1,14 +1,14 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react'
 
 interface IWhen {
-  condition: boolean;
-  children: ReactNode;
+  condition: boolean
+  children: ReactNode
 }
 
 const When: FC<IWhen> = ({ condition, children }) => {
-  if (condition) return children;
+  if (condition) return children
 
-  return null;
+  return null
 }
 
 export default When
