@@ -3,6 +3,8 @@
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { FC, useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
+import When from '../hoc/When'
+import ImageCropper from '../imageCropper/ImageCropper'
 
 const PlusIcon = () => {
   return (
@@ -39,22 +41,12 @@ const UploadIcon = () => {
 }
 
 interface IImagePicker {
-  getImage: (file: File | null) => void
+  getImage: (file: Blob | null) => void
 }
 
 const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
   const [imgUrl, setImgUrl] = useState('')
-
-  const pickImage = async () => {
-    const imagePickerUtils = new ImagePickerUtils()
-    const file = await imagePickerUtils.selectImageFromLocalDrive()
-
-    if (file) {
-      const imgUrl = await imagePickerUtils.imageUrl(file)
-      setImgUrl(imgUrl as string)
-      getImage(file)
-    }
-  }
+  const [showCropper, setShowCropper] = useState(false)
 
   const onDrop = useCallback(
     async (acceptedFiles: Array<File>) => {
@@ -63,8 +55,8 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
       if (file) {
         const imgUrl = await imagePickerUtils.imageUrl(file)
         setImgUrl(imgUrl as string)
+        setShowCropper(true)
       }
-      getImage(file)
     },
     [getImage],
   )
@@ -74,37 +66,46 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
   })
 
   return (
-    <div
-      className='p-4 flex items-center justify-between cursor-pointer'
-      {...getRootProps()}
-    >
-      <input {...getInputProps()} />
-      <p>Banner image</p>
+    <>
       <div
-        className={`flex justify-center w-8 h-8 ${
-          isDragActive
+        className='p-4 flex items-center justify-between cursor-pointer'
+        {...getRootProps()}
+      >
+        <input {...getInputProps()} />
+        <p>Banner image</p>
+        <div
+          className={`flex justify-center w-8 h-8 ${isDragActive
             ? 'outline-dashed outline-2 outline-slate-200'
             : ' border border-slate-200'
-        }`}
-        onClick={pickImage}
-      >
-        {imgUrl ? (
-          <img
-            src={imgUrl}
-            alt={'banner img picker'}
-            className='object-cover w-8 h-8 rounded-sm'
-          />
-        ) : !imgUrl && !isDragActive ? (
-          <div className='self-center'>
-            <PlusIcon />
-          </div>
-        ) : (
-          <div className='self-center'>
-            <UploadIcon />
-          </div>
-        )}
+            }`}
+        >
+          {imgUrl ? (
+            <img
+              src={imgUrl}
+              alt={'banner img picker'}
+              className='object-cover w-8 h-8 rounded-sm'
+            />
+          ) : !imgUrl && !isDragActive ? (
+            <div className='self-center'>
+              <PlusIcon />
+            </div>
+          ) : (
+            <div className='self-center'>
+              <UploadIcon />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      <When condition={showCropper}>
+        <ImageCropper open={showCropper} image={imgUrl}
+          getImage={(image) => {
+            getImage(image)
+            setShowCropper(false)
+          }}
+          onCancel={() => setShowCropper(false)}
+        />
+      </When>
+    </>
   )
 }
 

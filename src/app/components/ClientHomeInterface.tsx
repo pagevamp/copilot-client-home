@@ -23,9 +23,8 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${
-                  selected === defaultValue ? 'bg-slate-50' : ''
-                }`}
+                className={`hover:bg-slate-50 py-2 px-3 ${selected === defaultValue ? 'bg-slate-50' : ''
+                  }`}
                 onClick={() => setSelected(defaultValue)}
               >
                 {defaultValue}
@@ -34,9 +33,8 @@ const ClientHomeInterface = () => {
                 return (
                   <div
                     key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${
-                      selected === val ? 'bg-slate-50' : ''
-                    }`}
+                    className={`hover:bg-slate-50 py-2 px-3 ${selected === val ? 'bg-slate-50' : ''
+                      }`}
                     onClick={() => setSelected(val)}
                   >
                     {val}
@@ -52,11 +50,9 @@ const ClientHomeInterface = () => {
       <hr />
 
       <ImagePicker
-        getImage={async (file) => {
+        getImage={async (image) => {
           const imagePickerUtils = new ImagePickerUtils()
-          appState?.setBannerImg(
-            (await imagePickerUtils.imageUrl(file as File)) as string,
-          )
+          appState?.setBannerImg(await imagePickerUtils.convertBlobToUrlString(image as Blob) as string)
         }}
       />
     </div>

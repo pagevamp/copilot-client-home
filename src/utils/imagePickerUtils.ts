@@ -1,6 +1,7 @@
 interface IImagePickerUtils {
   selectImageFromLocalDrive(): Promise<File | null>
   imageUrl(file: File): Promise<string | null> | null
+  convertBlobToUrlString(image: Blob): Promise<string | null>
 }
 
 export class ImagePickerUtils implements IImagePickerUtils {
@@ -43,5 +44,17 @@ export class ImagePickerUtils implements IImagePickerUtils {
         resolve(dataURL)
       }
     })
+  }
+
+  convertBlobToUrlString(image: Blob): Promise<string | null> {
+    return new Promise<string | null>((resolve) => {
+      if (image.type.startsWith('image/')) {
+        const imageUrl = URL.createObjectURL(image);
+        resolve(imageUrl);
+      } else {
+        console.error('Input is not a valid image blob.');
+        resolve(null);
+      }
+    });
   }
 }

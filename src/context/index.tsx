@@ -8,7 +8,7 @@ export interface IAppState {
 
 export interface IAppContext {
   appState: IAppState
-  setBannerImg: (imgUrl: string) => void
+  setBannerImg: (image: string) => void
 }
 
 interface IAppCoreProvider {
@@ -19,11 +19,11 @@ export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
   const [state, setState] = useState<IAppState>({
-    bannerImg: '',
+    bannerImg: "",
   })
 
-  const setBannerImg = (imgUrl: string) => {
-    setState((prev) => ({ ...prev, bannerImg: imgUrl }))
+  const setBannerImg = (image: string) => {
+    setState((prev) => ({ ...prev, bannerImg: image }))
   }
 
   return (
