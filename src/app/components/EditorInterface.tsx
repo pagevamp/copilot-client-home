@@ -2,12 +2,12 @@
 
 import When from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
-import { EditorContent } from "@tiptap/react"
-import { useEditor } from '@tiptap/react'
+import { useEditor, FloatingMenu, EditorContent } from '@tiptap/react'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
 import Text from '@tiptap/extension-text'
+import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -50,6 +50,9 @@ const EditorInterface = () => {
       >
         <EditorContent editor={editor} />
       </div>
+      <When condition={!!editor}>
+        <FloatingMenuContainer editor={editor} />
+      </When>
     </>
   )
 }

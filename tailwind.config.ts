@@ -21,7 +21,12 @@ const config: Config = {
       },
       backgroundColor: {
         'new-dark': "#0E0E10",
-        'new-white': "#D7D7DD"
+        'new-white': "#D7D7DD",
+        'new-card-border': "#EDEDF0",
+        'new-white-2': "#F8F9FB"
+      },
+      boxShadow: {
+        'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)"
       }
     },
   },
