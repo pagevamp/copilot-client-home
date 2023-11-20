@@ -1,5 +1,5 @@
-import ClientHomeInterface from './components/ClientHomeInterface'
 import EditorInterface from './components/EditorInterface'
+import SideBarInterface from './components/SideBarInterface'
 
 export default async function Page() {
   return (
@@ -12,7 +12,7 @@ export default async function Page() {
           <EditorInterface />
         </div>
         <div className='basis-1/4 border-t-2 border-l-2 border-slate-300'>
-          <ClientHomeInterface />
+          <SideBarInterface />
         </div>
       </div>
     </div>

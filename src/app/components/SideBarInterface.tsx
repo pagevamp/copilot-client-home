@@ -1,12 +1,13 @@
 'use client'
 
 import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import ColorPicker from '@/components/colorPicker/ColorPicker'
 import Select from '@/components/select/Select'
 import { useAppState } from '@/hooks/useAppState'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useState } from 'react'
 
-const ClientHomeInterface = () => {
+const SideBarInterface = () => {
   const appState = useAppState()
 
   const clients = ['Jimbo', 'Beanie dude', 'Beach guy']
@@ -55,8 +56,12 @@ const ClientHomeInterface = () => {
           appState?.setBannerImg(await imagePickerUtils.convertBlobToUrlString(image as Blob) as string)
         }}
       />
+
+      <hr />
+
+      <ColorPicker />
     </div>
   )
 }
 
-export default ClientHomeInterface
+export default SideBarInterface 
