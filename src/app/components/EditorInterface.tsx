@@ -11,12 +11,19 @@ import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu
 import OrderedList from '@tiptap/extension-ordered-list'
 import BulletList from '@tiptap/extension-bullet-list'
 import ListItem from '@tiptap/extension-list-item'
+import Image from '@tiptap/extension-image'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
+import StarterKit from '@tiptap/starter-kit'
 
 const EditorInterface = () => {
   const appState = useAppState()
 
   const editor = useEditor({
     extensions: [
+      StarterKit,
       Document,
       Paragraph,
       Heading,
@@ -27,7 +34,7 @@ const EditorInterface = () => {
         keepAttributes: true,
         HTMLAttributes: {
           class: 'list-decimal',
-          type: "a"
+          type: "1"
         }
       }),
       ListItem,
@@ -35,9 +42,20 @@ const EditorInterface = () => {
         HTMLAttributes: {
           class: 'list-disc',
         }
-      })
+      }),
+      Image.configure({
+        HTMLAttributes: {
+          class: 'w-5/12 h-60 object-cover'
+        }
+      }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableCell,
+      TableHeader,
+      TableRow
     ],
-    content: '<p>Hello World! 🌎️</p>',
+    content: '',
   })
 
   if (!editor) return null;
@@ -55,7 +73,7 @@ const EditorInterface = () => {
         className='px-8 py-2'
         style={{
           background: '#f8f9fb', //to be changed later with color picker
-          height: '90vh',
+          minHeight: '90vh',
         }}
       >
         {

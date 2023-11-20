@@ -1,5 +1,6 @@
 import { Editor } from '@tiptap/react'
 import { Level } from '@tiptap/extension-heading'
+import { customCallOut } from '@/components/tiptap/callout/callout';
 
 export class TiptapEditorUtils {
   editor: Editor
@@ -47,5 +48,21 @@ export class TiptapEditorUtils {
 
   toggleNumberedList() {
     this.editor.chain().focus().toggleOrderedList().run()
+  }
+
+  setImage(imgUrl: string) {
+    this.editor.chain().focus().setImage({ src: imgUrl }).run()
+  }
+
+  insertTable({ rows, cols }: { rows: number; cols: number }) {
+    this.editor.chain().focus().insertTable({ rows: rows, cols: cols, withHeaderRow: true }).run()
+  }
+
+  insertCallout() {
+    this.editor.chain().focus().insertContent("<h1 style='font-size:100px'>hello world</h1>", {
+      parseOptions: {
+        preserveWhitespace: false
+      }
+    }).run()
   }
 }

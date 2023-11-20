@@ -39,7 +39,43 @@
   padding: 0 1rem;
 }
 
+td, th {
+  border: 2px solid #CED4DA;
+  box-sizing: border-box;
+  min-width: 6em;
+  padding: 3px 5px;
+  position: relative;
+}
+
+th {
+  background-color: #F1F3F5;
+  font-weight:700;
+  text-align: left
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  width: 80%;
+  table-layout: fixed;
+}
+
+.tableWrapper {
+  padding: 1rem 0;
+  overflow-x: auto;
+}
+
+.resize-cursor{
+  cursor: ew-resize;
+  cursor: col-resize;
+}
 
 .ProseMirror:focus {
   outline: none;
+}
+
+.callout {
+  border: 2px solid red;
+  padding: 10px 5px;
 }

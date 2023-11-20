@@ -2,6 +2,7 @@ import { FloatingMenu, Editor } from '@tiptap/react'
 import { FC } from 'react';
 import * as Icons from '@/components/tiptap/floatingMenu/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils';
+import { ImagePickerUtils } from '@/utils/imagePickerUtils';
 
 interface IFloatingMenuContainer {
   editor: Editor;
@@ -10,6 +11,7 @@ interface IFloatingMenuContainer {
 const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
+  const imagePickerUtils = new ImagePickerUtils()
 
 
   return (
@@ -123,7 +125,14 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             </div>
           </button>
 
-          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+            onClick={async () => {
+              tiptapEditorUtils.clearCurrentLineContent()
+              const file = await imagePickerUtils.selectImageFromLocalDrive();
+              const imgUrl = await imagePickerUtils.imageUrl(file as File)
+              tiptapEditorUtils.setImage(imgUrl as string)
+            }}
+          >
             <div>
               <Icons.UploadIcon />
             </div>
@@ -150,7 +159,12 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             </div>
           </button>
 
-          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+            onClick={() => {
+              tiptapEditorUtils.clearCurrentLineContent()
+              tiptapEditorUtils.insertTable({ rows: 3, cols: 3 })
+            }}
+          >
             <div>
               <Icons.TableIcon />
             </div>
@@ -159,7 +173,12 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             </div>
           </button>
 
-          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+            onClick={() => {
+              tiptapEditorUtils.clearCurrentLineContent()
+              tiptapEditorUtils.insertCallout()
+            }}
+          >
             <div>
               <Icons.CalloutIcon />
             </div>
