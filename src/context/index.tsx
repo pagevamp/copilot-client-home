@@ -3,7 +3,7 @@
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  bannerImg: string
+  bannerImg: string;
 }
 
 export interface IAppContext {
@@ -18,6 +18,8 @@ interface IAppCoreProvider {
 export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
+
+
   const [state, setState] = useState<IAppState>({
     bannerImg: "",
   })

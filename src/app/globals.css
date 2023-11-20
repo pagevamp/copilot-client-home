@@ -25,3 +25,12 @@
 /*     ) */
 /*     rgb(var(--background-start-rgb)); */
 /* } */
+
+.tiptap {
+  min-height: 90vh;
+  min-width: 100%;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
