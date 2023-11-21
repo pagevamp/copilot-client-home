@@ -72,7 +72,7 @@ const EditorInterface = () => {
       <div
         className='px-8 py-2'
         style={{
-          background: '#f8f9fb', //to be changed later with color picker
+          background: '#f8f9fb', //to be changed later with color picker component
           minHeight: '90vh',
         }}
       >
