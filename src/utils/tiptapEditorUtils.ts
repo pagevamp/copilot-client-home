@@ -50,6 +50,22 @@ export class TiptapEditorUtils {
     this.editor.chain().focus().toggleOrderedList().run()
   }
 
+  toggleBold() {
+    this.editor.chain().focus().toggleBold().run()
+  }
+
+  toggleItalic() {
+    this.editor.chain().focus().toggleItalic().run()
+  }
+
+  toggleUnderline() {
+    this.editor.chain().focus().toggleUnderline().run()
+  }
+
+  toggleStrike() {
+    this.editor.chain().focus().toggleStrike().run()
+  }
+
   setImage(imgUrl: string) {
     this.editor.chain().focus().setImage({ src: imgUrl }).run()
   }

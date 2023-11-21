@@ -17,6 +17,8 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import StarterKit from '@tiptap/starter-kit'
+import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
+import Underline from '@tiptap/extension-underline'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -28,6 +30,7 @@ const EditorInterface = () => {
       Paragraph,
       Heading,
       Text,
+      Underline,
       OrderedList.configure({
         itemTypeName: "listItem",
         keepMarks: true,
@@ -80,6 +83,7 @@ const EditorInterface = () => {
           editor ? (
             <div>
               <FloatingMenuContainer editor={editor} />
+              <BubbleMenuContainer editor={editor} />
             </div>
           ) : null
         }

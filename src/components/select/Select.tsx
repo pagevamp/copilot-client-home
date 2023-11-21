@@ -7,9 +7,10 @@ interface IDropDown {
   customOptions: ReactNode
   name: string
   selected: string | null
+  className?: string
 }
 
-interface ISelectOptions extends Pick<IDropDown, 'customOptions'> {}
+interface ISelectOptions extends Pick<IDropDown, 'customOptions'> { }
 
 const ArrowIcon = () => {
   return (
@@ -41,14 +42,13 @@ const SelectOptions: FC<ISelectOptions> = ({ customOptions }) => {
   )
 }
 
-const Select: FC<IDropDown> = ({ customOptions, name, selected }) => {
+const Select: FC<IDropDown> = ({ customOptions, name, selected, className }) => {
   const [showDropDown, setShowDropDown] = useState(false)
 
   return (
     <div
       id={name}
-      className='w-48 py-2 px-3 
-        border border-slate-300 bg-white outline-none rounded relative cursor-pointer'
+      className={`w-48 py-2 px-3 border border-slate-300 bg-white outline-none rounded relative cursor-pointer ${className}`}
       onClick={() => setShowDropDown((prev) => !prev)}
     >
       <When condition={showDropDown}>
