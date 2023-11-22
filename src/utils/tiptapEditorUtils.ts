@@ -1,6 +1,5 @@
 import { Editor } from '@tiptap/react'
 import { Level } from '@tiptap/extension-heading'
-import { customCallOut } from '@/components/tiptap/callout/callout';
 
 export class TiptapEditorUtils {
   editor: Editor
@@ -20,15 +19,28 @@ export class TiptapEditorUtils {
     const startOfLine = $from.start();
     const endOfLine = $to.end();
 
-    // Iterate through the nodes in the current line
-    doc.nodesBetween(startOfLine, endOfLine, (node: any, pos: any) => {
-      // Check if the node is a text node
+    // Get the last text node in the current line
+    let lastTextNodePos = null;
+    doc.nodesBetween(startOfLine, endOfLine, (node, pos) => {
       if (node.isText) {
-        // If it's a text node, delete its content
-        tr.delete(pos, pos + node.nodeSize);
+        lastTextNodePos = pos;
       }
-      // additional conditions here to handle non-text nodes (e.g., images)
     });
+
+    // Check if the last character of the last text node is "/"
+    if (lastTextNodePos !== null) {
+      const lastTextNode = doc.nodeAt(lastTextNodePos);
+      if (!lastTextNode) return;
+
+      const lastText = lastTextNode.text;
+
+      if (!lastText) return;
+
+      if (lastText.endsWith('/')) {
+        const deletePos = lastTextNodePos + lastText.length - 1;
+        tr.delete(deletePos, deletePos + 1); // Delete the last character
+      }
+    }
 
     // Apply the transaction to the editor
     this.editor.view.dispatch(tr);
@@ -66,6 +78,14 @@ export class TiptapEditorUtils {
     this.editor.chain().focus().toggleStrike().run()
   }
 
+  insertCodeBlock() {
+    this.editor.chain().focus().toggleCode().run()
+  }
+
+  insertLink(url: string) {
+    this.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }
+
   setImage(imgUrl: string) {
     this.editor.chain().focus().setImage({ src: imgUrl }).run()
   }
@@ -75,10 +95,6 @@ export class TiptapEditorUtils {
   }
 
   insertCallout() {
-    this.editor.chain().focus().insertContent("<h1 style='font-size:100px'>hello world</h1>", {
-      parseOptions: {
-        preserveWhitespace: false
-      }
-    }).run()
+    this.editor.chain().focus().insertContent('<callout></callout>').run()
   }
 }

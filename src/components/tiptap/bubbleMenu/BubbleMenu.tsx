@@ -15,7 +15,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
 
   return (
     <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }} >
-      <div className='flex flex-row border border-slate-200 rounded'>
+      <div className='flex flex-row border border-slate-200 rounded bg-white'>
         <Select
           labelId="formatter-select-label"
           id="formatter-select-id"

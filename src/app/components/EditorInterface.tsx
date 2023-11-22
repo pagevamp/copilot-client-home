@@ -1,13 +1,13 @@
 'use client'
 
-import When from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
+
+import When from '@/components/hoc/When'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
 import Text from '@tiptap/extension-text'
-import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import OrderedList from '@tiptap/extension-ordered-list'
 import BulletList from '@tiptap/extension-bullet-list'
 import ListItem from '@tiptap/extension-list-item'
@@ -16,21 +16,30 @@ import Table from '@tiptap/extension-table'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
-import StarterKit from '@tiptap/starter-kit'
-import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
 import Underline from '@tiptap/extension-underline'
+import CodeBlock from '@tiptap/extension-code-block'
+import Link from '@tiptap/extension-link'
+import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
+
+import LinkInput from '@/components/tiptap/linkInput/LinkInput'
+import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
+import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
 
 const EditorInterface = () => {
   const appState = useAppState()
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
       Document,
       Paragraph,
       Heading,
       Text,
       Underline,
+      CodeBlock,
+      CalloutExtension,
+      Link.extend({
+        exitable: true,
+      }),
       OrderedList.configure({
         itemTypeName: "listItem",
         keepMarks: true,
@@ -63,6 +72,7 @@ const EditorInterface = () => {
 
   if (!editor) return null;
 
+
   return (
     <>
       <When condition={appState?.appState.bannerImg !== ''}>
@@ -84,6 +94,7 @@ const EditorInterface = () => {
             <div>
               <FloatingMenuContainer editor={editor} />
               <BubbleMenuContainer editor={editor} />
+              <LinkInput editor={editor} />
             </div>
           ) : null
         }

@@ -3,6 +3,7 @@ import { FC } from 'react';
 import * as Icons from '@/components/tiptap/floatingMenu/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils';
 import { ImagePickerUtils } from '@/utils/imagePickerUtils';
+import { useAppState } from '@/hooks/useAppState';
 
 interface IFloatingMenuContainer {
   editor: Editor;
@@ -12,6 +13,8 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
   const imagePickerUtils = new ImagePickerUtils()
+
+  const appState = useAppState()
 
 
   return (
@@ -30,7 +33,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
           }
           return false
 
-        }}>
+        }} pluginKey="optionsMenu">
         <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
           <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
             onClick={() => {
@@ -141,7 +144,12 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             </div>
           </button>
 
-          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+            onClick={() => {
+              tiptapEditorUtils.clearCurrentLineContent()
+              tiptapEditorUtils.insertCodeBlock()
+            }}
+          >
             <div>
               <Icons.EmbedIcon />
             </div>
@@ -150,7 +158,12 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             </div>
           </button>
 
-          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+            onClick={() => {
+              tiptapEditorUtils.clearCurrentLineContent()
+              appState?.toggleShowLinkInput(true)
+            }}
+          >
             <div>
               <Icons.LinkIcon />
             </div>
