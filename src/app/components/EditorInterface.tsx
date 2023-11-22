@@ -24,18 +24,19 @@ import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
+import StarterKit from '@tiptap/starter-kit'
 
 const EditorInterface = () => {
   const appState = useAppState()
 
   const editor = useEditor({
     extensions: [
+      StarterKit,
       Document,
       Paragraph,
       Heading,
       Text,
       Underline,
-      CodeBlock,
       CalloutExtension,
       Link.extend({
         exitable: true,
@@ -65,7 +66,8 @@ const EditorInterface = () => {
       }),
       TableCell,
       TableHeader,
-      TableRow
+      TableRow,
+      CodeBlock,
     ],
     content: '',
   })
