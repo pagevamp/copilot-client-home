@@ -1,10 +1,11 @@
 'use client'
 
 import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import AutofillFields from '@/components/autofillFields/AutofillFields'
 import Select from '@/components/select/Select'
 import { useAppState } from '@/hooks/useAppState'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const ClientHomeInterface = () => {
   const appState = useAppState()
@@ -14,10 +15,18 @@ const ClientHomeInterface = () => {
 
   const [selected, setSelected] = useState(defaultValue)
 
+  useEffect(() => {
+    if (selected === defaultValue) {
+      appState?.toggleReadOnly(false)
+    } else {
+      appState?.toggleReadOnly(true)
+    }
+  }, [selected])
+
   return (
     <div>
       <div className='p-4 flex items-center justify-between'>
-        <p>Preview mode</p>
+        <p className='font-medium'>Preview mode</p>
         <Select
           name='Preview mode'
           customOptions={
@@ -47,7 +56,7 @@ const ClientHomeInterface = () => {
         />
       </div>
 
-      <hr />
+      <hr className='bg-slate-300' style={{ padding: 0.5 }} />
 
       <ImagePicker
         getImage={async (image) => {
@@ -55,6 +64,12 @@ const ClientHomeInterface = () => {
           appState?.setBannerImg(await imagePickerUtils.convertBlobToUrlString(image as Blob) as string)
         }}
       />
+
+      <hr className='bg-slate-300' style={{ padding: 0.3 }} />
+
+      <AutofillFields />
+
+      <hr className='bg-slate-300' style={{ padding: 0.5 }} />
     </div>
   )
 }

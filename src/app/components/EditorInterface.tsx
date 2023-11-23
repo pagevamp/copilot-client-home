@@ -18,26 +18,34 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import Underline from '@tiptap/extension-underline'
 import CodeBlock from '@tiptap/extension-code-block'
+import Code from '@tiptap/extension-code'
 import Link from '@tiptap/extension-link'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
+import Bold from '@tiptap/extension-bold'
+import Italic from '@tiptap/extension-italic'
+import Strike from '@tiptap/extension-strike'
+import Gapcursor from '@tiptap/extension-gapcursor'
 
 import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
-import StarterKit from '@tiptap/starter-kit'
+import { useEffect } from 'react'
 
 const EditorInterface = () => {
   const appState = useAppState()
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
       Document,
       Paragraph,
       Heading,
       Text,
       Underline,
+      Bold,
+      Italic,
+      Strike,
       CalloutExtension,
+      Gapcursor,
       Link.extend({
         exitable: true,
       }),
@@ -64,31 +72,39 @@ const EditorInterface = () => {
       Table.configure({
         resizable: true,
       }),
+      TableRow,
       TableCell,
       TableHeader,
-      TableRow,
       CodeBlock,
+      Code
     ],
     content: '',
   })
 
-  if (!editor) return null;
 
+  useEffect(() => {
+    if (editor) {
+      editor?.setEditable(!appState?.appState.readOnly as boolean)
+    }
+  }, [appState?.appState.readOnly])
+
+
+  if (!editor) return null;
 
   return (
     <>
       <When condition={appState?.appState.bannerImg !== ''}>
         <img
-          className='h-56 object-cover w-full'
+          className='w-full'
           src={appState?.appState.bannerImg as string}
           alt='banner image'
         />
       </When>
       <div
-        className='px-8 py-2'
+        className='px-14 py-8 overflow-auto'
         style={{
           background: '#f8f9fb', //to be changed later with color picker component
-          minHeight: '90vh',
+          maxHeight: '91vh',
         }}
       >
         {
@@ -100,7 +116,7 @@ const EditorInterface = () => {
             </div>
           ) : null
         }
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} readOnly={appState?.appState.readOnly} />
       </div>
     </>
   )

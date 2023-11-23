@@ -72,7 +72,7 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
         {...getRootProps()}
       >
         <input {...getInputProps()} />
-        <p>Banner image</p>
+        <p className='font-medium'>Banner image</p>
         <div
           className={`flex justify-center w-8 h-8 ${isDragActive
             ? 'outline-dashed outline-2 outline-slate-200'

@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #EDEDF0; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 .tiptap {
   min-height: 90vh;
   min-width: 100%;
@@ -61,7 +82,7 @@ td, th {
 
 th {
   background-color: #F1F3F5;
-  font-weight:700;
+  font-weight: bold;
   text-align: left
 }
 
@@ -109,6 +130,7 @@ table {
     margin: 1rem 0;
     position: relative;
     display: flex;
+    color: #60606A;
   }
 
 .callout-container > .callout-icon {
@@ -123,7 +145,7 @@ table {
     letter-spacing: 1px;
     font-weight: bold;
     text-transform: uppercase;
-    color: #fff;
+    color: #60606A;
     position: absolute;
     top: 0;
     padding: 0.25rem 0.75rem;

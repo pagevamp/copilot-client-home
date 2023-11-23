@@ -5,12 +5,14 @@ import { FC, ReactNode, useState, createContext } from 'react'
 export interface IAppState {
   bannerImg: string;
   showLinkInput: boolean;
+  readOnly: boolean;
 }
 
 export interface IAppContext {
   appState: IAppState
   setBannerImg: (image: string) => void
   toggleShowLinkInput: (v: boolean) => void
+  toggleReadOnly: (v: boolean) => void
 }
 
 interface IAppCoreProvider {
@@ -24,7 +26,8 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
 
   const [state, setState] = useState<IAppState>({
     bannerImg: "",
-    showLinkInput: false
+    showLinkInput: false,
+    readOnly: false
   })
 
   const setBannerImg = (image: string) => {
@@ -35,12 +38,17 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, showLinkInput: v }))
   }
 
+  const toggleReadOnly = (v: boolean) => {
+    setState((prev) => ({ ...prev, readOnly: v }))
+  }
+
   return (
     <AppContext.Provider
       value={{
         appState: state,
         setBannerImg,
         toggleShowLinkInput,
+        toggleReadOnly
       }}
     >
       {children}

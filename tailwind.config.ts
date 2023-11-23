@@ -23,7 +23,10 @@ const config: Config = {
         'new-dark': "#0E0E10",
         'new-white': "#D7D7DD",
         'new-card-border': "#EDEDF0",
-        'new-white-2': "#F8F9FB"
+        'new-white-2': "#F8F9FB",
+      },
+      textColor: {
+        'new-gray': "#60606A"
       },
       boxShadow: {
         'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)"
