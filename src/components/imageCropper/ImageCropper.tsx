@@ -47,7 +47,7 @@ const ImageCropper: FC<IImageCropper> = ({ open, image, getImage, onCancel }) =>
           image={image}
           crop={crop}
           zoom={zoom}
-          aspect={4 / 3}
+          aspect={16 / 9}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}
