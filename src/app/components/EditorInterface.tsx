@@ -30,6 +30,7 @@ import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
 import { useEffect } from 'react'
+import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -113,6 +114,7 @@ const EditorInterface = () => {
               <FloatingMenuContainer editor={editor} />
               <BubbleMenuContainer editor={editor} />
               <LinkInput editor={editor} />
+              <AutofieldSelector editor={editor} />
             </div>
           ) : null
         }
