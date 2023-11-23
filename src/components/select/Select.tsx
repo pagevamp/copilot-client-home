@@ -2,6 +2,7 @@
 
 import { FC, ReactNode, useState } from "react";
 import When from "../hoc/When";
+import { SelectArrowIcon } from "@/icons";
 
 
 interface IDropDown {
@@ -55,7 +56,9 @@ const Select: FC<IDropDown> = ({ customOptions, name, selected }) => {
         />
       </When>
 
-      <div className="absolute top-2.5 right-2"><ArrowIcon /></div>
+      <div className="absolute top-2.5 right-2">
+        <SelectArrowIcon />
+      </div>
 
       <div>{selected}</div>
 
