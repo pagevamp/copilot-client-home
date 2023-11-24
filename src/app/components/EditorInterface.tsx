@@ -112,7 +112,7 @@ const EditorInterface = () => {
 
 
   return (
-    <div className='relative'>
+    <div className='overflow-y-auto overflow-x-hidden max-h-screen w-full'>
       <When condition={appState?.appState.bannerImg !== ''}>
         <img
           className='w-full'
@@ -121,10 +121,9 @@ const EditorInterface = () => {
         />
       </When>
       <div
-        className='px-14 py-8 overflow-auto'
+        className='px-14 py-8'
         style={{
           background: '#f8f9fb', //to be changed later with color picker component
-          maxHeight: '91vh',
         }}
       >
         {
@@ -143,7 +142,12 @@ const EditorInterface = () => {
         />
       </div>
       <When condition={!!appState?.appState.readOnly}>
-        <div className='absolute bottom-10 w-96'>
+        <div style={{
+          width: "330px",
+          margin: "0 auto",
+          position: "sticky",
+          bottom: "5em"
+        }}>
           <NoteDisplay content="Edits cannot be made while in preview mode" />
         </div>
       </When>
