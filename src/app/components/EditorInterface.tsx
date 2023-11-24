@@ -3,6 +3,8 @@
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
 
+import Handlebars from "handlebars"
+
 import When from '@/components/hoc/When'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -29,8 +31,9 @@ import Gapcursor from '@tiptap/extension-gapcursor'
 import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
+import NoteDisplay from '@/components/display/NoteDisplay'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -82,18 +85,34 @@ const EditorInterface = () => {
     content: '',
   })
 
+  const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
 
+  //both useEffects should be refactored once api is connected
   useEffect(() => {
     if (editor) {
       editor?.setEditable(!appState?.appState.readOnly as boolean)
     }
+    setOriginalTemplate(editor?.getHTML())
+
   }, [appState?.appState.readOnly])
+
+  useEffect(() => {
+    if (appState?.appState.readOnly) {
+      const template = Handlebars?.compile(originalTemplate ? originalTemplate : editor?.getHTML() || "")
+      const mockData = appState.appState.mockData.filter(el => el.givenName === appState.appState.selectedClient)[0]
+      const c = template({ client: mockData })
+      editor?.chain().focus().setContent(c).run()
+    } else {
+      editor?.chain().focus().setContent(originalTemplate as string).run()
+    }
+  }, [appState?.appState.selectedClient])
 
 
   if (!editor) return null;
 
+
   return (
-    <>
+    <div className='relative'>
       <When condition={appState?.appState.bannerImg !== ''}>
         <img
           className='w-full'
@@ -118,9 +137,17 @@ const EditorInterface = () => {
             </div>
           ) : null
         }
-        <EditorContent editor={editor} readOnly={appState?.appState.readOnly} />
+        <EditorContent
+          editor={editor}
+          readOnly={appState?.appState.readOnly}
+        />
       </div>
-    </>
+      <When condition={!!appState?.appState.readOnly}>
+        <div className='absolute bottom-10 w-96'>
+          <NoteDisplay content="Edits cannot be made while in preview mode" />
+        </div>
+      </When>
+    </div>
   )
 }
 

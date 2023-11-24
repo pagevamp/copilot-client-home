@@ -40,6 +40,11 @@ export class TiptapEditorUtils {
         const deletePos = lastTextNodePos + lastText.length - 1;
         tr.delete(deletePos, deletePos + 1); // Delete the last character
       }
+
+      if (lastText.endsWith('{')) {
+        const deletePos = lastTextNodePos + lastText.length - 2;
+        tr.delete(deletePos, deletePos + 2); // Delete the last character
+      }
     }
 
     // Apply the transaction to the editor
@@ -96,5 +101,9 @@ export class TiptapEditorUtils {
 
   insertCallout() {
     this.editor.chain().focus().insertContent('<callout></callout>').run()
+  }
+
+  insertContent(content: string) {
+    this.editor.chain().focus().setParagraph().insertContent(content.toString()).run()
   }
 }

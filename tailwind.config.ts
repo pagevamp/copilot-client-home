@@ -28,8 +28,15 @@ const config: Config = {
       textColor: {
         'new-gray': "#60606A"
       },
+      borderColor: {
+        'col-1': "#DFE1E4"
+      },
       boxShadow: {
-        'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)"
+        'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)",
+        'variant-2': " 0px 8px 24px 0px rgba(0, 0, 0, 0.12)"
+      },
+      fontSize: {
+        'xs': "13px"
       }
     },
   },

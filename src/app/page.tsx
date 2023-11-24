@@ -19,7 +19,7 @@ async function listClients() {
 
 
 export default async function Page() {
-  const clientList = await listClients()
+  // const clientList = await listClients()
 
   return (
     <div>
