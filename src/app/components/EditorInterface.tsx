@@ -92,13 +92,13 @@ const EditorInterface = () => {
     if (editor) {
       editor?.setEditable(!appState?.appState.readOnly as boolean)
     }
-    setOriginalTemplate(editor?.getHTML())
 
   }, [appState?.appState.readOnly])
 
   useEffect(() => {
     if (appState?.appState.readOnly) {
-      const template = Handlebars?.compile(originalTemplate ? originalTemplate : editor?.getHTML() || "")
+      // const template = Handlebars?.compile(originalTemplate ? originalTemplate : editor?.getHTML() || "")
+      const template = Handlebars?.compile(originalTemplate || "")
       const mockData = appState.appState.mockData.filter(el => el.givenName === appState.appState.selectedClient)[0]
       const c = template({ client: mockData })
       editor?.chain().focus().setContent(c).run()
@@ -107,6 +107,10 @@ const EditorInterface = () => {
     }
   }, [appState?.appState.selectedClient])
 
+  useEffect(() => {
+    if (appState?.appState.readOnly) return;
+    setOriginalTemplate(editor?.getHTML())
+  }, [editor?.getText(), appState?.appState.readOnly])
 
   if (!editor) return null;
 
