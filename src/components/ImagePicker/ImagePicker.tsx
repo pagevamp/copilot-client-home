@@ -3,8 +3,8 @@
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { FC, useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import When from '../hoc/When'
-import ImageCropper from '../imageCropper/ImageCropper'
+import When from '@/components/hoc/When'
+import ImageCropper from '@/components/imageCropper/ImageCropper'
 
 const PlusIcon = () => {
   return (
@@ -74,10 +74,11 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
         <input {...getInputProps()} />
         <p>Banner image</p>
         <div
-          className={`flex justify-center w-8 h-8 ${isDragActive
-            ? 'outline-dashed outline-2 outline-slate-200'
-            : ' border border-slate-200'
-            }`}
+          className={`flex justify-center w-8 h-8 ${
+            isDragActive
+              ? 'outline-dashed outline-2 outline-slate-200'
+              : ' border border-slate-200'
+          }`}
         >
           {imgUrl ? (
             <img
@@ -97,7 +98,9 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
         </div>
       </div>
       <When condition={showCropper}>
-        <ImageCropper open={showCropper} image={imgUrl}
+        <ImageCropper
+          open={showCropper}
+          image={imgUrl}
           getImage={(image) => {
             getImage(image)
             setShowCropper(false)

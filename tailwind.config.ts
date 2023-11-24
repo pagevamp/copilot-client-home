@@ -17,12 +17,12 @@ const config: Config = {
         '100': '550px',
       },
       width: {
-        '100': '563px'
+        '100': '563px',
       },
       backgroundColor: {
-        'new-dark': "#0E0E10",
-        'new-white': "#D7D7DD"
-      }
+        'new-dark': '#0E0E10',
+        'new-white': '#D7D7DD',
+      },
     },
   },
   plugins: [],

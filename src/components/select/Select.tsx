@@ -1,7 +1,7 @@
 'use client'
 
 import { FC, ReactNode, useState } from 'react'
-import When from '../hoc/When'
+import When from '@/components/hoc/When'
 
 interface IDropDown {
   customOptions: ReactNode

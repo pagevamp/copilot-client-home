@@ -1,5 +1,5 @@
-import ClientHomeInterface from './components/ClientHomeInterface'
-import EditorInterface from './components/EditorInterface'
+import ClientHomeInterface from '@/app/components/ClientHomeInterface'
+import EditorInterface from '@/app/components/EditorInterface'
 
 export default async function Page() {
   return (

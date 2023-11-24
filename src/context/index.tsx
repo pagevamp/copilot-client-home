@@ -19,7 +19,7 @@ export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
   const [state, setState] = useState<IAppState>({
-    bannerImg: "",
+    bannerImg: '',
   })
 
   const setBannerImg = (image: string) => {
