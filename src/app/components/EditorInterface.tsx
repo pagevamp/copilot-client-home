@@ -1,6 +1,6 @@
 'use client'
 
-import When from '@/components/hoc/When'
+import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 
 const EditorInterface = () => {
