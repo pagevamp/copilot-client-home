@@ -1,8 +1,8 @@
 import { BubbleMenu, Editor } from '@tiptap/react'
 import { FC, useState } from 'react';
-import * as Icons from '@/components/tiptap/floatingMenu/icons'
 import { Divider, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils';
+import { AutofillIcon, BulletListIcon2, H1Icon, H2Icon, H3Icon, NumberedListIcon2, TextIcon } from '@/icons';
 
 interface IBubbleMenuContainer {
   editor: Editor;
@@ -35,7 +35,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
               }}
             >
               <div>
-                <Icons.H1Icon />
+                <H1Icon />
               </div>
               <div>
                 <p className='text-sm'>Heading 1</p>
@@ -50,7 +50,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
               }}
             >
               <div>
-                <Icons.H2Icon />
+                <H2Icon />
               </div>
               <div>
                 <p className='text-sm'>Heading 2</p>
@@ -65,7 +65,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
               }}
             >
               <div>
-                <Icons.H3Icon />
+                <H3Icon />
               </div>
               <div>
                 <p className='text-sm'>Heading 3</p>
@@ -80,7 +80,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
               }}
             >
               <div>
-                <Icons.TextIcon />
+                <TextIcon />
               </div>
               <div>
                 <p className='text-sm'>Text</p>
@@ -92,7 +92,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
             <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
             >
               <div>
-                <Icons.AutofillIcon />
+                <AutofillIcon />
               </div>
               <div>
                 <p className='text-sm'>Autofill field</p>
@@ -145,7 +145,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           tiptapEditorUtils.toggleBulletList()
         }}>
           <div>
-            <Icons.BulletListIcon />
+            <BulletListIcon2 />
           </div>
         </button>
 
@@ -155,7 +155,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           tiptapEditorUtils.toggleNumberedList()
         }}>
           <div>
-            <Icons.NumberedListIcon />
+            <NumberedListIcon2 />
           </div>
         </button>
       </div>
