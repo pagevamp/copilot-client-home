@@ -6,7 +6,6 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@next/eslint-plugin-next/recommended",
     "next",
     "next/core-web-vitals",
     "prettier",
@@ -18,16 +17,15 @@
     "sourceType": "module"
   },
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
+    "indent": ["error", 2],
     "camelcase": [
       "error",
       {
         "properties": "always"
       }
     ],
-    "no-unused-vars": "error"
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "@next/next/no-img-element": "off"
   }
 }

@@ -12,9 +12,14 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.18",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-dropzone": "^14.2.3",
+    "react-easy-crop": "^5.0.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.2",
