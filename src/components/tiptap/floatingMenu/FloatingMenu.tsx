@@ -1,9 +1,9 @@
 import { FloatingMenu, Editor } from '@tiptap/react'
 import { FC } from 'react';
-import * as Icons from '@/components/tiptap/floatingMenu/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils';
 import { ImagePickerUtils } from '@/utils/imagePickerUtils';
 import { useAppState } from '@/hooks/useAppState';
+import { H1Icon, H2Icon, H3Icon, TextIcon, AutofillIcon, NumberedListIcon, BulletListIcon, UploadIcon2, CalloutIcon, LinkIcon, TableIcon, EmbedIcon } from '@/icons';
 
 interface IFloatingMenuContainer {
   editor: Editor;
@@ -42,7 +42,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.H1Icon />
+              <H1Icon />
             </div>
             <div>
               <p className='text-sm'>Heading 1</p>
@@ -56,7 +56,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.H2Icon />
+              <H2Icon />
             </div>
             <div>
               <p className='text-sm'>Heading 2</p>
@@ -70,7 +70,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.H3Icon />
+              <H3Icon />
             </div>
             <div>
               <p className='text-sm'>Heading 3</p>
@@ -84,7 +84,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.TextIcon />
+              <TextIcon />
             </div>
             <div>
               <p className='text-sm'>Text</p>
@@ -93,7 +93,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
 
           <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
             <div>
-              <Icons.AutofillIcon />
+              <AutofillIcon />
             </div>
             <div>
               <p className='text-sm'>Autofill fields</p>
@@ -107,7 +107,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.BulletListIcon />
+              <BulletListIcon />
             </div>
             <div>
               <p className='text-sm'>Bullest list</p>
@@ -121,7 +121,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.NumberedListIcon />
+              <NumberedListIcon />
             </div>
             <div>
               <p className='text-sm'>Numbered list</p>
@@ -137,7 +137,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.UploadIcon />
+              <UploadIcon2 />
             </div>
             <div>
               <p className='text-sm'>Upload</p>
@@ -151,7 +151,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.EmbedIcon />
+              <EmbedIcon />
             </div>
             <div>
               <p className='text-sm'>Embed</p>
@@ -165,7 +165,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.LinkIcon />
+              <LinkIcon />
             </div>
             <div>
               <p className='text-sm'>Link</p>
@@ -179,7 +179,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.TableIcon />
+              <TableIcon />
             </div>
             <div>
               <p className='text-sm'>Table</p>
@@ -193,7 +193,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             }}
           >
             <div>
-              <Icons.CalloutIcon />
+              <CalloutIcon />
             </div>
             <div>
               <p className='text-sm'>Callout</p>

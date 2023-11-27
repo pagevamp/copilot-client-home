@@ -17,7 +17,7 @@ const config: Config = {
         '100': '550px',
       },
       width: {
-        '100': '563px',
+        '100': '563px'
       },
       backgroundColor: {
         'new-dark': "#0E0E10",
@@ -28,10 +28,16 @@ const config: Config = {
       textColor: {
         'new-gray': "#60606A"
       },
-      boxShadow: {
-        'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)"
-      }
+      borderColor: {
+        'col-1': "#DFE1E4"
       },
+      boxShadow: {
+        'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)",
+        'variant-2': " 0px 8px 24px 0px rgba(0, 0, 0, 0.12)"
+      },
+      fontSize: {
+        'xs': "13px"
+      }
     },
   },
   plugins: [],
