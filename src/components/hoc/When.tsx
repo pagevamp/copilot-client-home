@@ -1,14 +1,14 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, memo } from "react";
 
 interface IWhen {
   condition: boolean
   children: ReactNode
 }
 
-const When: FC<IWhen> = ({ condition, children }) => {
-  if (condition) return children
+const _When: FC<IWhen> = ({ condition, children }) => {
+  if (condition) return children;
 
   return null
 }
 
-export default When
+export const When = memo(_When) 
