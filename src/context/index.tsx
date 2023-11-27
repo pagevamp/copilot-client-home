@@ -7,6 +7,7 @@ export interface IAppState {
   showLinkInput: boolean;
   readOnly: boolean;
   selectedClient: string;
+  editorColor: string;
   //this data should be fetched from API in the future
   mockData: {
     clientId: number; givenName: string; familyName: string;
@@ -20,6 +21,7 @@ export interface IAppContext {
   toggleShowLinkInput: (v: boolean) => void
   toggleReadOnly: (v: boolean) => void
   setSelectedClient: (client: string) => void
+  setEditorColor: (color: string) => void
 }
 
 interface IAppCoreProvider {
@@ -54,6 +56,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     showLinkInput: false,
     readOnly: false,
     selectedClient: "",
+    editorColor: "#f8f9fb",
     mockData
   })
 
@@ -73,6 +76,10 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, selectedClient: client }))
   }
 
+  const setEditorColor = (color: string) => {
+    setState((prev) => ({ ...prev, editorColor: color }))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -80,7 +87,8 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setBannerImg,
         toggleShowLinkInput,
         toggleReadOnly,
-        setSelectedClient
+        setSelectedClient,
+        setEditorColor
       }}
     >
       {children}

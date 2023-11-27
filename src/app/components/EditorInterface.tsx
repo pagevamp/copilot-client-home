@@ -127,7 +127,7 @@ const EditorInterface = () => {
       <div
         className='px-14 py-8'
         style={{
-          background: '#f8f9fb', //to be changed later with color picker component
+          background: `${appState?.appState.editorColor}`
         }}
       >
         {

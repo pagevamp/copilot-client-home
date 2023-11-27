@@ -30,13 +30,8 @@ export default async function Page() {
         <div className='basis-3/4'>
           <EditorInterface />
         </div>
-<<<<<<< HEAD
         <div className='basis-1/4 border-t-2 border-l-2 border-slate-300'>
           <SideBarInterface />
-=======
-        <div className='basis-1/4 border-t-2 border-l-2 border-slate-300 rounded'>
-          <ClientHomeInterface />
->>>>>>> 66f23a285501e5a2d25676da8ed0b6fb4f3580ca
         </div>
       </div>
     </div>

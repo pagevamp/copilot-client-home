@@ -71,6 +71,7 @@ const SideBarInterface = () => {
       <hr />
 
       <ColorPicker />
+
       <hr className='bg-slate-300' style={{ padding: 0.3 }} />
 
       <AutofillFields />
