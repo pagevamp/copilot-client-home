@@ -17,7 +17,7 @@ const config: Config = {
         '100': '550px',
       },
       width: {
-        '100': '563px'
+        '100': '563px',
       },
       backgroundColor: {
         'new-dark': "#0E0E10",
@@ -31,6 +31,7 @@ const config: Config = {
       boxShadow: {
         'variant-1': "0px 6px 20px 0px rgba(0, 0, 0, 0.12)"
       }
+      },
     },
   },
   plugins: [],

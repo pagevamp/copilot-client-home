@@ -49,12 +49,12 @@ export class ImagePickerUtils implements IImagePickerUtils {
   convertBlobToUrlString(image: Blob): Promise<string | null> {
     return new Promise<string | null>((resolve) => {
       if (image.type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(image);
-        resolve(imageUrl);
+        const imageUrl = URL.createObjectURL(image)
+        resolve(imageUrl)
       } else {
-        console.error('Input is not a valid image blob.');
-        resolve(null);
+        console.error('Input is not a valid image blob.')
+        resolve(null)
       }
-    });
+    })
   }
 }

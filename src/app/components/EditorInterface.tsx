@@ -1,9 +1,9 @@
 'use client'
 
+import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
 
-import When from '@/components/hoc/When'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
