@@ -1,10 +1,9 @@
-import { PlusIcon, UploadIcon } from "@/icons";
-import { ImagePickerUtils } from "@/utils/imagePickerUtils";
-import { FC, useCallback, useState } from "react";
-import { When } from "@/components/hoc/When";
-import ImageCropper from "@/components/imageCropper/ImageCropper";
-import { useDropzone } from "react-dropzone";
-
+import { PlusIcon, UploadIcon } from '@/icons'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { FC, useCallback, useState } from 'react'
+import { When } from '@/components/hoc/When'
+import ImageCropper from '@/components/imageCropper/ImageCropper'
+import { useDropzone } from 'react-dropzone'
 
 interface IImagePicker {
   getImage: (file: Blob | null) => void

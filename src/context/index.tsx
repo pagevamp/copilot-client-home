@@ -3,9 +3,9 @@
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  bannerImg: string;
-  showLinkInput: boolean;
-  readOnly: boolean;
+  bannerImg: string
+  showLinkInput: boolean
+  readOnly: boolean
 }
 
 export interface IAppContext {
@@ -22,12 +22,10 @@ interface IAppCoreProvider {
 export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
-
-
   const [state, setState] = useState<IAppState>({
-    bannerImg: "",
+    bannerImg: '',
     showLinkInput: false,
-    readOnly: false
+    readOnly: false,
   })
 
   const setBannerImg = (image: string) => {
@@ -48,7 +46,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         appState: state,
         setBannerImg,
         toggleShowLinkInput,
-        toggleReadOnly
+        toggleReadOnly,
       }}
     >
       {children}

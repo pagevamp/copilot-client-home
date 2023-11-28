@@ -1,35 +1,44 @@
 import { BubbleMenu, Editor } from '@tiptap/react'
-import { FC, useState } from 'react';
-import { Divider, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils';
-import { AutofillIcon, BulletListIcon2, H1Icon, H2Icon, H3Icon, NumberedListIcon2, TextIcon } from '@/icons';
+import { FC, useState } from 'react'
+import { Divider, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
+import {
+  AutofillIcon,
+  BulletListIcon2,
+  H1Icon,
+  H2Icon,
+  H3Icon,
+  NumberedListIcon2,
+  TextIcon,
+} from '@/icons'
 
 interface IBubbleMenuContainer {
-  editor: Editor;
+  editor: Editor
 }
 
 const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
-  const [selectedFormatter, setSelectedFormatter] = useState("Text")
+  const [selectedFormatter, setSelectedFormatter] = useState('Text')
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
   return (
-    <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }} >
+    <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
       <div className='flex flex-row border border-slate-200 rounded bg-white'>
         <Select
-          labelId="formatter-select-label"
-          id="formatter-select-id"
+          labelId='formatter-select-label'
+          id='formatter-select-id'
           value={selectedFormatter}
-          defaultValue="Text"
-          label="Text"
+          defaultValue='Text'
+          label='Text'
           onChange={(event: SelectChangeEvent) => {
             setSelectedFormatter(event.target.value as string)
           }}
-          variant="standard"
+          variant='standard'
           disableUnderline
         >
-          <MenuItem value="Heading 1">
-            <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+          <MenuItem value='Heading 1'>
+            <button
+              className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
               onClick={() => {
                 tiptapEditorUtils.toggleHeading(1)
               }}
@@ -43,8 +52,9 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
             </button>
           </MenuItem>
 
-          <MenuItem value="Heading 2">
-            <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+          <MenuItem value='Heading 2'>
+            <button
+              className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
               onClick={() => {
                 tiptapEditorUtils.toggleHeading(2)
               }}
@@ -58,8 +68,9 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
             </button>
           </MenuItem>
 
-          <MenuItem value="Heading 3">
-            <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+          <MenuItem value='Heading 3'>
+            <button
+              className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
               onClick={() => {
                 tiptapEditorUtils.toggleHeading(3)
               }}
@@ -73,8 +84,9 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
             </button>
           </MenuItem>
 
-          <MenuItem value="Text">
-            <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+          <MenuItem value='Text'>
+            <button
+              className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
               onClick={() => {
                 tiptapEditorUtils.setParagraph()
               }}
@@ -88,9 +100,8 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
             </button>
           </MenuItem>
 
-          <MenuItem value="Autofill field">
-            <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            >
+          <MenuItem value='Autofill field'>
+            <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
               <div>
                 <AutofillIcon />
               </div>
@@ -101,7 +112,8 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           </MenuItem>
         </Select>
 
-        <button className='py-3 px-4 bg-white'
+        <button
+          className='py-3 px-4 bg-white'
           onClick={() => {
             tiptapEditorUtils.toggleBold()
           }}
@@ -109,9 +121,10 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           B
         </button>
 
-        <Divider flexItem orientation="vertical" />
+        <Divider flexItem orientation='vertical' />
 
-        <button className='flex flex-row py-3 px-4 bg-white italic'
+        <button
+          className='flex flex-row py-3 px-4 bg-white italic'
           onClick={() => {
             tiptapEditorUtils.toggleItalic()
           }}
@@ -119,9 +132,10 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           i
         </button>
 
-        <Divider flexItem orientation="vertical" />
+        <Divider flexItem orientation='vertical' />
 
-        <button className='flex flex-row py-3 px-4 bg-white'
+        <button
+          className='flex flex-row py-3 px-4 bg-white'
           onClick={() => {
             tiptapEditorUtils.toggleUnderline()
           }}
@@ -129,9 +143,10 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           U
         </button>
 
-        <Divider flexItem orientation="vertical" />
+        <Divider flexItem orientation='vertical' />
 
-        <button className='flex flex-row py-3 px-4 bg-white'
+        <button
+          className='flex flex-row py-3 px-4 bg-white'
           onClick={() => {
             tiptapEditorUtils.toggleStrike()
           }}
@@ -139,21 +154,27 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           &#36;
         </button>
 
-        <Divider flexItem orientation="vertical" />
+        <Divider flexItem orientation='vertical' />
 
-        <button className='flex flex-row pt-4 px-4 bg-white' onClick={() => {
-          tiptapEditorUtils.toggleBulletList()
-        }}>
+        <button
+          className='flex flex-row pt-4 px-4 bg-white'
+          onClick={() => {
+            tiptapEditorUtils.toggleBulletList()
+          }}
+        >
           <div>
             <BulletListIcon2 />
           </div>
         </button>
 
-        <Divider flexItem orientation="vertical" />
+        <Divider flexItem orientation='vertical' />
 
-        <button className='flex flex-row pt-4 px-4 bg-white align-center' onClick={() => {
-          tiptapEditorUtils.toggleNumberedList()
-        }}>
+        <button
+          className='flex flex-row pt-4 px-4 bg-white align-center'
+          onClick={() => {
+            tiptapEditorUtils.toggleNumberedList()
+          }}
+        >
           <div>
             <NumberedListIcon2 />
           </div>
@@ -163,4 +184,4 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
   )
 }
 
-export default BubbleMenuContainer;
+export default BubbleMenuContainer

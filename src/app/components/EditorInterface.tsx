@@ -51,24 +51,24 @@ const EditorInterface = () => {
         exitable: true,
       }),
       OrderedList.configure({
-        itemTypeName: "listItem",
+        itemTypeName: 'listItem',
         keepMarks: true,
         keepAttributes: true,
         HTMLAttributes: {
           class: 'list-decimal',
-          type: "1"
-        }
+          type: '1',
+        },
       }),
       ListItem,
       BulletList.configure({
         HTMLAttributes: {
           class: 'list-disc',
-        }
+        },
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'w-5/12 h-60 object-cover'
-        }
+          class: 'w-5/12 h-60 object-cover',
+        },
       }),
       Table.configure({
         resizable: true,
@@ -77,11 +77,10 @@ const EditorInterface = () => {
       TableCell,
       TableHeader,
       CodeBlock,
-      Code
+      Code,
     ],
     content: '',
   })
-
 
   useEffect(() => {
     if (editor) {
@@ -89,8 +88,7 @@ const EditorInterface = () => {
     }
   }, [appState?.appState.readOnly])
 
-
-  if (!editor) return null;
+  if (!editor) return null
 
   return (
     <>
@@ -108,16 +106,14 @@ const EditorInterface = () => {
           maxHeight: '91vh',
         }}
       >
-        {
-          editor ? (
-            <div>
-              <FloatingMenuContainer editor={editor} />
-              <BubbleMenuContainer editor={editor} />
-              <LinkInput editor={editor} />
-              <AutofieldSelector editor={editor} />
-            </div>
-          ) : null
-        }
+        {editor ? (
+          <div>
+            <FloatingMenuContainer editor={editor} />
+            <BubbleMenuContainer editor={editor} />
+            <LinkInput editor={editor} />
+            <AutofieldSelector editor={editor} />
+          </div>
+        ) : null}
         <EditorContent editor={editor} readOnly={appState?.appState.readOnly} />
       </div>
     </>
