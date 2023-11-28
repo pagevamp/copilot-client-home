@@ -3,14 +3,18 @@
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  bannerImg: string;
-  showLinkInput: boolean;
-  readOnly: boolean;
-  selectedClient: string;
+  bannerImg: string
+  showLinkInput: boolean
+  readOnly: boolean
+  selectedClient: string
   //this data should be fetched from API in the future
   mockData: {
-    clientId: number; givenName: string; familyName: string;
-    email: string; company: string; address: string;
+    clientId: number
+    givenName: string
+    familyName: string
+    email: string
+    company: string
+    address: string
   }[]
 }
 
@@ -29,32 +33,31 @@ interface IAppCoreProvider {
 const mockData = [
   {
     clientId: 1,
-    givenName: "John",
-    familyName: "Doe",
-    email: "john@gmail.com",
-    company: "The Fossils",
-    address: "New Town"
+    givenName: 'John',
+    familyName: 'Doe',
+    email: 'john@gmail.com',
+    company: 'The Fossils',
+    address: 'New Town',
   },
   {
     clientId: 2,
-    givenName: "Krish",
-    familyName: "Jane",
-    email: "krish@gmail.com",
-    company: "Yangtaru",
-    address: "Brooklyn"
-  }
+    givenName: 'Krish',
+    familyName: 'Jane',
+    email: 'krish@gmail.com',
+    company: 'Yangtaru',
+    address: 'Brooklyn',
+  },
 ]
 
 export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
-
   const [state, setState] = useState<IAppState>({
-    bannerImg: "",
+    bannerImg: '',
     showLinkInput: false,
     readOnly: false,
-    selectedClient: "",
-    mockData
+    selectedClient: '',
+    mockData,
   })
 
   const setBannerImg = (image: string) => {
@@ -80,7 +83,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setBannerImg,
         toggleShowLinkInput,
         toggleReadOnly,
-        setSelectedClient
+        setSelectedClient,
       }}
     >
       {children}

@@ -6,7 +6,7 @@ import Select from '@/components/select/Select'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 
 import { useAppState } from '@/hooks/useAppState'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 const ClientHomeInterface = () => {
   const appState = useAppState()
@@ -19,7 +19,7 @@ const ClientHomeInterface = () => {
   useEffect(() => {
     if (selected === defaultValue) {
       appState?.toggleReadOnly(false)
-      appState?.setSelectedClient("")
+      appState?.setSelectedClient('')
     } else {
       appState?.toggleReadOnly(true)
       appState?.setSelectedClient(selected)
@@ -42,18 +42,20 @@ const ClientHomeInterface = () => {
               >
                 {defaultValue}
               </div>
-              {clients && clients.map((val, key) => {
-                return (
-                  <div
-                    key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${selected === val.givenName ? 'bg-slate-50' : ''
+              {clients &&
+                clients.map((val, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className={`hover:bg-slate-50 py-2 px-3 ${
+                        selected === val.givenName ? 'bg-slate-50' : ''
                       }`}
-                    onClick={() => setSelected(val.givenName)}
-                  >
-                    {val.givenName}
-                  </div>
-                )
-              })}
+                      onClick={() => setSelected(val.givenName)}
+                    >
+                      {val.givenName}
+                    </div>
+                  )
+                })}
             </>
           }
           selected={selected}

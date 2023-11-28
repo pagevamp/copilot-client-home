@@ -4,7 +4,7 @@ import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
 
-import Handlebars from "handlebars"
+import Handlebars from 'handlebars'
 
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -54,24 +54,24 @@ const EditorInterface = () => {
         exitable: true,
       }),
       OrderedList.configure({
-        itemTypeName: "listItem",
+        itemTypeName: 'listItem',
         keepMarks: true,
         keepAttributes: true,
         HTMLAttributes: {
           class: 'list-decimal',
-          type: "1"
-        }
+          type: '1',
+        },
       }),
       ListItem,
       BulletList.configure({
         HTMLAttributes: {
           class: 'list-disc',
-        }
+        },
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'w-5/12 h-60 object-cover'
-        }
+          class: 'w-5/12 h-60 object-cover',
+        },
       }),
       Table.configure({
         resizable: true,
@@ -80,7 +80,7 @@ const EditorInterface = () => {
       TableCell,
       TableHeader,
       CodeBlock,
-      Code
+      Code,
     ],
     content: '',
   })
@@ -92,28 +92,32 @@ const EditorInterface = () => {
     if (editor) {
       editor?.setEditable(!appState?.appState.readOnly as boolean)
     }
-
   }, [appState?.appState.readOnly])
 
   useEffect(() => {
     if (appState?.appState.readOnly) {
       // const template = Handlebars?.compile(originalTemplate ? originalTemplate : editor?.getHTML() || "")
-      const template = Handlebars?.compile(originalTemplate || "")
-      const mockData = appState.appState.mockData.filter(el => el.givenName === appState.appState.selectedClient)[0]
+      const template = Handlebars?.compile(originalTemplate || '')
+      const mockData = appState.appState.mockData.filter(
+        (el) => el.givenName === appState.appState.selectedClient,
+      )[0]
       const c = template({ client: mockData })
       editor?.chain().focus().setContent(c).run()
     } else {
-      editor?.chain().focus().setContent(originalTemplate as string).run()
+      editor
+        ?.chain()
+        .focus()
+        .setContent(originalTemplate as string)
+        .run()
     }
   }, [appState?.appState.selectedClient])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) return;
+    if (appState?.appState.readOnly) return
     setOriginalTemplate(editor?.getHTML())
   }, [editor?.getText(), appState?.appState.readOnly])
 
-  if (!editor) return null;
-
+  if (!editor) return null
 
   return (
     <div className='overflow-y-auto overflow-x-hidden max-h-screen w-full'>
@@ -130,29 +134,26 @@ const EditorInterface = () => {
           background: '#f8f9fb', //to be changed later with color picker component
         }}
       >
-        {
-          editor ? (
-            <div>
-              <FloatingMenuContainer editor={editor} />
-              <BubbleMenuContainer editor={editor} />
-              <LinkInput editor={editor} />
-              <AutofieldSelector editor={editor} />
-            </div>
-          ) : null
-        }
-        <EditorContent
-          editor={editor}
-          readOnly={appState?.appState.readOnly}
-        />
+        {editor ? (
+          <div>
+            <FloatingMenuContainer editor={editor} />
+            <BubbleMenuContainer editor={editor} />
+            <LinkInput editor={editor} />
+            <AutofieldSelector editor={editor} />
+          </div>
+        ) : null}
+        <EditorContent editor={editor} readOnly={appState?.appState.readOnly} />
       </div>
       <When condition={!!appState?.appState.readOnly}>
-        <div style={{
-          width: "330px",
-          margin: "0 auto",
-          position: "sticky",
-          bottom: "5em"
-        }}>
-          <NoteDisplay content="Edits cannot be made while in preview mode" />
+        <div
+          style={{
+            width: '330px',
+            margin: '0 auto',
+            position: 'sticky',
+            bottom: '5em',
+          }}
+        >
+          <NoteDisplay content='Edits cannot be made while in preview mode' />
         </div>
       </When>
     </div>

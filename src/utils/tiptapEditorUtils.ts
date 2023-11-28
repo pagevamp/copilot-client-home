@@ -5,51 +5,51 @@ export class TiptapEditorUtils {
   editor: Editor
 
   constructor(editor: Editor) {
-    this.editor = editor;
+    this.editor = editor
   }
 
   clearCurrentLineContent() {
-    const { tr, doc } = this.editor.state;
-    const { from, to } = this.editor.view.state.selection;
+    const { tr, doc } = this.editor.state
+    const { from, to } = this.editor.view.state.selection
 
-    const $from = doc.resolve(from);
-    const $to = doc.resolve(to);
+    const $from = doc.resolve(from)
+    const $to = doc.resolve(to)
 
     // Get the start and end positions of the current line
-    const startOfLine = $from.start();
-    const endOfLine = $to.end();
+    const startOfLine = $from.start()
+    const endOfLine = $to.end()
 
     // Get the last text node in the current line
-    let lastTextNodePos = null;
+    let lastTextNodePos = null
     doc.nodesBetween(startOfLine, endOfLine, (node, pos) => {
       if (node.isText) {
-        lastTextNodePos = pos;
+        lastTextNodePos = pos
       }
-    });
+    })
 
     // Check if the last character of the last text node is "/"
     if (lastTextNodePos !== null) {
-      const lastTextNode = doc.nodeAt(lastTextNodePos);
-      if (!lastTextNode) return;
+      const lastTextNode = doc.nodeAt(lastTextNodePos)
+      if (!lastTextNode) return
 
-      const lastText = lastTextNode.text;
+      const lastText = lastTextNode.text
 
-      if (!lastText) return;
+      if (!lastText) return
 
       if (lastText.endsWith('/')) {
-        const deletePos = lastTextNodePos + lastText.length - 1;
-        tr.delete(deletePos, deletePos + 1); // Delete the last character
+        const deletePos = lastTextNodePos + lastText.length - 1
+        tr.delete(deletePos, deletePos + 1) // Delete the last character
       }
 
       if (lastText.endsWith('{')) {
-        const deletePos = lastTextNodePos + lastText.length - 2;
-        tr.delete(deletePos, deletePos + 2); // Delete the last character
+        const deletePos = lastTextNodePos + lastText.length - 2
+        tr.delete(deletePos, deletePos + 2) // Delete the last character
       }
     }
 
     // Apply the transaction to the editor
-    this.editor.view.dispatch(tr);
-  };
+    this.editor.view.dispatch(tr)
+  }
 
   toggleHeading(level: Level) {
     this.editor.chain().focus().toggleHeading({ level: level }).run()
@@ -88,7 +88,12 @@ export class TiptapEditorUtils {
   }
 
   insertLink(url: string) {
-    this.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    this.editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .setLink({ href: url })
+      .run()
   }
 
   setImage(imgUrl: string) {
@@ -96,7 +101,11 @@ export class TiptapEditorUtils {
   }
 
   insertTable({ rows, cols }: { rows: number; cols: number }) {
-    this.editor.chain().focus().insertTable({ rows: rows, cols: cols, withHeaderRow: true }).run()
+    this.editor
+      .chain()
+      .focus()
+      .insertTable({ rows: rows, cols: cols, withHeaderRow: true })
+      .run()
   }
 
   insertCallout() {
@@ -104,6 +113,11 @@ export class TiptapEditorUtils {
   }
 
   insertContent(content: string) {
-    this.editor.chain().focus().setParagraph().insertContent(content.toString()).run()
+    this.editor
+      .chain()
+      .focus()
+      .setParagraph()
+      .insertContent(content.toString())
+      .run()
   }
 }
