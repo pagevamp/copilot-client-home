@@ -1,12 +1,13 @@
 'use client'
 
-import ImagePicker from '@/components/ImagePicker/ImagePicker'
-import AutofillFields from '@/components/autofillFields/AutofillFields'
-import Select from '@/components/select/Select'
 import { useEffect, useState } from 'react'
 
-import { useAppState } from '@/hooks/useAppState'
+import AutofillFields from '@/components/autofillFields/AutofillFields'
+import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import Select from '@/components/select/Select'
+
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { useAppState } from '@/hooks/useAppState'
 
 const ClientHomeInterface = () => {
   const appState = useAppState()
@@ -34,9 +35,8 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${
-                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
-                }`}
+                className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
+                  }`}
                 onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
@@ -45,9 +45,8 @@ const ClientHomeInterface = () => {
                 return (
                   <div
                     key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${
-                      dropdownSelectedValue === val ? 'bg-slate-50' : ''
-                    }`}
+                    className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === val ? 'bg-slate-50' : ''
+                      }`}
                     onClick={() => setDropdownSelectedValue(val)}
                   >
                     {val}

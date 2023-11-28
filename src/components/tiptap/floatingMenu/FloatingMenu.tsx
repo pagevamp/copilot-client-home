@@ -1,8 +1,6 @@
 import { FloatingMenu, Editor } from '@tiptap/react'
 import { FC } from 'react'
-import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
-import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useAppState } from '@/hooks/useAppState'
+
 import {
   H1Icon,
   H2Icon,
@@ -17,6 +15,10 @@ import {
   TableIcon,
   EmbedIcon,
 } from '@/icons'
+
+import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { useAppState } from '@/hooks/useAppState'
 
 interface IFloatingMenuContainer {
   editor: Editor

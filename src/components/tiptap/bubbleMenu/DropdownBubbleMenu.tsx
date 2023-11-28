@@ -1,5 +1,5 @@
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { FC, useState } from 'react'
+import { FC, ReactNode, useState } from 'react'
 
 import { AutofillIcon, H1Icon, H2Icon, H3Icon, TextIcon } from '@/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
@@ -10,7 +10,8 @@ interface IBubbleMenuContainer {
 }
 
 const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
-  const [selectedFormatter, setSelectedFormatter] = useState('Text')
+
+  const [selectedFormatter, setSelectedFormatter] = useState('')
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
@@ -27,82 +28,36 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       variant='standard'
       disableUnderline
     >
-      <MenuItem value='Heading 1'>
-        <button
-          className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-          onClick={() => {
-            tiptapEditorUtils.toggleHeading(1)
-          }}
-        >
-          <div>
-            <H1Icon />
-          </div>
-          <div>
-            <p className='text-sm'>Heading 1</p>
-          </div>
-        </button>
-      </MenuItem>
 
-      <MenuItem value='Heading 2'>
-        <button
-          className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-          onClick={() => {
-            tiptapEditorUtils.toggleHeading(2)
-          }}
-        >
-          <div>
-            <H2Icon />
-          </div>
-          <div>
-            <p className='text-sm'>Heading 2</p>
-          </div>
-        </button>
-      </MenuItem>
+      <BubbleDropdownBtnContainer handleClick={() => tiptapEditorUtils.toggleHeading(1)} icon={<H1Icon />} label={"Heading 1"} />
 
-      <MenuItem value='Heading 3'>
-        <button
-          className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-          onClick={() => {
-            tiptapEditorUtils.toggleHeading(3)
-          }}
-        >
-          <div>
-            <H3Icon />
-          </div>
-          <div>
-            <p className='text-sm'>Heading 3</p>
-          </div>
-        </button>
-      </MenuItem>
+      <BubbleDropdownBtnContainer handleClick={() => tiptapEditorUtils.toggleHeading(2)} icon={<H2Icon />} label={"Heading 2"} />
 
-      <MenuItem value='Text'>
-        <button
-          className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-          onClick={() => {
-            tiptapEditorUtils.setParagraph()
-          }}
-        >
-          <div>
-            <TextIcon />
-          </div>
-          <div>
-            <p className='text-sm'>Text</p>
-          </div>
-        </button>
-      </MenuItem>
+      <BubbleDropdownBtnContainer handleClick={() => tiptapEditorUtils.toggleHeading(3)} icon={<H3Icon />} label={"Heading 3"} />
 
-      <MenuItem value='Autofill field'>
-        <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
-          <div>
-            <AutofillIcon />
-          </div>
-          <div>
-            <p className='text-sm'>Autofill field</p>
-          </div>
-        </button>
-      </MenuItem>
+      <BubbleDropdownBtnContainer handleClick={() => tiptapEditorUtils.setParagraph()} icon={<TextIcon />} label={"Text"} />
+
+      <BubbleDropdownBtnContainer handleClick={() => { }} icon={<AutofillIcon />} label={"Autofill field"} />
     </Select>
   )
 }
 
 export default DropdownBubbleMenu
+
+
+const BubbleDropdownBtnContainer = ({ icon, handleClick, label }: { icon: ReactNode; handleClick: () => void; label: string }) => {
+  return (
+    <MenuItem value={label}>
+      <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+        onClick={() => handleClick()}
+      >
+        <div>
+          {icon}
+        </div>
+        <div>
+          <p className='text-sm'>{label}</p>
+        </div>
+      </button>
+    </MenuItem>
+  )
+}

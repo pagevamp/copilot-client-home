@@ -1,11 +1,13 @@
 'use client'
 
+import { Editor } from '@tiptap/react'
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
   bannerImg: string
   showLinkInput: boolean
   readOnly: boolean
+  editor: Editor | null
 }
 
 export interface IAppContext {
@@ -13,6 +15,7 @@ export interface IAppContext {
   setBannerImg: (image: string) => void
   toggleShowLinkInput: (show: boolean) => void
   toggleReadOnly: (show: boolean) => void
+  setEditor: (editor: Editor | null) => void
 }
 
 interface IAppCoreProvider {
@@ -26,6 +29,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     bannerImg: '',
     showLinkInput: false,
     readOnly: false,
+    editor: null
   })
 
   const setBannerImg = (image: string) => {
@@ -40,6 +44,10 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, readOnly: show }))
   }
 
+  const setEditor = (editor: Editor | null) => {
+    setState((prev) => ({ ...prev, editor: editor }))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -47,6 +55,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setBannerImg,
         toggleShowLinkInput,
         toggleReadOnly,
+        setEditor
       }}
     >
       {children}
