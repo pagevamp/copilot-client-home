@@ -27,9 +27,7 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
         }}
         pluginKey='autofield-selector'
       >
-
         <FieldOptions />
-
       </FloatingMenu>
     </>
   )

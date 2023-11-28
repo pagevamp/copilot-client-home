@@ -11,8 +11,8 @@ export interface IAppState {
 export interface IAppContext {
   appState: IAppState
   setBannerImg: (image: string) => void
-  toggleShowLinkInput: (v: boolean) => void
-  toggleReadOnly: (v: boolean) => void
+  toggleShowLinkInput: (show: boolean) => void
+  toggleReadOnly: (show: boolean) => void
 }
 
 interface IAppCoreProvider {
@@ -32,12 +32,12 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, bannerImg: image }))
   }
 
-  const toggleShowLinkInput = (v: boolean) => {
-    setState((prev) => ({ ...prev, showLinkInput: v }))
+  const toggleShowLinkInput = (show: boolean) => {
+    setState((prev) => ({ ...prev, showLinkInput: show }))
   }
 
-  const toggleReadOnly = (v: boolean) => {
-    setState((prev) => ({ ...prev, readOnly: v }))
+  const toggleReadOnly = (show: boolean) => {
+    setState((prev) => ({ ...prev, readOnly: show }))
   }
 
   return (

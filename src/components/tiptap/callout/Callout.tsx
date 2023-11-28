@@ -4,7 +4,6 @@ import React from 'react'
 export const Callout = () => {
   return (
     <NodeViewWrapper className='callout-container'>
-
       <div className='callout-icon'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
