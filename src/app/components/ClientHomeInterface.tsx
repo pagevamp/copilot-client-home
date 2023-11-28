@@ -3,9 +3,10 @@
 import ImagePicker from '@/components/ImagePicker/ImagePicker'
 import AutofillFields from '@/components/autofillFields/AutofillFields'
 import Select from '@/components/select/Select'
-import { useAppState } from '@/hooks/useAppState'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useEffect, useState } from 'react'
+
+import { useAppState } from '@/hooks/useAppState'
+import { useState,useEffect } from 'react'
 
 const ClientHomeInterface = () => {
   const appState = useAppState()
@@ -34,8 +35,9 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${selected === defaultValue ? 'bg-slate-50' : ''
-                  }`}
+                className={`hover:bg-slate-50 py-2 px-3 ${
+                  selected === defaultValue ? 'bg-slate-50' : ''
+                }`}
                 onClick={() => setSelected(defaultValue)}
               >
                 {defaultValue}
@@ -63,7 +65,11 @@ const ClientHomeInterface = () => {
       <ImagePicker
         getImage={async (image) => {
           const imagePickerUtils = new ImagePickerUtils()
-          appState?.setBannerImg(await imagePickerUtils.convertBlobToUrlString(image as Blob) as string)
+          appState?.setBannerImg(
+            (await imagePickerUtils.convertBlobToUrlString(
+              image as Blob,
+            )) as string,
+          )
         }}
       />
 
