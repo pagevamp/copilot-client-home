@@ -1,15 +1,11 @@
 'use client'
 
-<<<<<<< HEAD
-=======
 import { When } from '@/components/hoc/When'
->>>>>>> 7c5759df636e508cf31ce41a15de7c2de1d9ac28
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
 
 import Handlebars from "handlebars"
 
-import When from '@/components/hoc/When'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'

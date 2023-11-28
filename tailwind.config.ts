@@ -20,7 +20,6 @@ const config: Config = {
         '100': '563px',
       },
       backgroundColor: {
-<<<<<<< HEAD
         'new-dark': "#0E0E10",
         'new-white': "#D7D7DD",
         'new-card-border': "#EDEDF0",
@@ -39,11 +38,6 @@ const config: Config = {
       fontSize: {
         'xs': "13px"
       }
-=======
-        'new-dark': '#0E0E10',
-        'new-white': '#D7D7DD',
-      },
->>>>>>> 7c5759df636e508cf31ce41a15de7c2de1d9ac28
     },
   },
   plugins: [],
