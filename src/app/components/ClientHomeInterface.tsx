@@ -14,15 +14,15 @@ const ClientHomeInterface = () => {
   const clients = ['Jimbo', 'Beanie dude', 'Beach guy']
   const defaultValue = 'Preview mode off'
 
-  const [selected, setSelected] = useState(defaultValue)
+  const [dropdownSelectedValue, setDropdownSelectedValue] = useState(defaultValue)
 
   useEffect(() => {
-    if (selected === defaultValue) {
+    if (dropdownSelectedValue === defaultValue) {
       appState?.toggleReadOnly(false)
     } else {
       appState?.toggleReadOnly(true)
     }
-  }, [selected])
+  }, [dropdownSelectedValue])
 
   return (
     <div>
@@ -33,9 +33,9 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${selected === defaultValue ? 'bg-slate-50' : ''
+                className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
                   }`}
-                onClick={() => setSelected(defaultValue)}
+                onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
               </div>
@@ -43,9 +43,9 @@ const ClientHomeInterface = () => {
                 return (
                   <div
                     key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${selected === val ? 'bg-slate-50' : ''
+                    className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === val ? 'bg-slate-50' : ''
                       }`}
-                    onClick={() => setSelected(val)}
+                    onClick={() => setDropdownSelectedValue(val)}
                   >
                     {val}
                   </div>
@@ -53,7 +53,7 @@ const ClientHomeInterface = () => {
               })}
             </>
           }
-          selected={selected}
+          selected={dropdownSelectedValue}
         />
       </div>
 
