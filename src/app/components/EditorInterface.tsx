@@ -106,14 +106,12 @@ const EditorInterface = () => {
           maxHeight: '91vh',
         }}
       >
-        {editor ? (
-          <div>
-            <FloatingMenuContainer editor={editor} />
-            <BubbleMenuContainer editor={editor} />
-            <LinkInput editor={editor} />
-            <AutofieldSelector editor={editor} />
-          </div>
-        ) : null}
+        <div>
+          <FloatingMenuContainer editor={editor} />
+          <BubbleMenuContainer editor={editor} />
+          <LinkInput editor={editor} />
+          <AutofieldSelector editor={editor} />
+        </div>
         <EditorContent editor={editor} readOnly={appState?.appState.readOnly} />
       </div>
     </>
