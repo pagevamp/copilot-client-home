@@ -15,8 +15,7 @@ const EditorInterface = () => {
 
   const editor = appState?.appState.editor
 
-  console.log("editor", editor)
-
+  console.log('editor', editor)
 
   useEffect(() => {
     if (editor) {

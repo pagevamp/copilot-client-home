@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import Document from '@tiptap/extension-document'
@@ -32,7 +32,6 @@ interface ITiptap {
 }
 
 const Tiptap: FC<ITiptap> = ({ children }) => {
-
   const editor = useEditor({
     extensions: [
       Document,

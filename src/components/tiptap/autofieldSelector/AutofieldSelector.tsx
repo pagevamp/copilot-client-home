@@ -26,11 +26,11 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
         pluginKey='autofield-selector'
       >
         <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
-          <AutofieldButton label={"client.givenName"} />
-          <AutofieldButton label={"client.firstName"} />
-          <AutofieldButton label={"client.email"} />
-          <AutofieldButton label={"client.company"} />
-          <AutofieldButton label={"client.address"} />
+          <AutofieldButton label={'client.givenName'} />
+          <AutofieldButton label={'client.firstName'} />
+          <AutofieldButton label={'client.email'} />
+          <AutofieldButton label={'client.company'} />
+          <AutofieldButton label={'client.address'} />
         </div>
       </FloatingMenu>
     </>

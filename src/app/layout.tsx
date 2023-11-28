@@ -20,9 +20,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <AppContextProvider>
-          <Tiptap>
-            {children}
-          </Tiptap>
+          <Tiptap>{children}</Tiptap>
         </AppContextProvider>
       </body>
     </html>

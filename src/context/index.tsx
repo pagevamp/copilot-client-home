@@ -29,7 +29,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     bannerImg: '',
     showLinkInput: false,
     readOnly: false,
-    editor: null
+    editor: null,
   })
 
   const setBannerImg = (image: string) => {
@@ -55,7 +55,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setBannerImg,
         toggleShowLinkInput,
         toggleReadOnly,
-        setEditor
+        setEditor,
       }}
     >
       {children}
