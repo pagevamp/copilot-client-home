@@ -27,7 +27,7 @@ const AutofillFields = () => {
               key={key}
               label={el}
               handleClick={() => {
-                if (appState?.appState.readOnly) return;
+                if (appState?.appState.readOnly) return
                 tiptapEditorUtils.insertContent(`{{${el}}}`)
               }}
             />
