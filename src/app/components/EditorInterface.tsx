@@ -117,6 +117,9 @@ const EditorInterface = () => {
 
   useEffect(() => {
     if (!editor) return;
+
+    appState?.setEditor(editor)
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === 'z') {
         event.preventDefault(); // Prevent the default behavior of Cmd+Z (e.g., browser undo)

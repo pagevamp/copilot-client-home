@@ -1,13 +1,26 @@
+import { useAppState } from "@/hooks/useAppState"
+import { TiptapEditorUtils } from "@/utils/tiptapEditorUtils"
+import { Editor } from "@tiptap/react"
+
+
 const AutofillFields = () => {
+  const appState = useAppState()
+
+  const tiptapEditorUtils = new TiptapEditorUtils(appState?.appState.editor as Editor)
+
+  const staticAutofillValues = ['client.givenName', 'client.familyName', 'client.email', 'client.company', 'client.address']
+
   return (
     <div className='p-5'>
       <p className='font-medium pb-5'>Autofill fields</p>
       <div className='flex flex-col gap-5'>
-        <AutofillText label={'client.givenName'} />
-        <AutofillText label={'client.familyName'} />
-        <AutofillText label={'client.email'} />
-        <AutofillText label={'client.company'} />
-        <AutofillText label={'client.address'} />
+        {
+          staticAutofillValues.map((el) => {
+            return (
+              <AutofillText label={el} handleClick={() => tiptapEditorUtils.insertContent(`{{${el}}}`)} />
+            )
+          })
+        }
       </div>
     </div>
   )
@@ -15,6 +28,32 @@ const AutofillFields = () => {
 
 export default AutofillFields
 
-const AutofillText = ({ label }: { label: string }) => {
-  return <p className='text-new-gray'> &#123;&#123;{label}&#125;&#125;</p>
+const AutofillText = ({ label, handleClick }: { label: string; handleClick: () => void; }) => {
+  return <p className='text-new-gray hover:text-text'
+    onClick={handleClick}
+  > &#123;&#123;{label}&#125;&#125;</p>
 }
+
+
+/**
+  *
+THIS CODE REMAINS COMMENTED BECAUSE IT MIGHT BE A NEED LATER
+THIS CODE MOVES THE CURSOR TO THE searchText TEXT
+*/
+// import { TextSelection } from 'prosemirror-state';
+// const moveCursor = (searchText: string) => {
+//   if (editor) {
+//     const pos = editor.getText().indexOf(searchText);
+
+//     if (!pos) return;
+
+//     if (pos !== -1) {
+//       const { state } = editor;
+//       const resolvedPos = state.doc.resolve(pos + searchText.length); // Move to the end of the matched text
+//       console.log(resolvedPos)
+//       const selection = TextSelection.create(state.doc, resolvedPos.pos);
+//       editor.chain().focus().setTextSelection({ to: selection.to, from: selection.from }).run()
+
+//     }
+//   }
+// };
