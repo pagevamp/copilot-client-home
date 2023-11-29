@@ -29,26 +29,21 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
         pluginKey='autofield-selector'
       >
         <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
-          <AutofieldButton label={'client.givenName'}   handleClick={() => {
-              tiptapEditorUtils.clearCurrentLineContent()
-              tiptapEditorUtils.insertContent("{{client.givenName}}")
-            }}/>
-          <AutofieldButton label={'client.firstName'}   handleClick={() => {
-              tiptapEditorUtils.clearCurrentLineContent()
-              tiptapEditorUtils.insertContent("{{client.familyName}}")
-            }}/>
-          <AutofieldButton label={'client.email'}  handleClick={() => {
-              tiptapEditorUtils.clearCurrentLineContent()
-              tiptapEditorUtils.insertContent("{{client.email}}")
-            }}/>
-          <AutofieldButton label={'client.company'}   handleClick={() => {
-              tiptapEditorUtils.clearCurrentLineContent()
-              tiptapEditorUtils.insertContent("{{client.company}}")
-            }}/>
-          <AutofieldButton label={'client.address'}    handleClick={() => {
-              tiptapEditorUtils.clearCurrentLineContent()
-              tiptapEditorUtils.insertContent("{{client.address}}")
-            }}/>
+          <AutofieldButton label={'client.givenName'} handleClick={() => {
+            tiptapEditorUtils.insertContent("client.givenName}}")
+          }} />
+          <AutofieldButton label={'client.firstName'} handleClick={() => {
+            tiptapEditorUtils.insertContent("client.familyName}}")
+          }} />
+          <AutofieldButton label={'client.email'} handleClick={() => {
+            tiptapEditorUtils.insertContent("client.email}}")
+          }} />
+          <AutofieldButton label={'client.company'} handleClick={() => {
+            tiptapEditorUtils.insertContent("client.company}}")
+          }} />
+          <AutofieldButton label={'client.address'} handleClick={() => {
+            tiptapEditorUtils.insertContent("client.address}}")
+          }} />
         </div>
       </FloatingMenu>
     </>
@@ -60,7 +55,7 @@ export default AutofieldSelector
 const AutofieldButton = ({ label, handleClick }: { label: string; handleClick: () => void; }) => {
   return (
     <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-    onClick={() => handleClick()}
+      onClick={() => handleClick()}
     >
       &#123;&#123;{label}&#125;&#125;
     </button>
