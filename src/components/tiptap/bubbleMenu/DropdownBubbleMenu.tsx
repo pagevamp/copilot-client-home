@@ -1,7 +1,7 @@
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { FC, ReactNode, useState } from 'react'
 
-import { H1Icon, H2Icon, H3Icon, LinkIcon, TextIcon } from '@/icons'
+import { CalloutIcon, H1Icon, H2Icon, H3Icon, LinkIcon, TextIcon } from '@/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
 import { useAppState } from '@/hooks/useAppState'
@@ -63,6 +63,15 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
         }}
         icon={<LinkIcon />}
         label={editor.isActive('link') ? "Unlink" : "Link"}
+      />
+
+      <BubbleDropdownBtnContainer
+        handleClick={() => {
+          const text = tiptapEditorUtils.getSelectedText()
+          tiptapEditorUtils.insertCallout(text)
+        }}
+        icon={<CalloutIcon />}
+        label={'Callout'}
       />
     </Select>
   )
