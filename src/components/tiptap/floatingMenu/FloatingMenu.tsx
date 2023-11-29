@@ -110,7 +110,12 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
             </div>
           </button>
 
-          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+          <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+            onClick={() => {
+              tiptapEditorUtils.clearCurrentLineContent()
+              tiptapEditorUtils.insertContent("{{")
+            }}
+          >
             <div>
               <AutofillIcon />
             </div>
