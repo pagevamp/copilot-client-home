@@ -1,9 +1,10 @@
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { FC, ReactNode, useState } from 'react'
 
-import { AutofillIcon, H1Icon, H2Icon, H3Icon, TextIcon } from '@/icons'
+import { H1Icon, H2Icon, H3Icon, LinkIcon, TextIcon } from '@/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
+import { useAppState } from '@/hooks/useAppState'
 
 interface IBubbleMenuContainer {
   editor: Editor
@@ -13,6 +14,8 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
   const [selectedFormatter, setSelectedFormatter] = useState('')
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
+
+  const appState = useAppState()
 
   return (
     <Select
@@ -49,6 +52,17 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
         handleClick={() => tiptapEditorUtils.setParagraph()}
         icon={<TextIcon />}
         label={'Text'}
+      />
+
+      <BubbleDropdownBtnContainer
+        handleClick={() => {
+          editor.isActive('link') ?
+            tiptapEditorUtils.unlink() :
+            appState?.toggleShowLinkInput(true)
+
+        }}
+        icon={<LinkIcon />}
+        label={editor.isActive('link') ? "Unlink" : "Link"}
       />
     </Select>
   )

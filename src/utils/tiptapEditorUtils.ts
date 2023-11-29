@@ -96,6 +96,10 @@ export class TiptapEditorUtils {
       .run()
   }
 
+  unlink() {
+    this.editor.chain().focus().extendMarkRange('link').unsetLink().run()
+  }
+
   setImage(imgUrl: string) {
     this.editor.chain().focus().setImage({ src: imgUrl }).run()
   }
