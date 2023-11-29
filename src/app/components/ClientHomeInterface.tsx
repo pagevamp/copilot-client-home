@@ -24,9 +24,10 @@ const ClientHomeInterface = () => {
       appState?.setSelectedClient('')
     } else {
       appState?.toggleReadOnly(true)
-      appState?.setSelectedClient(selected)
+      appState?.setSelectedClient(dropdownSelectedValue)
     }
   }, [dropdownSelectedValue])
+
 
   return (
     <div>
@@ -37,23 +38,21 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${
-                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
-                }`}
+                className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
+                  }`}
                 onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
               </div>
-              {clients.map((val, key) => {
+              {clients && clients.map((val, key) => {
                 return (
                   <div
                     key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${
-                      dropdownSelectedValue === val ? 'bg-slate-50' : ''
-                    }`}
-                    onClick={() => setDropdownSelectedValue(val)}
+                    className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === val.givenName ? 'bg-slate-50' : ''
+                      }`}
+                    onClick={() => setDropdownSelectedValue(val.givenName)}
                   >
-                    {val}
+                    {val.givenName}
                   </div>
                 )
               })}

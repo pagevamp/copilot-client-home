@@ -1,18 +1,11 @@
 import { FC, FormEvent, useState } from 'react'
 import { Editor } from '@tiptap/react'
-<<<<<<< HEAD
-import { useAppState } from '@/hooks/useAppState'
-import { Dialog } from '@mui/material'
-import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
-import { ArrowForward, CloseRounded } from '@mui/icons-material'
-=======
 
 import { ArrowForward, CloseRounded } from '@mui/icons-material'
 import { Dialog } from '@mui/material'
 
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { useAppState } from '@/hooks/useAppState'
->>>>>>> e8f2d98d7c7559d1041521034cb27a474eafd65b
 
 interface ILinkInput {
   editor: Editor

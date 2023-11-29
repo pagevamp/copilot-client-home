@@ -1,8 +1,5 @@
 import { FloatingMenu, Editor } from '@tiptap/react'
 import { FC } from 'react'
-<<<<<<< HEAD
-import * as Icons from '@/components/tiptap/floatingMenu/icons'
-=======
 
 import {
   H1Icon,
@@ -19,7 +16,6 @@ import {
   EmbedIcon,
 } from '@/icons'
 
->>>>>>> e8f2d98d7c7559d1041521034cb27a474eafd65b
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useAppState } from '@/hooks/useAppState'
@@ -40,11 +36,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
         editor={editor}
         tippyOptions={{ duration: 100 }}
         shouldShow={({ view }) => {
-<<<<<<< HEAD
-          //@ts-ignore
-=======
           //@ts-expect-error shouldShow function's view prop should have $cursor property
->>>>>>> e8f2d98d7c7559d1041521034cb27a474eafd65b
           const { $cursor } = view.state.selection
 
           if ($cursor) {

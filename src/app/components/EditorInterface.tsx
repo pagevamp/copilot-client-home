@@ -1,5 +1,28 @@
 'use client'
 
+import Handlebars from "handlebars"
+import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Heading from '@tiptap/extension-heading'
+import Text from '@tiptap/extension-text'
+import OrderedList from '@tiptap/extension-ordered-list'
+import BulletList from '@tiptap/extension-bullet-list'
+import ListItem from '@tiptap/extension-list-item'
+import Image from '@tiptap/extension-image'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
+import Underline from '@tiptap/extension-underline'
+import CodeBlock from '@tiptap/extension-code-block'
+import Code from '@tiptap/extension-code'
+import Link from '@tiptap/extension-link'
+import Bold from '@tiptap/extension-bold'
+import Italic from '@tiptap/extension-italic'
+import Strike from '@tiptap/extension-strike'
+import Gapcursor from '@tiptap/extension-gapcursor'
+
 import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
@@ -8,24 +31,90 @@ import NoteDisplay from '@/components/display/NoteDisplay'
 import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
-import { EditorContent } from '@tiptap/react'
-import { useEffect } from 'react'
+import { useEditor, EditorContent } from '@tiptap/react'
+import { useEffect, useState } from 'react'
 
 const EditorInterface = () => {
   const appState = useAppState()
 
-  const editor = appState?.appState.editor
+  const editor = useEditor({
+    extensions: [
+      Document,
+      Paragraph,
+      Heading,
+      Text,
+      Underline,
+      Bold,
+      Italic,
+      Strike,
+      CalloutExtension,
+      Gapcursor,
+      Link.extend({
+        exitable: true,
+      }),
+      OrderedList.configure({
+        itemTypeName: 'listItem',
+        keepMarks: true,
+        keepAttributes: true,
+        HTMLAttributes: {
+          class: 'list-decimal',
+          type: '1',
+        },
+      }),
+      ListItem,
+      BulletList.configure({
+        HTMLAttributes: {
+          class: 'list-disc',
+        },
+      }),
+      Image.configure({
+        HTMLAttributes: {
+          class: 'w-5/12 h-60 object-cover',
+        },
+      }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableCell,
+      TableHeader,
+      CodeBlock,
+      Code,
+    ],
+    content: '',
+  })
 
-  console.log('editor', editor)
+  const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
 
   //both useEffects should be refactored once api is connected
   useEffect(() => {
     if (editor) {
       editor?.setEditable(!appState?.appState.readOnly as boolean)
     }
-  }, [appState?.appState.readOnly])
+  }, [appState?.appState.readOnly, editor])
+
+  console.log(originalTemplate)
+
+  useEffect(() => {
+    if (appState?.appState.readOnly) {
+      const template = Handlebars?.compile(originalTemplate || "")
+      const mockData = appState.appState.mockData.filter(el => el.givenName === appState.appState.selectedClient)[0]
+      const c = template({ client: mockData })
+      console.log(c)
+      editor?.chain().focus().setContent(c).run()
+    } else {
+      editor?.chain().focus().setContent(originalTemplate as string).run()
+    }
+  }, [appState?.appState.selectedClient])
+
+  useEffect(() => {
+    if (appState?.appState.readOnly) return;
+    setOriginalTemplate(editor?.getHTML())
+  }, [editor?.getText(), appState?.appState.readOnly])
+
 
   if (!editor) return null
+
 
   return (
     <div className='overflow-y-auto overflow-x-hidden max-h-screen w-full'>
@@ -39,27 +128,31 @@ const EditorInterface = () => {
       <div
         className='px-14 py-8'
         style={{
-          background: '#f8f9fb', //to be changed later with color picker component
+          background: `${appState?.appState.editorColor}`
         }}
       >
+
         <div>
           <FloatingMenuContainer editor={editor} />
           <BubbleMenuContainer editor={editor} />
           <LinkInput editor={editor} />
           <AutofieldSelector editor={editor} />
         </div>
-        <EditorContent editor={editor} readOnly={appState?.appState.readOnly} />
+
+
+        <EditorContent
+          editor={editor}
+          readOnly={appState?.appState.readOnly}
+        />
       </div>
       <When condition={!!appState?.appState.readOnly}>
-        <div
-          style={{
-            width: '330px',
-            margin: '0 auto',
-            position: 'sticky',
-            bottom: '5em',
-          }}
-        >
-          <NoteDisplay content='Edits cannot be made while in preview mode' />
+        <div style={{
+          width: "330px",
+          margin: "0 auto",
+          position: "sticky",
+          bottom: "5em"
+        }}>
+          <NoteDisplay content="Edits cannot be made while in preview mode" />
         </div>
       </When>
     </div>
