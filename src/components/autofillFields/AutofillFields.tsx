@@ -1,26 +1,35 @@
-import { useAppState } from "@/hooks/useAppState"
-import { TiptapEditorUtils } from "@/utils/tiptapEditorUtils"
-import { Editor } from "@tiptap/react"
-
+import { useAppState } from '@/hooks/useAppState'
+import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
+import { Editor } from '@tiptap/react'
 
 const AutofillFields = () => {
   const appState = useAppState()
 
-  const tiptapEditorUtils = new TiptapEditorUtils(appState?.appState.editor as Editor)
+  const tiptapEditorUtils = new TiptapEditorUtils(
+    appState?.appState.editor as Editor,
+  )
 
-  const staticAutofillValues = ['client.givenName', 'client.familyName', 'client.email', 'client.company', 'client.address']
+  const staticAutofillValues = [
+    'client.givenName',
+    'client.familyName',
+    'client.email',
+    'client.company',
+    'client.address',
+  ]
 
   return (
     <div className='p-5'>
       <p className='font-medium pb-5'>Autofill fields</p>
       <div className='flex flex-col gap-5'>
-        {
-          staticAutofillValues.map((el) => {
-            return (
-              <AutofillText label={el} handleClick={() => tiptapEditorUtils.insertContent(`{{${el}}}`)} />
-            )
-          })
-        }
+        {staticAutofillValues.map((el, key) => {
+          return (
+            <AutofillText
+              key={key}
+              label={el}
+              handleClick={() => tiptapEditorUtils.insertContent(`{{${el}}}`)}
+            />
+          )
+        })}
       </div>
     </div>
   )
@@ -28,12 +37,20 @@ const AutofillFields = () => {
 
 export default AutofillFields
 
-const AutofillText = ({ label, handleClick }: { label: string; handleClick: () => void; }) => {
-  return <p className='text-new-gray hover:text-text'
-    onClick={handleClick}
-  > &#123;&#123;{label}&#125;&#125;</p>
+const AutofillText = ({
+  label,
+  handleClick,
+}: {
+  label: string
+  handleClick: () => void
+}) => {
+  return (
+    <p className='text-new-gray hover:text-text' onClick={handleClick}>
+      {' '}
+      &#123;&#123;{label}&#125;&#125;
+    </p>
+  )
 }
-
 
 /**
   *

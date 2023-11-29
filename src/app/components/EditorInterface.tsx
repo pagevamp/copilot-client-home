@@ -1,6 +1,6 @@
 'use client'
 
-import Handlebars from "handlebars"
+import Handlebars from 'handlebars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -38,7 +38,7 @@ import { useEffect, useRef, useState } from 'react'
 const EditorInterface = () => {
   const appState = useAppState()
 
-  const initialEditorContent = "Type / for commands"
+  const initialEditorContent = 'Type / for commands'
 
   const editor = useEditor({
     extensions: [
@@ -90,7 +90,6 @@ const EditorInterface = () => {
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
 
-
   //both useEffects should be refactored once api is connected
   useEffect(() => {
     if (editor) {
@@ -100,41 +99,45 @@ const EditorInterface = () => {
 
   useEffect(() => {
     if (appState?.appState.readOnly) {
-      const template = Handlebars?.compile(originalTemplate || "")
-      const mockData = appState.appState.mockData.filter(el => el.givenName === appState.appState.selectedClient)[0]
+      const template = Handlebars?.compile(originalTemplate || '')
+      const mockData = appState.appState.mockData.filter(
+        (el) => el.givenName === appState.appState.selectedClient,
+      )[0]
       const c = template({ client: mockData })
       console.log(c)
       editor?.chain().focus().setContent(c).run()
     } else {
-      editor?.chain().focus().setContent(originalTemplate as string).run()
+      editor
+        ?.chain()
+        .focus()
+        .setContent(originalTemplate as string)
+        .run()
     }
   }, [appState?.appState.selectedClient])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) return;
+    if (appState?.appState.readOnly) return
     setOriginalTemplate(editor?.getHTML())
   }, [editor?.getText(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (!editor) return;
+    if (!editor) return
 
     appState?.setEditor(editor)
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === 'z') {
-        event.preventDefault(); // Prevent the default behavior of Cmd+Z (e.g., browser undo)
-        editor.chain().focus().undo().run(); // Perform undo operation
+        event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
+        editor.chain().focus().undo().run() // Perform undo operation
       }
-    };
-    document.addEventListener('keydown', handleKeyDown);
+    }
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [editor]);
-
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [editor])
 
   if (!editor) return null
-
 
   return (
     <div className='overflow-y-auto overflow-x-hidden max-h-screen w-full'>
@@ -148,17 +151,15 @@ const EditorInterface = () => {
       <div
         className='px-14 py-8'
         style={{
-          background: `${appState?.appState.editorColor}`
+          background: `${appState?.appState.editorColor}`,
         }}
       >
-
         <div>
           <FloatingMenuContainer editor={editor} />
           <BubbleMenuContainer editor={editor} />
           <LinkInput editor={editor} />
           <AutofieldSelector editor={editor} />
         </div>
-
 
         <EditorContent
           editor={editor}
@@ -171,13 +172,15 @@ const EditorInterface = () => {
         />
       </div>
       <When condition={!!appState?.appState.readOnly}>
-        <div style={{
-          width: "330px",
-          margin: "0 auto",
-          position: "sticky",
-          bottom: "5em"
-        }}>
-          <NoteDisplay content="Edits cannot be made while in preview mode" />
+        <div
+          style={{
+            width: '330px',
+            margin: '0 auto',
+            position: 'sticky',
+            bottom: '5em',
+          }}
+        >
+          <NoteDisplay content='Edits cannot be made while in preview mode' />
         </div>
       </When>
     </div>

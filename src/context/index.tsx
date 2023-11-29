@@ -1,19 +1,23 @@
 'use client'
 
-import { Editor } from '@tiptap/react';
+import { Editor } from '@tiptap/react'
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  bannerImg: string;
-  showLinkInput: boolean;
-  readOnly: boolean;
-  selectedClient: string;
-  editorColor: string;
+  bannerImg: string
+  showLinkInput: boolean
+  readOnly: boolean
+  selectedClient: string
+  editorColor: string
   editor: Editor | null
   //this data should be fetched from API in the future
   mockData: {
-    clientId: number; givenName: string; familyName: string;
-    email: string; company: string; address: string;
+    clientId: number
+    givenName: string
+    familyName: string
+    email: string
+    company: string
+    address: string
   }[]
 }
 
@@ -34,34 +38,33 @@ interface IAppCoreProvider {
 const mockData = [
   {
     clientId: 1,
-    givenName: "John",
-    familyName: "Doe",
-    email: "john@gmail.com",
-    company: "The Fossils",
-    address: "New Town"
+    givenName: 'John',
+    familyName: 'Doe',
+    email: 'john@gmail.com',
+    company: 'The Fossils',
+    address: 'New Town',
   },
   {
     clientId: 2,
-    givenName: "Krish",
-    familyName: "Jane",
-    email: "krish@gmail.com",
-    company: "Yangtaru",
-    address: "Brooklyn"
-  }
+    givenName: 'Krish',
+    familyName: 'Jane',
+    email: 'krish@gmail.com',
+    company: 'Yangtaru',
+    address: 'Brooklyn',
+  },
 ]
 
 export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
-
   const [state, setState] = useState<IAppState>({
-    bannerImg: "",
+    bannerImg: '',
     showLinkInput: false,
     readOnly: false,
-    selectedClient: "",
-    editorColor: "#f8f9fb",
+    selectedClient: '',
+    editorColor: '#f8f9fb',
     editor: null,
-    mockData
+    mockData,
   })
 
   const setBannerImg = (image: string) => {
@@ -97,7 +100,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         toggleReadOnly,
         setSelectedClient,
         setEditorColor,
-        setEditor
+        setEditor,
       }}
     >
       {children}

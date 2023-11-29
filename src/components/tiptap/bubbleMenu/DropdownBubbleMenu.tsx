@@ -1,7 +1,14 @@
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { FC, ReactNode, useState } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 
-import { CalloutIcon, H1Icon, H2Icon, H3Icon, LinkIcon, TextIcon } from '@/icons'
+import {
+  CalloutIcon,
+  H1Icon,
+  H2Icon,
+  H3Icon,
+  LinkIcon,
+  TextIcon,
+} from '@/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
 import { useAppState } from '@/hooks/useAppState'
@@ -11,11 +18,35 @@ interface IBubbleMenuContainer {
 }
 
 const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
-  const [selectedFormatter, setSelectedFormatter] = useState('')
+  const [selectedFormatter, setSelectedFormatter] = useState('Text')
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
   const appState = useAppState()
+
+  console.log(editor.state.selection)
+  console.log(editor.isActive('link'))
+  useEffect(() => {
+    const parent = editor.state.selection.$anchor.parent
+    const level = parent.attrs.level
+    const name = parent.type.name
+
+    if (name === 'heading' && level === 1) {
+      setSelectedFormatter('Heading 1')
+    }
+    if (name === 'heading' && level === 2) {
+      setSelectedFormatter('Heading 2')
+    }
+    if (name === 'heading' && level === 3) {
+      setSelectedFormatter('Heading 3')
+    }
+    if (name === 'paragraph') {
+      setSelectedFormatter('Text')
+    }
+    if (name === 'calloutComponent') {
+      setSelectedFormatter('Callout')
+    }
+  }, [editor.state.selection.$anchor.parent])
 
   return (
     <Select
@@ -25,54 +56,57 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       defaultValue='Text'
       label='Text'
       onChange={(event: SelectChangeEvent) => {
-        setSelectedFormatter(event.target.value as string)
+        const { value } = event.target
+        console.log(value)
+        setSelectedFormatter(value as string)
+        if (value === 'Heading 1') {
+          tiptapEditorUtils.toggleHeading(1)
+        }
+        if (value === 'Heading 2') {
+          tiptapEditorUtils.toggleHeading(2)
+        }
+        if (value === 'Heading 3') {
+          tiptapEditorUtils.toggleHeading(3)
+        }
+        if (value === 'Text') {
+          tiptapEditorUtils.setParagraph()
+        }
+
+        if (value === 'Link') {
+          appState?.toggleShowLinkInput(true)
+        }
+        if (value === 'Unlink') {
+          tiptapEditorUtils.unlink()
+        }
+        if (value === 'Callout') {
+          const text = tiptapEditorUtils.getSelectedText()
+          tiptapEditorUtils.insertCallout(text)
+        }
       }}
       variant='standard'
       disableUnderline
     >
-      <BubbleDropdownBtnContainer
-        handleClick={() => tiptapEditorUtils.toggleHeading(1)}
-        icon={<H1Icon />}
-        label={'Heading 1'}
-      />
-
-      <BubbleDropdownBtnContainer
-        handleClick={() => tiptapEditorUtils.toggleHeading(2)}
-        icon={<H2Icon />}
-        label={'Heading 2'}
-      />
-
-      <BubbleDropdownBtnContainer
-        handleClick={() => tiptapEditorUtils.toggleHeading(3)}
-        icon={<H3Icon />}
-        label={'Heading 3'}
-      />
-
-      <BubbleDropdownBtnContainer
-        handleClick={() => tiptapEditorUtils.setParagraph()}
-        icon={<TextIcon />}
-        label={'Text'}
-      />
-
-      <BubbleDropdownBtnContainer
-        handleClick={() => {
-          editor.isActive('link') ?
-            tiptapEditorUtils.unlink() :
-            appState?.toggleShowLinkInput(true)
-
-        }}
-        icon={<LinkIcon />}
-        label={editor.isActive('link') ? "Unlink" : "Link"}
-      />
-
-      <BubbleDropdownBtnContainer
-        handleClick={() => {
-          const text = tiptapEditorUtils.getSelectedText()
-          tiptapEditorUtils.insertCallout(text)
-        }}
-        icon={<CalloutIcon />}
-        label={'Callout'}
-      />
+      <MenuItem value='Heading 1'>
+        <BubbleDropdownBtnContainer icon={<H1Icon />} label={'Heading 1'} />
+      </MenuItem>
+      <MenuItem value='Heading 2'>
+        <BubbleDropdownBtnContainer icon={<H2Icon />} label={'Heading 2'} />
+      </MenuItem>
+      <MenuItem value='Heading 3'>
+        <BubbleDropdownBtnContainer icon={<H3Icon />} label={'Heading 3'} />
+      </MenuItem>
+      <MenuItem value='Text'>
+        <BubbleDropdownBtnContainer icon={<TextIcon />} label={'Text'} />
+      </MenuItem>
+      <MenuItem value={editor.isActive('link') ? 'Unlink' : 'Link'}>
+        <BubbleDropdownBtnContainer
+          icon={<LinkIcon />}
+          label={editor.isActive('link') ? 'Unlink' : 'Link'}
+        />
+      </MenuItem>
+      <MenuItem value='Callout'>
+        <BubbleDropdownBtnContainer icon={<CalloutIcon />} label={'Callout'} />
+      </MenuItem>
     </Select>
   )
 }
@@ -81,24 +115,17 @@ export default DropdownBubbleMenu
 
 const BubbleDropdownBtnContainer = ({
   icon,
-  handleClick,
   label,
 }: {
   icon: ReactNode
-  handleClick: () => void
   label: string
 }) => {
   return (
-    <MenuItem value={label}>
-      <button
-        className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-        onClick={() => handleClick()}
-      >
-        <div>{icon}</div>
-        <div>
-          <p className='text-sm'>{label}</p>
-        </div>
-      </button>
-    </MenuItem>
+    <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+      <div>{icon}</div>
+      <div>
+        <p className='text-sm'>{label}</p>
+      </div>
+    </button>
   )
 }

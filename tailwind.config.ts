@@ -27,7 +27,7 @@ const config: Config = {
       },
       textColor: {
         'new-gray': '#60606A',
-        'text': '#212B36'
+        text: '#212B36',
       },
       borderColor: {
         'col-1': '#DFE1E4',

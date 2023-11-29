@@ -28,7 +28,6 @@ const ClientHomeInterface = () => {
     }
   }, [dropdownSelectedValue])
 
-
   return (
     <div>
       <div className='p-4 flex items-center justify-between'>
@@ -38,24 +37,29 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
-                  }`}
+                className={`hover:bg-slate-50 py-2 px-3 ${
+                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
+                }`}
                 onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
               </div>
-              {clients && clients.map((val, key) => {
-                return (
-                  <div
-                    key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === val.givenName ? 'bg-slate-50' : ''
+              {clients &&
+                clients.map((val, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className={`hover:bg-slate-50 py-2 px-3 ${
+                        dropdownSelectedValue === val.givenName
+                          ? 'bg-slate-50'
+                          : ''
                       }`}
-                    onClick={() => setDropdownSelectedValue(val.givenName)}
-                  >
-                    {val.givenName}
-                  </div>
-                )
-              })}
+                      onClick={() => setDropdownSelectedValue(val.givenName)}
+                    >
+                      {val.givenName}
+                    </div>
+                  )
+                })}
             </>
           }
           selected={dropdownSelectedValue}

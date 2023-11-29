@@ -113,7 +113,11 @@ export class TiptapEditorUtils {
   }
 
   insertCallout(text: string) {
-    this.editor.chain().focus().insertContent(`<callout>${text}</callout>`).run()
+    this.editor
+      .chain()
+      .focus()
+      .insertContent(`<callout>${text}</callout>`)
+      .run()
   }
 
   insertContent(content: string) {
