@@ -26,7 +26,10 @@ const AutofillFields = () => {
             <AutofillText
               key={key}
               label={el}
-              handleClick={() => tiptapEditorUtils.insertContent(`{{${el}}}`)}
+              handleClick={() => {
+                if (appState?.appState.readOnly) return;
+                tiptapEditorUtils.insertContent(`{{${el}}}`)
+              }}
             />
           )
         })}
