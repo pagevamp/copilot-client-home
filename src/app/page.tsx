@@ -22,9 +22,6 @@ export default async function Page() {
 
   return (
     <div>
-      <div className='p-5'>
-        <p className='font-medium'>Home</p>
-      </div>
       <div className='flex flex-row'>
         <div className='basis-3/4'>
           <EditorInterface />
