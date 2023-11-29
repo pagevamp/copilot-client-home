@@ -22,6 +22,7 @@ import Bold from '@tiptap/extension-bold'
 import Italic from '@tiptap/extension-italic'
 import Strike from '@tiptap/extension-strike'
 import Gapcursor from '@tiptap/extension-gapcursor'
+import History from '@tiptap/extension-history'
 
 import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
@@ -51,6 +52,7 @@ const EditorInterface = () => {
       Strike,
       CalloutExtension,
       Gapcursor,
+      History,
       Link.extend({
         exitable: true,
       }),
@@ -96,8 +98,6 @@ const EditorInterface = () => {
     }
   }, [appState?.appState.readOnly, editor])
 
-  console.log(originalTemplate)
-
   useEffect(() => {
     if (appState?.appState.readOnly) {
       const template = Handlebars?.compile(originalTemplate || "")
@@ -114,6 +114,20 @@ const EditorInterface = () => {
     if (appState?.appState.readOnly) return;
     setOriginalTemplate(editor?.getHTML())
   }, [editor?.getText(), appState?.appState.readOnly])
+
+  useEffect(() => {
+    if (!editor) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === 'z') {
+        event.preventDefault(); // Prevent the default behavior of Cmd+Z (e.g., browser undo)
+        editor.chain().focus().undo().run(); // Perform undo operation
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [editor]);
 
 
   if (!editor) return null
