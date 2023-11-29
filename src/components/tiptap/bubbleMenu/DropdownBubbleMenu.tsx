@@ -50,12 +50,6 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
         icon={<TextIcon />}
         label={'Text'}
       />
-
-      <BubbleDropdownBtnContainer
-        handleClick={() => {}}
-        icon={<AutofillIcon />}
-        label={'Autofill field'}
-      />
     </Select>
   )
 }
