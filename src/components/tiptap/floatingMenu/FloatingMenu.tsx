@@ -130,7 +130,7 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
               <BulletListIcon />
             </div>
             <div>
-              <p className='text-sm'>Bullest list</p>
+              <p className='text-sm'>Bullet list</p>
             </div>
           </button>
 
