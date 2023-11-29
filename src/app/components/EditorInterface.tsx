@@ -32,10 +32,12 @@ import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const EditorInterface = () => {
   const appState = useAppState()
+
+  const initialEditorContent = "Type / for commands"
 
   const editor = useEditor({
     extensions: [
@@ -81,10 +83,11 @@ const EditorInterface = () => {
       CodeBlock,
       Code,
     ],
-    content: '',
+    content: initialEditorContent,
   })
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
+
 
   //both useEffects should be refactored once api is connected
   useEffect(() => {
@@ -143,6 +146,11 @@ const EditorInterface = () => {
         <EditorContent
           editor={editor}
           readOnly={appState?.appState.readOnly}
+          onClick={() => {
+            if (editor.getText() === initialEditorContent) {
+              editor.chain().focus().clearContent().run()
+            }
+          }}
         />
       </div>
       <When condition={!!appState?.appState.readOnly}>
