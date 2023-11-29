@@ -1,12 +1,13 @@
 'use client'
 
-import ImagePicker from '@/components/ImagePicker/ImagePicker'
-import AutofillFields from '@/components/autofillFields/AutofillFields'
-import Select from '@/components/select/Select'
-import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { useEffect, useState } from 'react'
 
+import AutofillFields from '@/components/autofillFields/AutofillFields'
+import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import Select from '@/components/select/Select'
+
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useAppState } from '@/hooks/useAppState'
-import { useState, useEffect } from 'react'
 
 const ClientHomeInterface = () => {
   const appState = useAppState()
@@ -14,17 +15,18 @@ const ClientHomeInterface = () => {
   const clients = appState?.appState.mockData
   const defaultValue = 'Preview mode off'
 
-  const [selected, setSelected] = useState(defaultValue)
+  const [dropdownSelectedValue, setDropdownSelectedValue] =
+    useState(defaultValue)
 
   useEffect(() => {
-    if (selected === defaultValue) {
+    if (dropdownSelectedValue === defaultValue) {
       appState?.toggleReadOnly(false)
       appState?.setSelectedClient('')
     } else {
       appState?.toggleReadOnly(true)
       appState?.setSelectedClient(selected)
     }
-  }, [selected])
+  }, [dropdownSelectedValue])
 
   return (
     <div>
@@ -36,29 +38,28 @@ const ClientHomeInterface = () => {
             <>
               <div
                 className={`hover:bg-slate-50 py-2 px-3 ${
-                  selected === defaultValue ? 'bg-slate-50' : ''
+                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
                 }`}
-                onClick={() => setSelected(defaultValue)}
+                onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
               </div>
-              {clients &&
-                clients.map((val, key) => {
-                  return (
-                    <div
-                      key={key}
-                      className={`hover:bg-slate-50 py-2 px-3 ${
-                        selected === val.givenName ? 'bg-slate-50' : ''
-                      }`}
-                      onClick={() => setSelected(val.givenName)}
-                    >
-                      {val.givenName}
-                    </div>
-                  )
-                })}
+              {clients.map((val, key) => {
+                return (
+                  <div
+                    key={key}
+                    className={`hover:bg-slate-50 py-2 px-3 ${
+                      dropdownSelectedValue === val ? 'bg-slate-50' : ''
+                    }`}
+                    onClick={() => setDropdownSelectedValue(val)}
+                  >
+                    {val}
+                  </div>
+                )
+              })}
             </>
           }
-          selected={selected}
+          selected={dropdownSelectedValue}
         />
       </div>
 

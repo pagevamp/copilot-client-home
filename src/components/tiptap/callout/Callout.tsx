@@ -4,8 +4,6 @@ import React from 'react'
 export const Callout = () => {
   return (
     <NodeViewWrapper className='callout-container'>
-      {/* <span className="label" contentEditable={false}>Callout</span> */}
-
       <div className='callout-icon'>
         <svg
           xmlns='http://www.w3.org/2000/svg'

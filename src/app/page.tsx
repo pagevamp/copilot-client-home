@@ -3,19 +3,19 @@ import EditorInterface from '@/app/components/EditorInterface'
 
 export const revalidate = 0
 
-async function listClients() {
-  const res = await fetch('https://api-beta.copilot.com/v1/clients?limit=100', {
-    headers: {
-      'X-API-KEY': process.env.COPILOT_API_KEY as string,
-    },
-  })
+// async function listClients() {
+//   const res = await fetch('https://api-beta.copilot.com/v1/clients?limit=100', {
+//     headers: {
+//       'X-API-KEY': process.env.COPILOT_API_KEY as string,
+//     },
+//   })
 
-  if (!res.ok) {
-    throw new Error('Something went wrong while fetching client list!')
-  }
+//   if (!res.ok) {
+//     throw new Error('Something went wrong while fetching client list!')
+//   }
 
-  return res.json()
-}
+//   return res.json()
+// }
 
 export default async function Page() {
   // const clientList = await listClients()

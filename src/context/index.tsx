@@ -1,29 +1,21 @@
 'use client'
 
+import { Editor } from '@tiptap/react'
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
   bannerImg: string
   showLinkInput: boolean
   readOnly: boolean
-  selectedClient: string
-  //this data should be fetched from API in the future
-  mockData: {
-    clientId: number
-    givenName: string
-    familyName: string
-    email: string
-    company: string
-    address: string
-  }[]
+  editor: Editor | null
 }
 
 export interface IAppContext {
   appState: IAppState
   setBannerImg: (image: string) => void
-  toggleShowLinkInput: (v: boolean) => void
-  toggleReadOnly: (v: boolean) => void
-  setSelectedClient: (client: string) => void
+  toggleShowLinkInput: (show: boolean) => void
+  toggleReadOnly: (show: boolean) => void
+  setEditor: (editor: Editor | null) => void
 }
 
 interface IAppCoreProvider {
@@ -56,20 +48,23 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     bannerImg: '',
     showLinkInput: false,
     readOnly: false,
-    selectedClient: '',
-    mockData,
+    editor: null,
   })
 
   const setBannerImg = (image: string) => {
     setState((prev) => ({ ...prev, bannerImg: image }))
   }
 
-  const toggleShowLinkInput = (v: boolean) => {
-    setState((prev) => ({ ...prev, showLinkInput: v }))
+  const toggleShowLinkInput = (show: boolean) => {
+    setState((prev) => ({ ...prev, showLinkInput: show }))
   }
 
-  const toggleReadOnly = (v: boolean) => {
-    setState((prev) => ({ ...prev, readOnly: v }))
+  const toggleReadOnly = (show: boolean) => {
+    setState((prev) => ({ ...prev, readOnly: show }))
+  }
+
+  const setEditor = (editor: Editor | null) => {
+    setState((prev) => ({ ...prev, editor: editor }))
   }
 
   const setSelectedClient = (client: string) => {
@@ -83,7 +78,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setBannerImg,
         toggleShowLinkInput,
         toggleReadOnly,
-        setSelectedClient,
+        setEditor,
       }}
     >
       {children}
