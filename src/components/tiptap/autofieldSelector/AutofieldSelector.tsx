@@ -25,7 +25,7 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
           if ($cursor) {
             const { pos } = $cursor
             const charBeforeCursor = view.state.doc.textBetween(pos - 2, pos)
-            if (charBeforeCursor === "{{") {
+            if (charBeforeCursor === '{{') {
               // setSuggestionText("")
               // setGetTextOn(true)
               return true
@@ -36,19 +36,17 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
         pluginKey='autofield-selector'
       >
         <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
-          {
-            staticAutofillValues.map((value, key) => {
-              return (
-                <AutofieldButton
-                  key={key}
-                  label={value}
-                  handleClick={() => {
-                    tiptapEditorUtils.insertContent(`${value}}}`)
-                  }}
-                />
-              )
-            })
-          }
+          {staticAutofillValues.map((value, key) => {
+            return (
+              <AutofieldButton
+                key={key}
+                label={value}
+                handleClick={() => {
+                  tiptapEditorUtils.insertContent(`${value}}}`)
+                }}
+              />
+            )
+          })}
         </div>
       </FloatingMenu>
     </>

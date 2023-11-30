@@ -10,7 +10,6 @@ const AutofillFields = () => {
     appState?.appState.editor as Editor,
   )
 
-
   return (
     <div className='p-5'>
       <p className='font-medium pb-5'>Autofill fields</p>
@@ -42,7 +41,10 @@ const AutofillText = ({
   handleClick: () => void
 }) => {
   return (
-    <p className='text-new-gray hover:text-text' onClick={handleClick}>
+    <p
+      className='text-new-gray hover:text-text cursor-pointer'
+      onClick={handleClick}
+    >
       {' '}
       &#123;&#123;{label}&#125;&#125;
     </p>

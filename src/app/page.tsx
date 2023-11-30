@@ -17,13 +17,19 @@ export const revalidate = 0
 //   return res.json()
 // }
 
+// async function getSettings() {
+//   const { data } = await fetch("http://localhost:3000/api/settings").then(res => res.json())
+//   return data
+// }
 export default async function Page() {
   // const clientList = await listClients()
+  // const settings = await getSettings()
+  // console.log(settings)
 
   return (
     <div>
       <div className='flex flex-row'>
-        <div className='basis-3/4'>
+        <div className='basis-3/4 relative'>
           <EditorInterface />
         </div>
         <div className='basis-1/4 border-t-2 border-l-2 border-slate-300'>

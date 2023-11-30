@@ -5,3 +5,6 @@ export const staticAutofillValues = [
   'client.company',
   'client.address',
 ]
+//
+//putting this here for now
+export const baseUrl = 'http://localhost:3000'

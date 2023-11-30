@@ -91,4 +91,4 @@ const SideBarInterface = () => {
   )
 }
 
-export default SideBarInterface 
+export default SideBarInterface

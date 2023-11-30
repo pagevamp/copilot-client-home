@@ -55,7 +55,6 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       label='Text'
       onChange={(event: SelectChangeEvent) => {
         const { value } = event.target
-        console.log(value)
         setSelectedFormatter(value as string)
         if (value === 'Heading 1') {
           tiptapEditorUtils.toggleHeading(1)

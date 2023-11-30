@@ -16,7 +16,7 @@ interface ISelectOptions extends Pick<IDropDown, 'customOptions'> {}
 const SelectOptions: FC<ISelectOptions> = ({ customOptions }) => {
   return (
     <div
-      className='bg-white absolute top-12 right-0 w-full py-2 cursor-pointer border border-slate-300 rounded'
+      className='bg-white absolute top-12 right-0 w-full py-2 cursor-pointer border border-slate-300 rounded z-50'
       style={{
         boxShadow: '0px 6px 20px 0px rgba(0, 0, 0, 0.12)',
       }}

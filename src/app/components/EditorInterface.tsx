@@ -33,12 +33,19 @@ import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { ISettings } from '@/types/interfaces'
+import { baseUrl } from '@/utils/constants'
+import LoaderComponent from '@/components/display/Loader'
+
+// interface IEditorInterface {
+//   settings: ISettings;
+// }
 
 const EditorInterface = () => {
   const appState = useAppState()
 
-  const initialEditorContent = 'Type / for commands'
+  const initialEditorContent = 'Type "/" for commands'
 
   const editor = useEditor({
     extensions: [
@@ -75,6 +82,7 @@ const EditorInterface = () => {
         HTMLAttributes: {
           class: 'w-5/12 h-60 object-cover',
         },
+        allowBase64: true,
       }),
       Table.configure({
         resizable: true,
@@ -104,7 +112,6 @@ const EditorInterface = () => {
         (el) => el.givenName === appState.appState.selectedClient,
       )[0]
       const c = template({ client: mockData })
-      console.log(c)
       editor?.chain().focus().setContent(c).run()
     } else {
       editor
@@ -119,6 +126,24 @@ const EditorInterface = () => {
     if (appState?.appState.readOnly) return
     setOriginalTemplate(editor?.getHTML())
   }, [editor?.getText(), appState?.appState.readOnly])
+
+  useEffect(() => {
+    if (!appState?.appState.settings) return
+    if (
+      originalTemplate !== appState?.appState.settings.content ||
+      appState?.appState.settings.backgroundColor !==
+      appState?.appState.editorColor
+    ) {
+      appState?.toggleChangesCreated(true)
+    } else {
+      appState?.toggleChangesCreated(false)
+    }
+  }, [
+    originalTemplate,
+    appState?.appState.editorColor,
+    appState?.appState.bannerImg,
+    appState?.appState.readOnly,
+  ])
 
   useEffect(() => {
     if (!editor) return
@@ -137,53 +162,85 @@ const EditorInterface = () => {
     }
   }, [editor])
 
+  useEffect(() => {
+    ; (async () => {
+      appState?.setLoading(true)
+      const { data } = await fetch(`${baseUrl}/api/settings`).then((res) =>
+        res.json(),
+      )
+      setOriginalTemplate(data.content)
+      appState?.setSettings(data)
+      appState?.setLoading(false)
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (!appState?.appState.settings) return
+    editor
+      ?.chain()
+      .focus()
+      .setContent((appState?.appState.settings as ISettings).content)
+      .run()
+    appState?.setEditorColor(
+      (appState?.appState.settings as ISettings).backgroundColor,
+    )
+  }, [appState?.appState.settings])
+
   if (!editor) return null
 
   return (
-    <div className='overflow-y-auto overflow-x-hidden max-h-screen w-full'>
-      <When condition={appState?.appState.bannerImg !== ''}>
-        <img
-          className='w-full'
-          src={appState?.appState.bannerImg as string}
-          alt='banner image'
-        />
+    <>
+      <When condition={appState?.appState.loading as boolean}>
+        <LoaderComponent />
       </When>
       <div
-        className='px-14 py-8'
-        style={{
-          background: `${appState?.appState.editorColor}`
-        }}
+        className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${appState?.appState.changesCreated && 'pb-10'
+          }`}
       >
-        <div>
-          <FloatingMenuContainer editor={editor} />
-          <BubbleMenuContainer editor={editor} />
-          <LinkInput editor={editor} />
-          <AutofieldSelector editor={editor} />
-        </div>
-
-        <EditorContent
-          editor={editor}
-          readOnly={appState?.appState.readOnly}
-          onClick={() => {
-            if (editor.getText() === initialEditorContent) {
-              editor.chain().focus().clearContent().run()
-            }
-          }}
-        />
-      </div>
-      <When condition={!!appState?.appState.readOnly}>
+        <When condition={appState?.appState.bannerImg !== ''}>
+          <img
+            className='w-full'
+            src={appState?.appState.bannerImg as string}
+            alt='banner image'
+          />
+        </When>
         <div
+          className='px-14 py-8'
           style={{
-            width: '330px',
-            margin: '0 auto',
-            position: 'sticky',
-            bottom: '5em',
+            background: `${appState?.appState.editorColor}`,
           }}
         >
-          <NoteDisplay content='Edits cannot be made while in preview mode' />
+          <div>
+            <FloatingMenuContainer editor={editor} />
+            <BubbleMenuContainer editor={editor} />
+            <LinkInput editor={editor} />
+            <AutofieldSelector editor={editor} />
+          </div>
+
+          <EditorContent
+            editor={editor}
+            readOnly={appState?.appState.readOnly}
+            onClick={() => {
+              if (editor.getText() === initialEditorContent) {
+                editor.chain().focus().clearContent().run()
+              }
+            }}
+          />
         </div>
-      </When>
-    </div>
+        <When condition={!!appState?.appState.readOnly}>
+          <div
+            style={{
+              width: '330px',
+              margin: '0 auto',
+              position: 'sticky',
+              bottom: '5em',
+            }}
+          >
+            <NoteDisplay content='Edits cannot be made while in preview mode' />
+          </div>
+        </When>
+      </div>
+    </>
   )
 }
 

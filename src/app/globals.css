@@ -23,6 +23,12 @@
   cursor: pointer;
 }
 
+::-webkit-scrollbar:horizontal {
+  height: 0;
+  width: 0;
+  display: none;
+}
+
 .tiptap {
   min-height: 100vh;
   width: 100%;

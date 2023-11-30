@@ -1,16 +1,19 @@
 'use client'
 
+import { ISettings } from '@/types/interfaces'
 import { Editor } from '@tiptap/react'
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  
   editor: Editor | null
-  bannerImg: string;
-  showLinkInput: boolean;
-  readOnly: boolean;
-  selectedClient: string;
-  editorColor: string;
+  bannerImg: string
+  showLinkInput: boolean
+  readOnly: boolean
+  selectedClient: string
+  editorColor: string
+  changesCreated: boolean
+  settings: ISettings | undefined
+  loading: boolean
   //this data should be fetched from API in the future
   mockData: {
     clientId: number
@@ -30,6 +33,9 @@ export interface IAppContext {
   setSelectedClient: (client: string) => void
   setEditorColor: (color: string) => void
   setEditor: (editor: Editor | null) => void
+  toggleChangesCreated: (v: boolean) => void
+  setSettings: (settings: ISettings) => void
+  setLoading: (v: boolean) => void
 }
 
 interface IAppCoreProvider {
@@ -65,6 +71,9 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     selectedClient: '',
     editorColor: '#f8f9fb',
     editor: null,
+    changesCreated: false,
+    settings: undefined,
+    loading: false,
     mockData,
   })
 
@@ -92,6 +101,18 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, editor: editor }))
   }
 
+  const toggleChangesCreated = (v: boolean) => {
+    setState((prev) => ({ ...prev, changesCreated: v }))
+  }
+
+  const setSettings = (settings: ISettings) => {
+    setState((prev) => ({ ...prev, settings: settings }))
+  }
+
+  const setLoading = (v: boolean) => {
+    setState((prev) => ({ ...prev, loading: v }))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -102,6 +123,9 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setSelectedClient,
         setEditorColor,
         setEditor,
+        toggleChangesCreated,
+        setSettings,
+        setLoading,
       }}
     >
       {children}
