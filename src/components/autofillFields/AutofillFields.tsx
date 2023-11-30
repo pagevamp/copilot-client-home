@@ -1,4 +1,5 @@
 import { useAppState } from '@/hooks/useAppState'
+import { staticAutofillValues } from '@/utils/constants'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
 
@@ -9,13 +10,6 @@ const AutofillFields = () => {
     appState?.appState.editor as Editor,
   )
 
-  const staticAutofillValues = [
-    'client.givenName',
-    'client.familyName',
-    'client.email',
-    'client.company',
-    'client.address',
-  ]
 
   return (
     <div className='p-5'>

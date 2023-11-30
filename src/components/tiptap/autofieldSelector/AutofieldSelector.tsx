@@ -1,6 +1,8 @@
-import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { FloatingMenu, Editor } from '@tiptap/react'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+
+import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
+import { staticAutofillValues as values } from '@/utils/constants'
 
 interface IAutofieldSelector {
   editor: Editor
@@ -8,6 +10,8 @@ interface IAutofieldSelector {
 
 const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
+
+  const [staticAutofillValues, setStaticAutofillValues] = useState([...values])
 
   return (
     <>
@@ -21,44 +25,30 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
           if ($cursor) {
             const { pos } = $cursor
             const charBeforeCursor = view.state.doc.textBetween(pos - 2, pos)
-
-            return charBeforeCursor === '{{'
+            if (charBeforeCursor === "{{") {
+              // setSuggestionText("")
+              // setGetTextOn(true)
+              return true
+            }
           }
           return false
         }}
         pluginKey='autofield-selector'
       >
         <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
-          <AutofieldButton
-            label={'client.givenName'}
-            handleClick={() => {
-              tiptapEditorUtils.insertContent('client.givenName}}')
-            }}
-          />
-          <AutofieldButton
-            label={'client.firstName'}
-            handleClick={() => {
-              tiptapEditorUtils.insertContent('client.familyName}}')
-            }}
-          />
-          <AutofieldButton
-            label={'client.email'}
-            handleClick={() => {
-              tiptapEditorUtils.insertContent('client.email}}')
-            }}
-          />
-          <AutofieldButton
-            label={'client.company'}
-            handleClick={() => {
-              tiptapEditorUtils.insertContent('client.company}}')
-            }}
-          />
-          <AutofieldButton
-            label={'client.address'}
-            handleClick={() => {
-              tiptapEditorUtils.insertContent('client.address}}')
-            }}
-          />
+          {
+            staticAutofillValues.map((value, key) => {
+              return (
+                <AutofieldButton
+                  key={key}
+                  label={value}
+                  handleClick={() => {
+                    tiptapEditorUtils.insertContent(`${value}}}`)
+                  }}
+                />
+              )
+            })
+          }
         </div>
       </FloatingMenu>
     </>

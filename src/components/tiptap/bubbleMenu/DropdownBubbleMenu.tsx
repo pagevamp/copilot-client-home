@@ -24,8 +24,6 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
 
   const appState = useAppState()
 
-  console.log(editor.state.selection)
-  console.log(editor.isActive('link'))
   useEffect(() => {
     const parent = editor.state.selection.$anchor.parent
     const level = parent.attrs.level

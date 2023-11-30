@@ -1818,6 +1818,11 @@
     "@tiptap/extension-strike" "^2.1.12"
     "@tiptap/extension-text" "^2.1.12"
 
+"@tiptap/suggestion@^2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.1.12.tgz#a13782d1e625ec03b3f61b6839ecc95b6b685d3f"
+  integrity sha512-rhlLWwVkOodBGRMK0mAmE34l2a+BqM2Y7q1ViuQRBhs/6sZ8d83O4hARHKVwqT5stY4i1l7d7PoemV3uAGI6+g==
+
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
