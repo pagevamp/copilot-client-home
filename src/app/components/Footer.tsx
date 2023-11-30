@@ -11,7 +11,7 @@ export const Footer = () => {
     const content = appState?.appState.editor?.getHTML()
     try {
       appState?.setLoading(true)
-      await fetch(`/api/settings`, {
+      await fetch(`${baseUrl}/api/settings`, {
         method: 'PUT',
         body: JSON.stringify({
           backgroundColor: appState?.appState.editorColor,

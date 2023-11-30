@@ -165,7 +165,9 @@ const EditorInterface = () => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      const { data } = await fetch(`/api/settings`).then((res) => res.json())
+      const { data } = await fetch(`${baseUrl}/api/settings`).then((res) =>
+        res.json(),
+      )
       setOriginalTemplate(data.content)
       appState?.setSettings(data)
       appState?.setLoading(false)
