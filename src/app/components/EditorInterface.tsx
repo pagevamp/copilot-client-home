@@ -132,7 +132,7 @@ const EditorInterface = () => {
     if (
       originalTemplate !== appState?.appState.settings.content ||
       appState?.appState.settings.backgroundColor !==
-      appState?.appState.editorColor
+        appState?.appState.editorColor
     ) {
       appState?.toggleChangesCreated(true)
     } else {
@@ -163,7 +163,7 @@ const EditorInterface = () => {
   }, [editor])
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       appState?.setLoading(true)
       const { data } = await fetch(`${baseUrl}/api/settings`).then((res) =>
         res.json(),
@@ -194,8 +194,9 @@ const EditorInterface = () => {
         <LoaderComponent />
       </When>
       <div
-        className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${appState?.appState.changesCreated && 'pb-10'
-          }`}
+        className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
+          appState?.appState.changesCreated && 'pb-10'
+        }`}
       >
         <When condition={appState?.appState.bannerImg !== ''}>
           <img
