@@ -1,5 +1,5 @@
-import ClientHomeInterface from '@/app/components/ClientHomeInterface'
-import EditorInterface from '@/app/components/EditorInterface'
+import EditorInterface from './components/EditorInterface'
+import SideBarInterface from './components/SideBarInterface'
 
 export const revalidate = 0
 
@@ -26,8 +26,8 @@ export default async function Page() {
         <div className='basis-3/4'>
           <EditorInterface />
         </div>
-        <div className='basis-1/4 border-t-2 border-l-2 border-slate-300 rounded'>
-          <ClientHomeInterface />
+        <div className='basis-1/4 border-t-2 border-l-2 border-slate-300'>
+          <SideBarInterface />
         </div>
       </div>
     </div>

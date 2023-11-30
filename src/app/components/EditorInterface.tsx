@@ -151,7 +151,7 @@ const EditorInterface = () => {
       <div
         className='px-14 py-8'
         style={{
-          background: `${appState?.appState.editorColor}`,
+          background: `${appState?.appState.editorColor}`
         }}
       >
         <div>

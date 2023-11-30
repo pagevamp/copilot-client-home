@@ -1,15 +1,14 @@
 'use client'
 
+import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import ColorPicker from '@/components/colorPicker/ColorPicker'
+import AutofillFields from '@/components/autofillFields/AutofillFields'
+import Select from '@/components/select/Select'
+import { useAppState } from '@/hooks/useAppState'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useEffect, useState } from 'react'
 
-import AutofillFields from '@/components/autofillFields/AutofillFields'
-import ImagePicker from '@/components/ImagePicker/ImagePicker'
-import Select from '@/components/select/Select'
-
-import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useAppState } from '@/hooks/useAppState'
-
-const ClientHomeInterface = () => {
+const SideBarInterface = () => {
   const appState = useAppState()
 
   const clients = appState?.appState.mockData
@@ -79,6 +78,10 @@ const ClientHomeInterface = () => {
         }}
       />
 
+      <hr />
+
+      <ColorPicker />
+
       <hr className='bg-slate-300' style={{ padding: 0.3 }} />
 
       <AutofillFields />
@@ -88,4 +91,4 @@ const ClientHomeInterface = () => {
   )
 }
 
-export default ClientHomeInterface
+export default SideBarInterface 

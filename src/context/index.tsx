@@ -4,12 +4,13 @@ import { Editor } from '@tiptap/react'
 import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
-  bannerImg: string
-  showLinkInput: boolean
-  readOnly: boolean
-  selectedClient: string
-  editorColor: string
+  
   editor: Editor | null
+  bannerImg: string;
+  showLinkInput: boolean;
+  readOnly: boolean;
+  selectedClient: string;
+  editorColor: string;
   //this data should be fetched from API in the future
   mockData: {
     clientId: number
