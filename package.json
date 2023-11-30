@@ -9,7 +9,9 @@
     "lint": "next lint",
     "eslint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install",
+    "lint-staged": "npx lint-staged"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -38,9 +40,17 @@
     "eslint-config-next": "latest",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.1.0",
     "postcss": "latest",
     "prettier": "^3.0.3",
     "tailwindcss": "latest",
     "typescript": "latest"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.{ts,tsx}": [
+      "eslint --fix --color",
+      "prettier --write"
+    ]
   }
 }
