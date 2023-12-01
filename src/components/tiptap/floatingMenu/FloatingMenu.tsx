@@ -1,5 +1,5 @@
 import { FloatingMenu, Editor } from '@tiptap/react'
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 
 import {
   H1Icon,
@@ -50,187 +50,115 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
         pluginKey='optionsMenu'
       >
         <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.toggleHeading(1)
             }}
-          >
-            <div>
-              <H1Icon />
-            </div>
-            <div>
-              <p className='text-sm'>Heading 1</p>
-            </div>
-          </button>
+            icon={<H1Icon />}
+            label={'Heading 1'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.toggleHeading(2)
             }}
-          >
-            <div>
-              <H2Icon />
-            </div>
-            <div>
-              <p className='text-sm'>Heading 2</p>
-            </div>
-          </button>
+            icon={<H2Icon />}
+            label={'Heading 2'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.toggleHeading(3)
             }}
-          >
-            <div>
-              <H3Icon />
-            </div>
-            <div>
-              <p className='text-sm'>Heading 3</p>
-            </div>
-          </button>
+            icon={<H3Icon />}
+            label={'Heading 3'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.setParagraph()
             }}
-          >
-            <div>
-              <TextIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Text</p>
-            </div>
-          </button>
+            icon={<TextIcon />}
+            label={'Text'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.insertContent('{{')
             }}
-          >
-            <div>
-              <AutofillIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Autofill fields</p>
-            </div>
-          </button>
+            icon={<AutofillIcon />}
+            label={'Autofill fields'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.toggleBulletList()
             }}
-          >
-            <div>
-              <BulletListIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Bullet list</p>
-            </div>
-          </button>
+            icon={<BulletListIcon />}
+            label={'Bullet list'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.toggleNumberedList()
             }}
-          >
-            <div>
-              <NumberedListIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Numbered list</p>
-            </div>
-          </button>
+            icon={<NumberedListIcon />}
+            label={'Numbered list'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={async () => {
+          <FloatingContainerBtn
+            handleClick={async () => {
               tiptapEditorUtils.clearCurrentLineContent()
               const file = await imagePickerUtils.selectImageFromLocalDrive()
               const imgUrl = await imagePickerUtils.imageUrl(file as File)
               tiptapEditorUtils.setImage(imgUrl as string)
             }}
-          >
-            <div>
-              <UploadIcon2 />
-            </div>
-            <div>
-              <p className='text-sm'>Upload</p>
-            </div>
-          </button>
+            icon={<UploadIcon2 />}
+            label={'Upload'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.insertCodeBlock()
             }}
-          >
-            <div>
-              <EmbedIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Embed</p>
-            </div>
-          </button>
+            icon={<EmbedIcon />}
+            label={'Embed'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               appState?.toggleShowLinkInput(true)
             }}
-          >
-            <div>
-              <LinkIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Link</p>
-            </div>
-          </button>
+            icon={<LinkIcon />}
+            label={'Link'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.insertTable({ rows: 3, cols: 3 })
             }}
-          >
-            <div>
-              <TableIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Table</p>
-            </div>
-          </button>
+            icon={<TableIcon />}
+            label={'Table'}
+          />
 
-          <button
-            className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
-            onClick={() => {
+          <FloatingContainerBtn
+            handleClick={() => {
               tiptapEditorUtils.clearCurrentLineContent()
               tiptapEditorUtils.insertCallout('')
             }}
-          >
-            <div>
-              <CalloutIcon />
-            </div>
-            <div>
-              <p className='text-sm'>Callout</p>
-            </div>
-          </button>
+            icon={<CalloutIcon />}
+            label={'Callout'}
+          />
         </div>
       </FloatingMenu>
     </>
@@ -238,3 +166,27 @@ const FloatingMenuContainer: FC<IFloatingMenuContainer> = ({ editor }) => {
 }
 
 export default FloatingMenuContainer
+
+const FloatingContainerBtn = ({
+  handleClick,
+  icon,
+  label,
+}: {
+  handleClick: () => void
+  icon: ReactNode
+  label: string
+}) => {
+  return (
+    <button
+      className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'
+      onClick={() => {
+        handleClick()
+      }}
+    >
+      <div>{icon}</div>
+      <div>
+        <p className='text-sm'>{label}</p>
+      </div>
+    </button>
+  )
+}
