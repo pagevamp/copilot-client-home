@@ -40,6 +40,11 @@ export class TiptapEditorUtils {
         const deletePos = lastTextNodePos + lastText.length - 1
         tr.delete(deletePos, deletePos + 1) // Delete the last character
       }
+
+      if (lastText.endsWith('{')) {
+        const deletePos = lastTextNodePos + lastText.length - 2
+        tr.delete(deletePos, deletePos + 2) // Delete the last character
+      }
     }
 
     // Apply the transaction to the editor
@@ -91,6 +96,10 @@ export class TiptapEditorUtils {
       .run()
   }
 
+  unlink() {
+    this.editor.chain().focus().extendMarkRange('link').unsetLink().run()
+  }
+
   setImage(imgUrl: string) {
     this.editor.chain().focus().setImage({ src: imgUrl }).run()
   }
@@ -103,7 +112,27 @@ export class TiptapEditorUtils {
       .run()
   }
 
-  insertCallout() {
-    this.editor.chain().focus().insertContent('<callout></callout>').run()
+  insertCallout(text: string) {
+    this.editor
+      .chain()
+      .focus()
+      .insertContent(`<callout>${text}</callout>`)
+      .run()
+  }
+
+  insertContent(content: string) {
+    this.editor
+      .chain()
+      .focus()
+      .setParagraph()
+      .insertContent(content.toString())
+      .run()
+  }
+
+  getSelectedText() {
+    const { view, state } = this.editor
+    const { from, to } = view.state.selection
+    const text = state.doc.textBetween(from, to, ' ')
+    return text
   }
 }

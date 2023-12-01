@@ -1,18 +1,16 @@
 'use client'
 
+import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import AutofillFields from '@/components/autofillFields/AutofillFields'
+import Select from '@/components/select/Select'
+import { useAppState } from '@/hooks/useAppState'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useEffect, useState } from 'react'
 
-import AutofillFields from '@/components/autofillFields/AutofillFields'
-import ImagePicker from '@/components/ImagePicker/ImagePicker'
-import Select from '@/components/select/Select'
-
-import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useAppState } from '@/hooks/useAppState'
-
-const ClientHomeInterface = () => {
+const SideBarInterface = () => {
   const appState = useAppState()
 
-  const clients = ['Jimbo', 'Beanie dude', 'Beach guy']
+  const clients = appState?.appState.mockData
   const defaultValue = 'Preview mode off'
 
   const [dropdownSelectedValue, setDropdownSelectedValue] =
@@ -21,8 +19,10 @@ const ClientHomeInterface = () => {
   useEffect(() => {
     if (dropdownSelectedValue === defaultValue) {
       appState?.toggleReadOnly(false)
+      appState?.setSelectedClient('')
     } else {
       appState?.toggleReadOnly(true)
+      appState?.setSelectedClient(dropdownSelectedValue)
     }
   }, [dropdownSelectedValue])
 
@@ -42,19 +42,22 @@ const ClientHomeInterface = () => {
               >
                 {defaultValue}
               </div>
-              {clients.map((val, key) => {
-                return (
-                  <div
-                    key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${
-                      dropdownSelectedValue === val ? 'bg-slate-50' : ''
-                    }`}
-                    onClick={() => setDropdownSelectedValue(val)}
-                  >
-                    {val}
-                  </div>
-                )
-              })}
+              {clients &&
+                clients.map((val, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className={`hover:bg-slate-50 py-2 px-3 ${
+                        dropdownSelectedValue === val.givenName
+                          ? 'bg-slate-50'
+                          : ''
+                      }`}
+                      onClick={() => setDropdownSelectedValue(val.givenName)}
+                    >
+                      {val.givenName}
+                    </div>
+                  )
+                })}
             </>
           }
           selected={dropdownSelectedValue}
@@ -83,4 +86,4 @@ const ClientHomeInterface = () => {
   )
 }
 
-export default ClientHomeInterface
+export default SideBarInterface
