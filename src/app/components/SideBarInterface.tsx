@@ -85,7 +85,7 @@ const SideBarInterface: FC<IEditorInterface> = ({
         />
       </div>
 
-      <hr className='bg-slate-300' style={{ padding: 0.5 }} />
+      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
 
       <ImagePicker
         getImage={async (image) => {
@@ -102,11 +102,11 @@ const SideBarInterface: FC<IEditorInterface> = ({
 
       <ColorPicker />
 
-      <hr className='bg-slate-300' style={{ padding: 0.3 }} />
+      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
 
       <AutofillFields />
 
-      <hr className='bg-slate-300' style={{ padding: 0.5 }} />
+      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
     </div>
   )
 }

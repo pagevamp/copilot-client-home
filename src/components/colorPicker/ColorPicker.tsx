@@ -27,7 +27,7 @@ const ColorPicker = () => {
   return (
     <div className='relative flex justify-end p-4 gap-3 z-0' ref={pickerRef}>
       <div
-        className='border border-slate-200 rounded p-1 flex flex-col justify-center'
+        className='border border-slate-200 rounded p-1 flex flex-col justify-center cursor-pointer'
         onClick={() => setShowPicker((prev) => !prev)}
       >
         <div
@@ -45,7 +45,7 @@ const ColorPicker = () => {
       </div>
 
       <When condition={showPicker}>
-        <div className='absolute left-2 top-12'>
+        <div className='absolute left-12 top-14'>
           <ChromePicker
             disableAlpha={true}
             color={appState?.appState.editorColor}
