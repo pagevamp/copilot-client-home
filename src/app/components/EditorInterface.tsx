@@ -35,7 +35,6 @@ import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { FC, useEffect, useState } from 'react'
 import { ISettings } from '@/types/interfaces'
-import { baseUrl } from '@/utils/constants'
 import LoaderComponent from '@/components/display/Loader'
 
 // interface IEditorInterface {
@@ -165,9 +164,7 @@ const EditorInterface = () => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      const { data } = await fetch(`${baseUrl}/api/settings`).then((res) =>
-        res.json(),
-      )
+      const { data } = await fetch(`/api/settings`).then((res) => res.json())
       setOriginalTemplate(data.content)
       appState?.setSettings(data)
       appState?.setLoading(false)

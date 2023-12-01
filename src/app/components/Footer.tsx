@@ -2,7 +2,6 @@
 
 import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
-import { baseUrl } from '@/utils/constants'
 
 export const Footer = () => {
   const appState = useAppState()
@@ -11,7 +10,7 @@ export const Footer = () => {
     const content = appState?.appState.editor?.getHTML()
     try {
       appState?.setLoading(true)
-      await fetch(`${baseUrl}/api/settings`, {
+      await fetch(`/api/settings`, {
         method: 'PUT',
         body: JSON.stringify({
           backgroundColor: appState?.appState.editorColor,
