@@ -36,6 +36,7 @@ export const Footer = () => {
         .setContent(appState?.appState.settings?.content as string)
         .run()
     }
+    appState?.toggleChangesCreated(false)
   }
 
   return (
