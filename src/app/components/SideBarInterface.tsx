@@ -6,26 +6,42 @@ import AutofillFields from '@/components/autofillFields/AutofillFields'
 import Select from '@/components/select/Select'
 import { useAppState } from '@/hooks/useAppState'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { IClient, ICustomField } from '@/types/interfaces'
 
-const SideBarInterface = () => {
+interface IEditorInterface {
+  clientList: IClient[]
+  customFields: ICustomField[]
+}
+
+const SideBarInterface: FC<IEditorInterface> = ({
+  clientList,
+  customFields,
+}) => {
   const appState = useAppState()
 
-  const clients = appState?.appState.mockData
   const defaultValue = 'Preview mode off'
 
-  const [dropdownSelectedValue, setDropdownSelectedValue] =
-    useState(defaultValue)
+  const [dropdownSelectedClient, setDropdownSelectedClient] = useState<
+    IClient | string | null
+  >(defaultValue)
 
   useEffect(() => {
-    if (dropdownSelectedValue === defaultValue) {
+    if (dropdownSelectedClient === defaultValue) {
       appState?.toggleReadOnly(false)
-      appState?.setSelectedClient('')
+      appState?.setSelectedClient(null)
     } else {
       appState?.toggleReadOnly(true)
-      appState?.setSelectedClient(dropdownSelectedValue)
+      appState?.setSelectedClient(dropdownSelectedClient as IClient)
     }
-  }, [dropdownSelectedValue])
+  }, [dropdownSelectedClient])
+
+  useEffect(() => {
+    if (clientList.length === 0 || customFields.length === 0) return
+
+    appState?.setClientList(clientList)
+    appState?.setCustomFields(customFields)
+  }, [clientList, customFields])
 
   return (
     <div>
@@ -37,23 +53,23 @@ const SideBarInterface = () => {
             <>
               <div
                 className={`hover:bg-slate-50 py-2 px-3 ${
-                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
+                  dropdownSelectedClient === defaultValue ? 'bg-slate-50' : ''
                 }`}
-                onClick={() => setDropdownSelectedValue(defaultValue)}
+                onClick={() => setDropdownSelectedClient(defaultValue)}
               >
                 {defaultValue}
               </div>
-              {clients &&
-                clients.map((val, key) => {
+              {appState?.appState.clientList &&
+                appState?.appState.clientList.map((val, key) => {
                   return (
                     <div
                       key={key}
                       className={`hover:bg-slate-50 py-2 px-3 ${
-                        dropdownSelectedValue === val.givenName
+                        dropdownSelectedClient === val.givenName
                           ? 'bg-slate-50'
                           : ''
                       }`}
-                      onClick={() => setDropdownSelectedValue(val.givenName)}
+                      onClick={() => setDropdownSelectedClient(val)}
                     >
                       {val.givenName}
                     </div>
@@ -61,7 +77,11 @@ const SideBarInterface = () => {
                 })}
             </>
           }
-          selected={dropdownSelectedValue}
+          selected={
+            dropdownSelectedClient === defaultValue
+              ? defaultValue
+              : (dropdownSelectedClient as IClient).givenName
+          }
         />
       </div>
 

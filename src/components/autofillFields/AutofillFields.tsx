@@ -1,7 +1,10 @@
 import { useAppState } from '@/hooks/useAppState'
+import { IClient } from '@/types/interfaces'
 import { staticAutofillValues } from '@/utils/constants'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
+import { When } from '../hoc/When'
+import { useEffect, useState } from 'react'
 
 const AutofillFields = () => {
   const appState = useAppState()
@@ -10,22 +13,95 @@ const AutofillFields = () => {
     appState?.appState.editor as Editor,
   )
 
+  const [company, setCompany] = useState<{ name: string } | undefined>()
+
+  useEffect(() => {
+    if (!appState?.appState.selectedClient && !appState?.appState.readOnly)
+      return
+    ;(async () => {
+      const res = await fetch(
+        `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}`,
+      )
+      const { data } = await res.json()
+      setCompany(data)
+    })()
+  }, [appState?.appState.selectedClient])
+
   return (
     <div className='p-5'>
       <p className='font-medium pb-5'>Autofill fields</p>
       <div className='flex flex-col gap-5'>
-        {staticAutofillValues.map((el, key) => {
-          return (
-            <AutofillText
-              key={key}
-              label={el}
-              handleClick={() => {
-                if (appState?.appState.readOnly) return
-                tiptapEditorUtils.insertContent(`{{${el}}}`)
-              }}
-            />
-          )
-        })}
+        {/* readonly mode */}
+        <When condition={appState?.appState.readOnly as boolean}>
+          <AutofillTextReadonlyMode
+            label={`Given name: ${
+              appState?.appState.selectedClient?.givenName as string
+            }`}
+          />
+          <AutofillTextReadonlyMode
+            label={`Family name: ${
+              appState?.appState.selectedClient?.familyName as string
+            }`}
+          />
+          <AutofillTextReadonlyMode
+            label={`Email: ${
+              appState?.appState.selectedClient?.email as string
+            }`}
+          />
+          <AutofillTextReadonlyMode
+            label={`Company: ${company ? company?.name : ''}`}
+          />
+          <AutofillTextReadonlyMode
+            label={`Address: ${
+              appState?.appState.selectedClient?.address as string
+            }`}
+          />
+          {appState?.appState.selectedClient &&
+            Object.keys(
+              (appState?.appState.selectedClient as IClient)?.customFields,
+            ).length > 0 &&
+            Object.entries(
+              (appState?.appState.selectedClient as IClient)?.customFields,
+            ).map((value, key) => {
+              return (
+                <AutofillTextReadonlyMode
+                  key={key}
+                  label={`${value[0]}: ${value[1]}`}
+                />
+              )
+            })}
+        </When>
+
+        {/* edit mode */}
+        <When condition={!appState?.appState.readOnly}>
+          {staticAutofillValues.map((el, key) => {
+            return (
+              <AutofillText
+                key={key}
+                label={el}
+                handleClick={() => {
+                  if (appState?.appState.readOnly) return
+                  tiptapEditorUtils.insertContent(`{{${el}}}`)
+                }}
+              />
+            )
+          })}
+          {appState?.appState.customFields &&
+            appState?.appState.customFields.map((el, key) => {
+              return (
+                <AutofillText
+                  key={key}
+                  label={`client.customFields.${el.key}`}
+                  handleClick={() => {
+                    if (appState?.appState.readOnly) return
+                    tiptapEditorUtils.insertContent(
+                      `{{client.customFields.${el.key}}}`,
+                    )
+                  }}
+                />
+              )
+            })}
+        </When>
       </div>
     </div>
   )
@@ -38,17 +114,20 @@ const AutofillText = ({
   handleClick,
 }: {
   label: string
-  handleClick: () => void
+  handleClick?: () => void
 }) => {
   return (
     <p
       className='text-new-gray hover:text-text cursor-pointer'
       onClick={handleClick}
     >
-      {' '}
       &#123;&#123;{label}&#125;&#125;
     </p>
   )
+}
+
+const AutofillTextReadonlyMode = ({ label }: { label: string }) => {
+  return <p className='text-new-gray hover:text-text cursor-pointer'>{label}</p>
 }
 
 /**

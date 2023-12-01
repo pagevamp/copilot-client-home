@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react'
 
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { staticAutofillValues as values } from '@/utils/constants'
+import { useAppState } from '@/hooks/useAppState'
 
 interface IAutofieldSelector {
   editor: Editor
@@ -10,6 +11,8 @@ interface IAutofieldSelector {
 
 const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
+
+  const appState = useAppState()
 
   const [staticAutofillValues, setStaticAutofillValues] = useState([...values])
 
@@ -35,7 +38,7 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
         }}
         pluginKey='autofield-selector'
       >
-        <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
+        <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-fit'>
           {staticAutofillValues.map((value, key) => {
             return (
               <AutofieldButton
@@ -47,6 +50,20 @@ const AutofieldSelector: FC<IAutofieldSelector> = ({ editor }) => {
               />
             )
           })}
+          {appState?.appState.customFields &&
+            appState?.appState.customFields.map((el, key) => {
+              return (
+                <AutofieldButton
+                  key={key}
+                  label={`client.customFields.${el.key}`}
+                  handleClick={() => {
+                    tiptapEditorUtils.insertContent(
+                      `client.customFields.${el.key}}}`,
+                    )
+                  }}
+                />
+              )
+            })}
         </div>
       </FloatingMenu>
     </>

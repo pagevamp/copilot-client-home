@@ -35,12 +35,8 @@ import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { FC, useEffect, useState } from 'react'
-import { ISettings } from '@/types/interfaces'
+import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
-
-// interface IEditorInterface {
-//   settings: ISettings;
-// }
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -111,10 +107,10 @@ const EditorInterface = () => {
   useEffect(() => {
     if (appState?.appState.readOnly) {
       const template = Handlebars?.compile(originalTemplate || '')
-      const mockData = appState.appState.mockData.filter(
-        (el) => el.givenName === appState.appState.selectedClient,
+      const client = appState.appState.clientList.filter(
+        (el) => el.id === (appState.appState.selectedClient as IClient).id,
       )[0]
-      const c = template({ client: mockData })
+      const c = template({ client: client })
       editor?.chain().focus().setContent(c).run()
     } else {
       editor
@@ -168,7 +164,8 @@ const EditorInterface = () => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      const { data } = await fetch(`/api/settings`).then((res) => res.json())
+      const res = await fetch(`/api/settings`)
+      const { data } = await res.json()
       setOriginalTemplate(data.content)
       appState?.setSettings(data)
       appState?.setLoading(false)

@@ -1,6 +1,6 @@
 'use client'
 
-import { ISettings } from '@/types/interfaces'
+import { IClient, ICustomField, ISettings } from '@/types/interfaces'
 import { Editor } from '@tiptap/react'
 import { FC, ReactNode, useState, createContext } from 'react'
 
@@ -9,20 +9,14 @@ export interface IAppState {
   bannerImg: string
   showLinkInput: boolean
   readOnly: boolean
-  selectedClient: string
+  selectedClient: IClient | null
   editorColor: string
   changesCreated: boolean
   settings: ISettings | undefined
   loading: boolean
   //this data should be fetched from API in the future
-  mockData: {
-    clientId: number
-    givenName: string
-    familyName: string
-    email: string
-    company: string
-    address: string
-  }[]
+  clientList: IClient[]
+  customFields: ICustomField[]
 }
 
 export interface IAppContext {
@@ -30,36 +24,19 @@ export interface IAppContext {
   setBannerImg: (image: string) => void
   toggleShowLinkInput: (v: boolean) => void
   toggleReadOnly: (v: boolean) => void
-  setSelectedClient: (client: string) => void
+  setSelectedClient: (client: IClient | null) => void
   setEditorColor: (color: string) => void
   setEditor: (editor: Editor | null) => void
   toggleChangesCreated: (v: boolean) => void
   setSettings: (settings: ISettings) => void
   setLoading: (v: boolean) => void
+  setClientList: (clientList: IClient[]) => void
+  setCustomFields: (customFields: ICustomField[]) => void
 }
 
 interface IAppCoreProvider {
   children: ReactNode
 }
-
-const mockData = [
-  {
-    clientId: 1,
-    givenName: 'John',
-    familyName: 'Doe',
-    email: 'john@gmail.com',
-    company: 'The Fossils',
-    address: 'New Town',
-  },
-  {
-    clientId: 2,
-    givenName: 'Krish',
-    familyName: 'Jane',
-    email: 'krish@gmail.com',
-    company: 'Yangtaru',
-    address: 'Brooklyn',
-  },
-]
 
 export const AppContext = createContext<IAppContext | null>(null)
 
@@ -68,13 +45,14 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     bannerImg: '',
     showLinkInput: false,
     readOnly: false,
-    selectedClient: '',
+    selectedClient: null,
     editorColor: '#f8f9fb',
     editor: null,
     changesCreated: false,
     settings: undefined,
     loading: false,
-    mockData,
+    clientList: [],
+    customFields: [],
   })
 
   const setBannerImg = (image: string) => {
@@ -89,7 +67,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, readOnly: v }))
   }
 
-  const setSelectedClient = (client: string) => {
+  const setSelectedClient = (client: IClient | null) => {
     setState((prev) => ({ ...prev, selectedClient: client }))
   }
 
@@ -113,6 +91,14 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, loading: v }))
   }
 
+  const setClientList = (clientList: IClient[]) => {
+    setState((prev) => ({ ...prev, clientList: clientList }))
+  }
+
+  const setCustomFields = (customFields: ICustomField[]) => {
+    setState((prev) => ({ ...prev, customFields: customFields }))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -126,6 +112,8 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         toggleChangesCreated,
         setSettings,
         setLoading,
+        setClientList,
+        setCustomFields,
       }}
     >
       {children}
