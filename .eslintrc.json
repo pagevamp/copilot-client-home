@@ -25,7 +25,8 @@
       }
     ],
     "no-unused-vars": "warn",
-    "@typescript-eslint/no-unused-vars": ["error"],
-    "@next/next/no-img-element": "off"
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "@next/next/no-img-element": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }

@@ -1,11 +1,13 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
+import AutofillFields from '@/components/autofillFields/AutofillFields'
 import ImagePicker from '@/components/ImagePicker/ImagePicker'
 import Select from '@/components/select/Select'
-import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useAppState } from '@/hooks/useAppState'
-import { useState } from 'react'
 
 const ClientHomeInterface = () => {
   const appState = useAppState()
@@ -13,21 +15,30 @@ const ClientHomeInterface = () => {
   const clients = ['Jimbo', 'Beanie dude', 'Beach guy']
   const defaultValue = 'Preview mode off'
 
-  const [selected, setSelected] = useState(defaultValue)
+  const [dropdownSelectedValue, setDropdownSelectedValue] =
+    useState(defaultValue)
+
+  useEffect(() => {
+    if (dropdownSelectedValue === defaultValue) {
+      appState?.toggleReadOnly(false)
+    } else {
+      appState?.toggleReadOnly(true)
+    }
+  }, [dropdownSelectedValue])
 
   return (
     <div>
       <div className='p-4 flex items-center justify-between'>
-        <p>Preview mode</p>
+        <p className='font-medium'>Preview mode</p>
         <Select
           name='Preview mode'
           customOptions={
             <>
               <div
                 className={`hover:bg-slate-50 py-2 px-3 ${
-                  selected === defaultValue ? 'bg-slate-50' : ''
+                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
                 }`}
-                onClick={() => setSelected(defaultValue)}
+                onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
               </div>
@@ -36,9 +47,9 @@ const ClientHomeInterface = () => {
                   <div
                     key={key}
                     className={`hover:bg-slate-50 py-2 px-3 ${
-                      selected === val ? 'bg-slate-50' : ''
+                      dropdownSelectedValue === val ? 'bg-slate-50' : ''
                     }`}
-                    onClick={() => setSelected(val)}
+                    onClick={() => setDropdownSelectedValue(val)}
                   >
                     {val}
                   </div>
@@ -46,11 +57,11 @@ const ClientHomeInterface = () => {
               })}
             </>
           }
-          selected={selected}
+          selected={dropdownSelectedValue}
         />
       </div>
 
-      <hr />
+      <hr className='bg-slate-300' style={{ padding: 0.5 }} />
 
       <ImagePicker
         getImage={async (image) => {
@@ -62,6 +73,12 @@ const ClientHomeInterface = () => {
           )
         }}
       />
+
+      <hr className='bg-slate-300' style={{ padding: 0.3 }} />
+
+      <AutofillFields />
+
+      <hr className='bg-slate-300' style={{ padding: 0.5 }} />
     </div>
   )
 }
