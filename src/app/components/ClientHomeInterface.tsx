@@ -1,15 +1,13 @@
 'use client'
 
+import ImagePicker from '@/components/ImagePicker/ImagePicker'
+import AutofillFields from '@/components/autofillFields/AutofillFields'
+import Select from '@/components/select/Select'
+import { useAppState } from '@/hooks/useAppState'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { useEffect, useState } from 'react'
 
-import AutofillFields from '@/components/autofillFields/AutofillFields'
-import ImagePicker from '@/components/ImagePicker/ImagePicker'
-import Select from '@/components/select/Select'
-
-import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useAppState } from '@/hooks/useAppState'
-
-const ClientHomeInterface = () => {
+const SideBarInterface = () => {
   const appState = useAppState()
 
   const clients = appState?.appState.mockData
@@ -28,7 +26,6 @@ const ClientHomeInterface = () => {
     }
   }, [dropdownSelectedValue])
 
-
   return (
     <div>
       <div className='p-4 flex items-center justify-between'>
@@ -38,24 +35,29 @@ const ClientHomeInterface = () => {
           customOptions={
             <>
               <div
-                className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
-                  }`}
+                className={`hover:bg-slate-50 py-2 px-3 ${
+                  dropdownSelectedValue === defaultValue ? 'bg-slate-50' : ''
+                }`}
                 onClick={() => setDropdownSelectedValue(defaultValue)}
               >
                 {defaultValue}
               </div>
-              {clients && clients.map((val, key) => {
-                return (
-                  <div
-                    key={key}
-                    className={`hover:bg-slate-50 py-2 px-3 ${dropdownSelectedValue === val.givenName ? 'bg-slate-50' : ''
+              {clients &&
+                clients.map((val, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className={`hover:bg-slate-50 py-2 px-3 ${
+                        dropdownSelectedValue === val.givenName
+                          ? 'bg-slate-50'
+                          : ''
                       }`}
-                    onClick={() => setDropdownSelectedValue(val.givenName)}
-                  >
-                    {val.givenName}
-                  </div>
-                )
-              })}
+                      onClick={() => setDropdownSelectedValue(val.givenName)}
+                    >
+                      {val.givenName}
+                    </div>
+                  )
+                })}
             </>
           }
           selected={dropdownSelectedValue}
@@ -84,4 +86,4 @@ const ClientHomeInterface = () => {
   )
 }
 
-export default ClientHomeInterface
+export default SideBarInterface

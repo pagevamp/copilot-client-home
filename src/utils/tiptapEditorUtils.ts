@@ -96,6 +96,10 @@ export class TiptapEditorUtils {
       .run()
   }
 
+  unlink() {
+    this.editor.chain().focus().extendMarkRange('link').unsetLink().run()
+  }
+
   setImage(imgUrl: string) {
     this.editor.chain().focus().setImage({ src: imgUrl }).run()
   }
@@ -108,8 +112,12 @@ export class TiptapEditorUtils {
       .run()
   }
 
-  insertCallout() {
-    this.editor.chain().focus().insertContent('<callout></callout>').run()
+  insertCallout(text: string) {
+    this.editor
+      .chain()
+      .focus()
+      .insertContent(`<callout>${text}</callout>`)
+      .run()
   }
 
   insertContent(content: string) {
@@ -119,5 +127,12 @@ export class TiptapEditorUtils {
       .setParagraph()
       .insertContent(content.toString())
       .run()
+  }
+
+  getSelectedText() {
+    const { view, state } = this.editor
+    const { from, to } = view.state.selection
+    const text = state.doc.textBetween(from, to, ' ')
+    return text
   }
 }
