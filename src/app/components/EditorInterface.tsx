@@ -23,7 +23,6 @@ import Italic from '@tiptap/extension-italic'
 import Strike from '@tiptap/extension-strike'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import History from '@tiptap/extension-history'
-import Placeholder from '@tiptap/extension-placeholder'
 
 import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
 import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
@@ -60,14 +59,6 @@ const EditorInterface = () => {
       CalloutExtension,
       Gapcursor,
       History,
-      Placeholder.configure({
-        placeholder: () => {
-          if (appState?.appState.loading) {
-            return ''
-          }
-          return initialEditorContent
-        },
-      }),
       Link.extend({
         exitable: true,
       }),
@@ -101,7 +92,7 @@ const EditorInterface = () => {
       CodeBlock,
       Code,
     ],
-    content: '',
+    content: initialEditorContent,
   })
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
@@ -227,6 +218,11 @@ const EditorInterface = () => {
           <EditorContent
             editor={editor}
             readOnly={appState?.appState.readOnly}
+            onClick={() => {
+              if (editor.getText() === initialEditorContent) {
+                editor.chain().focus().clearContent().run()
+              }
+            }}
           />
         </div>
         <When condition={!!appState?.appState.readOnly}>

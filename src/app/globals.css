@@ -34,6 +34,8 @@
   width: 100%;
   max-width: 1000px;
   overflow-x: scroll;
+  min-height: 90vh;
+  min-width: 100%;
 }
 
 .tiptap p {
