@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server'
 import { CopilotAPI, MeResponse } from './copilotApiUtils'
 
 export async function getCurrentUser(): Promise<MeResponse> {
@@ -7,4 +8,13 @@ export async function getCurrentUser(): Promise<MeResponse> {
   const copilotClient = new CopilotAPI(process.env.COPILOT_API_KEY)
 
   return await copilotClient.me()
+}
+
+export function errorHandler(message: string, status: number = 200) {
+  return NextResponse.json(
+    { message },
+    {
+      status,
+    },
+  )
 }
