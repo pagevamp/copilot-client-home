@@ -18,6 +18,7 @@ export const Footer = () => {
         }),
       })
       appState?.setLoading(false)
+      appState?.toggleChangesCreated(false)
     } catch (e) {
       console.error(e)
       appState?.setLoading(false)

@@ -49,7 +49,7 @@ const ColorPicker = () => {
           <ChromePicker
             disableAlpha={true}
             color={appState?.appState.editorColor}
-            onChangeComplete={(color) => {
+            onChange={(color) => {
               appState?.setEditorColor(color.hex)
             }}
           />
