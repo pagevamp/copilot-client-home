@@ -15,6 +15,9 @@ export class SettingService {
       where: {
         createdById: createdById,
       },
+      include: {
+        bannerImage: true,
+      },
     })
     if (!setting) {
       return null
@@ -33,7 +36,7 @@ export class SettingService {
     if (!settingByUser) {
       await this.prismaClient.setting.create({
         data: {
-          bannerImage: requestData.bannerImage,
+          bannerImageId: requestData.bannerImageId,
           backgroundColor: requestData.backgroundColor,
           content: requestData.content,
           createdById: currentUser.id,
@@ -48,7 +51,7 @@ export class SettingService {
         id: settingByUser.id,
       },
       data: {
-        bannerImage: requestData.bannerImage,
+        bannerImageId: requestData.bannerImageId,
         backgroundColor: requestData.backgroundColor,
         content: requestData.content,
       },
