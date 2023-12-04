@@ -13,17 +13,22 @@ const AutofillFields = () => {
     appState?.appState.editor as Editor,
   )
 
-  const [company, setCompany] = useState<{ name: string } | undefined>()
-
   useEffect(() => {
     if (!appState?.appState.selectedClient && !appState?.appState.readOnly)
       return
+    appState?.setClientCompanyName('')
     ;(async () => {
+      appState?.setLoading(true)
       const res = await fetch(
         `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}`,
       )
       const { data } = await res.json()
-      setCompany(data)
+      if (data.name) {
+        appState?.setClientCompanyName(data.name)
+      } else {
+        appState?.setClientCompanyName('')
+      }
+      appState?.setLoading(false)
     })()
   }, [appState?.appState.selectedClient])
 
@@ -49,7 +54,11 @@ const AutofillFields = () => {
             }`}
           />
           <AutofillTextReadonlyMode
-            label={`Company: ${company ? company?.name : ''}`}
+            label={`Company: ${
+              appState?.appState.selectedClientCompanyName
+                ? appState?.appState.selectedClientCompanyName
+                : ''
+            }`}
           />
           <AutofillTextReadonlyMode
             label={`Address: ${
@@ -78,10 +87,10 @@ const AutofillFields = () => {
             return (
               <AutofillText
                 key={key}
-                label={el}
+                label={el.replaceAll('{{', '').replaceAll('}}', '')}
                 handleClick={() => {
                   if (appState?.appState.readOnly) return
-                  tiptapEditorUtils.insertContent(`{{${el}}}`)
+                  tiptapEditorUtils.insertContent(`${el}`)
                 }}
               />
             )

@@ -10,6 +10,7 @@ export interface IAppState {
   showLinkInput: boolean
   readOnly: boolean
   selectedClient: IClient | null
+  selectedClientCompanyName: string
   editorColor: string
   changesCreated: boolean
   settings: ISettings | undefined
@@ -32,6 +33,7 @@ export interface IAppContext {
   setLoading: (v: boolean) => void
   setClientList: (clientList: IClient[]) => void
   setCustomFields: (customFields: ICustomField[]) => void
+  setClientCompanyName: (companyName: string) => void
 }
 
 interface IAppCoreProvider {
@@ -46,6 +48,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     showLinkInput: false,
     readOnly: false,
     selectedClient: null,
+    selectedClientCompanyName: '',
     editorColor: '#f8f9fb',
     editor: null,
     changesCreated: false,
@@ -99,6 +102,10 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, customFields: customFields }))
   }
 
+  const setClientCompanyName = (companyName: string) => {
+    setState((prev) => ({ ...prev, selectedClientCompanyName: companyName }))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -114,6 +121,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setLoading,
         setClientList,
         setCustomFields,
+        setClientCompanyName,
       }}
     >
       {children}
