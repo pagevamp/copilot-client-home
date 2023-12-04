@@ -1,21 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
-import {
-  H1Icon,
-  H2Icon,
-  H3Icon,
-  TextIcon,
-  AutofillIcon,
-  NumberedListIcon,
-  BulletListIcon,
-  UploadIcon2,
-  CalloutIcon,
-  LinkIcon,
-  TableIcon,
-  EmbedIcon,
-} from '@/icons'
-
-const FloatingContainerBtn = ({
+const AutofillContainerBtn = ({
   handleClick,
   label,
   focus,
@@ -34,42 +19,13 @@ const FloatingContainerBtn = ({
       }}
     >
       <div>
-        {label === 'Heading 1' ? (
-          <H1Icon />
-        ) : label === 'Heading 2' ? (
-          <H2Icon />
-        ) : label === 'Heading 3' ? (
-          <H3Icon />
-        ) : label === 'Text' ? (
-          <TextIcon />
-        ) : label === 'Autofill Fields' ? (
-          <AutofillIcon />
-        ) : label === 'Bullet List' ? (
-          <BulletListIcon />
-        ) : label === 'Numbered List' ? (
-          <NumberedListIcon />
-        ) : label === 'Upload' ? (
-          <UploadIcon2 />
-        ) : label === 'Embed' ? (
-          <EmbedIcon />
-        ) : label === 'Link' ? (
-          <LinkIcon />
-        ) : label === 'Table' ? (
-          <TableIcon />
-        ) : label === 'Callout' ? (
-          <CalloutIcon />
-        ) : (
-          <></>
-        )}
-      </div>
-      <div>
         <p className='text-sm'>{label}</p>
       </div>
     </button>
   )
 }
 
-export const FloatingMenu = forwardRef((props: any, ref: any) => {
+export const AutofillMenu = forwardRef((props: any, ref: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const selectItem = (index: any) => {
@@ -120,20 +76,20 @@ export const FloatingMenu = forwardRef((props: any, ref: any) => {
   const { items } = props
 
   return (
-    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
+    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-fit'>
       {items && items?.length ? (
         items.map((item: any, index: any) => (
-          <FloatingContainerBtn
+          <AutofillContainerBtn
             key={index}
             handleClick={() => {
               selectItem(index)
             }}
-            label={item.title}
+            label={item}
             focus={index === selectedIndex}
           />
         ))
       ) : (
-        <FloatingContainerBtn
+        <AutofillContainerBtn
           label={'No Options'}
           handleClick={() => {}}
           focus={false}
@@ -143,4 +99,4 @@ export const FloatingMenu = forwardRef((props: any, ref: any) => {
   )
 })
 
-FloatingMenu.displayName = 'FloatingMenu'
+AutofillMenu.displayName = 'AutofillMenu'

@@ -24,9 +24,10 @@ import Strike from '@tiptap/extension-strike'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
+import Mention from '@tiptap/extension-mention'
+import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingCommandExtension'
+import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 
-import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
-import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
 import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import NoteDisplay from '@/components/display/NoteDisplay'
@@ -34,9 +35,10 @@ import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
+import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -56,6 +58,15 @@ const EditorInterface = () => {
       CalloutExtension,
       Gapcursor,
       History,
+      FloatingCommandExtension.configure({
+        suggestion: floatingMenuSuggestion,
+      }),
+      Mention.configure({
+        suggestion: autofillMenuSuggestion,
+        renderLabel({ node }) {
+          return `${node.attrs.label ?? node.attrs.id}`
+        },
+      }),
       Placeholder.configure({
         placeholder: initialEditorContent,
       }),
@@ -111,13 +122,17 @@ const EditorInterface = () => {
         (el) => el.id === (appState.appState.selectedClient as IClient).id,
       )[0]
       const c = template({ client: client })
-      editor?.chain().focus().setContent(c).run()
+      setTimeout(() => {
+        editor?.chain().focus().setContent(c).run()
+      })
     } else {
-      editor
-        ?.chain()
-        .focus()
-        .setContent(originalTemplate as string)
-        .run()
+      setTimeout(() => {
+        editor
+          ?.chain()
+          .focus()
+          .setContent(originalTemplate as string)
+          .run()
+      })
     }
   }, [appState?.appState.selectedClient])
 
@@ -210,10 +225,8 @@ const EditorInterface = () => {
           }}
         >
           <div>
-            <FloatingMenuContainer editor={editor} />
             <BubbleMenuContainer editor={editor} />
             <LinkInput editor={editor} />
-            <AutofieldSelector editor={editor} />
           </div>
 
           <EditorContent
