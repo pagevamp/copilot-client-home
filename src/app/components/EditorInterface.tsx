@@ -118,9 +118,9 @@ const EditorInterface = () => {
   useEffect(() => {
     if (appState?.appState.readOnly) {
       const template = Handlebars?.compile(originalTemplate || '')
-      const _client = appState.appState.clientList.filter(
+      const _client = appState.appState.clientList.find(
         (el) => el.id === (appState.appState.selectedClient as IClient).id,
-      )[0]
+      )
       const client = {
         ..._client,
         company: appState?.appState.selectedClientCompanyName,
