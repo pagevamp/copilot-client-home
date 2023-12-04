@@ -27,6 +27,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Mention from '@tiptap/extension-mention'
 import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingCommandExtension'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
+import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
 import LinkInput from '@/components/tiptap/linkInput/LinkInput'
@@ -38,7 +39,6 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import { useEffect, useState } from 'react'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
-import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
 const EditorInterface = () => {
   const appState = useAppState()

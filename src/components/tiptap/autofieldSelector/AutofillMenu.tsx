@@ -13,7 +13,7 @@ const AutofillContainerBtn = ({
     <button
       className={`flex flex-row gap-x-2.5 items-center py-1.5 px-3 cursor-pointer outline-none ${
         focus && 'bg-new-white-2'
-      }`}
+      } display-block`}
       onClick={() => {
         handleClick()
       }}
@@ -76,7 +76,7 @@ export const AutofillMenu = forwardRef((props: any, ref: any) => {
   const { items } = props
 
   return (
-    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-fit'>
+    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 top-3 w-fit overflow-hidden relative'>
       {items && items?.length ? (
         items.map((item: any, index: any) => (
           <AutofillContainerBtn

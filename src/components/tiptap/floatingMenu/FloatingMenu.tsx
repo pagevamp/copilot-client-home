@@ -1,5 +1,4 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-
 import {
   H1Icon,
   H2Icon,
@@ -14,6 +13,7 @@ import {
   TableIcon,
   EmbedIcon,
 } from '@/icons'
+import { useAppState } from '@/hooks/useAppState'
 
 const FloatingContainerBtn = ({
   handleClick,
@@ -28,7 +28,7 @@ const FloatingContainerBtn = ({
     <button
       className={`flex flex-row gap-x-2.5 items-center py-1.5 px-3 cursor-pointer outline-none ${
         focus && 'bg-new-white-2'
-      }`}
+      } display-block`}
       onClick={() => {
         handleClick()
       }}
@@ -70,6 +70,8 @@ const FloatingContainerBtn = ({
 }
 
 export const FloatingMenu = forwardRef((props: any, ref: any) => {
+  const appState = useAppState()
+
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const selectItem = (index: any) => {
@@ -92,9 +94,15 @@ export const FloatingMenu = forwardRef((props: any, ref: any) => {
 
   const enterHandler = () => {
     selectItem(selectedIndex)
+    //handle link input here
+    if (props.items[0].title === 'Link') {
+      appState?.toggleShowLinkInput(true)
+    }
   }
 
-  useEffect(() => setSelectedIndex(0), [props.items])
+  useEffect(() => {
+    setSelectedIndex(0)
+  }, [props.items])
 
   useImperativeHandle(ref, () => ({
     onKeyDown: ({ event }: any) => {
@@ -120,7 +128,7 @@ export const FloatingMenu = forwardRef((props: any, ref: any) => {
   const { items } = props
 
   return (
-    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 absolute top-3 w-52'>
+    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 w-48 overflow-hidden relative'>
       {items && items?.length ? (
         items.map((item: any, index: any) => (
           <FloatingContainerBtn

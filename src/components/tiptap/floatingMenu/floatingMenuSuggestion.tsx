@@ -88,8 +88,6 @@ export const floatingMenuSuggestion = {
         command: ({ editor, range }: { editor: Editor; range: any }) => {
           const tiptapEditorUtils = new TiptapEditorUtils(editor)
           tiptapEditorUtils.deleteRange(range)
-          // const appState = useAppState()
-          // appState?.toggleShowLinkInput(true)
         },
       },
       {
