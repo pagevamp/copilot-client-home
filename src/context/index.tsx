@@ -6,7 +6,8 @@ import { FC, ReactNode, useState, createContext } from 'react'
 
 export interface IAppState {
   editor: Editor | null
-  bannerImg: string
+  bannerImgUrl: string | Blob | null
+  bannerImgId: string
   showLinkInput: boolean
   readOnly: boolean
   selectedClient: IClient | null
@@ -22,7 +23,6 @@ export interface IAppState {
 
 export interface IAppContext {
   appState: IAppState
-  setBannerImg: (image: string) => void
   toggleShowLinkInput: (v: boolean) => void
   toggleReadOnly: (v: boolean) => void
   setSelectedClient: (client: IClient | null) => void
@@ -34,6 +34,8 @@ export interface IAppContext {
   setClientList: (clientList: IClient[]) => void
   setCustomFields: (customFields: ICustomField[]) => void
   setClientCompanyName: (companyName: string) => void
+  setBannerImgUrl: (imageUrl: string | Blob) => void
+  setBannerImgId: (imageId: string) => void
 }
 
 interface IAppCoreProvider {
@@ -44,7 +46,8 @@ export const AppContext = createContext<IAppContext | null>(null)
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
   const [state, setState] = useState<IAppState>({
-    bannerImg: '',
+    bannerImgUrl: null,
+    bannerImgId: '',
     showLinkInput: false,
     readOnly: false,
     selectedClient: null,
@@ -57,10 +60,6 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     clientList: [],
     customFields: [],
   })
-
-  const setBannerImg = (image: string) => {
-    setState((prev) => ({ ...prev, bannerImg: image }))
-  }
 
   const toggleShowLinkInput = (v: boolean) => {
     setState((prev) => ({ ...prev, showLinkInput: v }))
@@ -106,11 +105,18 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, selectedClientCompanyName: companyName }))
   }
 
+  const setBannerImgUrl = (imageUrl: string | Blob) => {
+    setState((prev) => ({ ...prev, bannerImgUrl: imageUrl }))
+  }
+
+  const setBannerImgId = (imageId: string) => {
+    setState((prev) => ({ ...prev, bannerImgId: imageId }))
+  }
+
   return (
     <AppContext.Provider
       value={{
         appState: state,
-        setBannerImg,
         toggleShowLinkInput,
         toggleReadOnly,
         setSelectedClient,
@@ -122,6 +128,8 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setClientList,
         setCustomFields,
         setClientCompanyName,
+        setBannerImgUrl,
+        setBannerImgId,
       }}
     >
       {children}

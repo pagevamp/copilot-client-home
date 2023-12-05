@@ -2,20 +2,57 @@
 
 import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 
 export const Footer = () => {
   const appState = useAppState()
 
-  const handleSave = async () => {
-    const content = appState?.appState.editor?.getHTML()
+  const handleBannerImageUpload = async (imageFile: File) => {
     try {
-      appState?.setLoading(true)
+      const formData = new FormData()
+      formData.append('file', imageFile)
+      const res = await fetch('/api/media', {
+        method: 'POST',
+        body: formData,
+      })
+      const { data } = await res.json()
+      return data
+      // appState?.setBannerImgId(data.id)
+      // appState?.setBannerImgUrl(data.url)
+    } catch (e) {
+      console.error('Something went wrong!')
+    }
+  }
+
+  const handleSave = async () => {
+    appState?.setLoading(true)
+    //get editor content
+    const content = appState?.appState.editor?.getHTML()
+    //upload banner image
+    const imagePickerUtils = new ImagePickerUtils()
+    const imageFile = await imagePickerUtils.blobToFile(
+      appState?.appState.bannerImgUrl as Blob,
+      'bannerImg',
+    )
+    const data = await handleBannerImageUpload(imageFile as File)
+
+    let payload = {}
+    if (appState?.appState.bannerImgId) {
+      payload = {
+        backgroundColor: appState?.appState.editorColor,
+        content: content,
+        bannerImageId: data.id,
+      }
+    } else {
+      payload = {
+        backgroundColor: appState?.appState.editorColor,
+        content: content,
+      }
+    }
+    try {
       await fetch(`/api/settings`, {
         method: 'PUT',
-        body: JSON.stringify({
-          backgroundColor: appState?.appState.editorColor,
-          content: content,
-        }),
+        body: JSON.stringify(payload),
       })
       appState?.setLoading(false)
       appState?.toggleChangesCreated(false)

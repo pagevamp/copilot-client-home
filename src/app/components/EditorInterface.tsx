@@ -39,6 +39,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import { useEffect, useState } from 'react'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -107,6 +108,7 @@ const EditorInterface = () => {
   })
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
+  const [bannerImage, setBannerImage] = useState('')
 
   //both useEffects should be refactored once api is connected
   useEffect(() => {
@@ -153,7 +155,9 @@ const EditorInterface = () => {
     if (
       originalTemplate !== appState?.appState.settings.content ||
       appState?.appState.settings.backgroundColor !==
-        appState?.appState.editorColor
+        appState?.appState.editorColor ||
+      appState?.appState.settings.bannerImage.url !==
+        appState?.appState.bannerImgUrl
     ) {
       appState?.toggleChangesCreated(true)
     } else {
@@ -162,7 +166,7 @@ const EditorInterface = () => {
   }, [
     originalTemplate,
     appState?.appState.editorColor,
-    appState?.appState.bannerImg,
+    appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
   ])
 
@@ -204,7 +208,25 @@ const EditorInterface = () => {
     appState?.setEditorColor(
       (appState?.appState.settings as ISettings).backgroundColor,
     )
+    appState?.setBannerImgUrl(
+      (appState?.appState.settings as ISettings).bannerImage.url,
+    )
   }, [appState?.appState.settings])
+
+  useEffect(() => {
+    ;(async () => {
+      const imagePickerUtils = new ImagePickerUtils()
+      if (appState?.appState.bannerImgUrl instanceof Blob) {
+        setBannerImage(
+          (await imagePickerUtils.convertBlobToUrlString(
+            appState?.appState.bannerImgUrl,
+          )) as string,
+        )
+      } else {
+        setBannerImage(appState?.appState.bannerImgUrl as string)
+      }
+    })()
+  }, [appState?.appState.bannerImgUrl])
 
   if (!editor) return null
 
@@ -218,12 +240,8 @@ const EditorInterface = () => {
           appState?.appState.changesCreated && 'pb-10'
         }`}
       >
-        <When condition={appState?.appState.bannerImg !== ''}>
-          <img
-            className='w-full'
-            src={appState?.appState.bannerImg as string}
-            alt='banner image'
-          />
+        <When condition={!!appState?.appState.bannerImgUrl}>
+          <img className='w-full' src={bannerImage} alt='banner image' />
         </When>
         <div
           className='px-14 py-8'

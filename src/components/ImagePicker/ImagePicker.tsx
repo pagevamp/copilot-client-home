@@ -7,9 +7,10 @@ import { useDropzone } from 'react-dropzone'
 
 interface IImagePicker {
   getImage: (file: Blob | null) => void
+  showImage: string
 }
 
-const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
+const ImagePicker: FC<IImagePicker> = ({ getImage, showImage }) => {
   const [imgUrl, setImgUrl] = useState('')
   const [showCropper, setShowCropper] = useState(false)
 
@@ -45,9 +46,9 @@ const ImagePicker: FC<IImagePicker> = ({ getImage }) => {
               : ' border border-slate-200'
           }`}
         >
-          {imgUrl ? (
+          {imgUrl || showImage ? (
             <img
-              src={imgUrl}
+              src={showImage ? showImage : imgUrl}
               alt={'banner img picker'}
               className='object-cover w-8 h-8 rounded-sm'
             />

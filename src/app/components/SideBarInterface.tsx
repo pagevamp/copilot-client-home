@@ -20,6 +20,8 @@ const SideBarInterface: FC<IEditorInterface> = ({
 }) => {
   const appState = useAppState()
 
+  const [showImage, setShowImage] = useState('')
+
   const defaultValue = 'Preview mode off'
 
   const [dropdownSelectedClient, setDropdownSelectedClient] = useState<
@@ -42,6 +44,21 @@ const SideBarInterface: FC<IEditorInterface> = ({
     appState?.setClientList(clientList)
     appState?.setCustomFields(customFields)
   }, [clientList, customFields])
+
+  useEffect(() => {
+    ;(async () => {
+      const imagePickerUtils = new ImagePickerUtils()
+      if (appState?.appState.bannerImgUrl instanceof Blob) {
+        setShowImage(
+          (await imagePickerUtils.convertBlobToUrlString(
+            appState?.appState.bannerImgUrl,
+          )) as string,
+        )
+      } else {
+        setShowImage(appState?.appState.bannerImgUrl as string)
+      }
+    })()
+  }, [appState?.appState.bannerImgUrl])
 
   return (
     <div>
@@ -88,13 +105,9 @@ const SideBarInterface: FC<IEditorInterface> = ({
       <hr className='bg-slate-300' style={{ padding: 0.1 }} />
 
       <ImagePicker
+        showImage={showImage}
         getImage={async (image) => {
-          const imagePickerUtils = new ImagePickerUtils()
-          appState?.setBannerImg(
-            (await imagePickerUtils.convertBlobToUrlString(
-              image as Blob,
-            )) as string,
-          )
+          appState?.setBannerImgUrl(image as Blob)
         }}
       />
 

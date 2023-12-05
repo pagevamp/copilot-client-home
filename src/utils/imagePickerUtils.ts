@@ -57,4 +57,9 @@ export class ImagePickerUtils implements IImagePickerUtils {
       }
     })
   }
+
+  async blobToFile(blob: Blob, fileName: string): Promise<File | null> {
+    const file = new File([blob], fileName, { type: blob.type })
+    return file
+  }
 }
