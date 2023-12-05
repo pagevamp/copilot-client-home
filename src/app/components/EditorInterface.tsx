@@ -110,7 +110,6 @@ const EditorInterface = () => {
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
   const [bannerImage, setBannerImage] = useState('')
 
-  //both useEffects should be refactored once api is connected
   useEffect(() => {
     if (editor) {
       editor?.setEditable(!appState?.appState.readOnly as boolean)
@@ -148,7 +147,7 @@ const EditorInterface = () => {
   useEffect(() => {
     if (appState?.appState.readOnly) return
     setOriginalTemplate(editor?.getHTML())
-  }, [editor?.getText(), appState?.appState.readOnly])
+  }, [editor?.getJSON(), appState?.appState.readOnly])
 
   useEffect(() => {
     if (!appState?.appState.settings) return
