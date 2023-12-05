@@ -4,7 +4,7 @@ import { staticAutofillValues } from '@/utils/constants'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
 import { When } from '../hoc/When'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const AutofillFields = () => {
   const appState = useAppState()
