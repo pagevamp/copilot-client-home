@@ -62,7 +62,7 @@ const AutofillFields = () => {
           />
           <AutofillTextReadonlyMode
             label={`Address: ${
-              appState?.appState.selectedClient?.address as string
+              (appState?.appState.selectedClient?.address as string) || ''
             }`}
           />
           {appState?.appState.selectedClient &&
