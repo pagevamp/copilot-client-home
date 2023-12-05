@@ -36,6 +36,12 @@ const config: Config = {
         'variant-1': '0px 6px 20px 0px rgba(0, 0, 0, 0.12)',
         'variant-2': ' 0px 8px 24px 0px rgba(0, 0, 0, 0.12)',
       },
+      borderRadius: {
+        'rounded-xl': "35px"
+      },
+      borderWidth: {
+        'border-1': "1px"
+      },
       fontSize: {
         xs: '13px',
       },
