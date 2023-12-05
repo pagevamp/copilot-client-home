@@ -24,6 +24,7 @@ const config: Config = {
         'new-white': '#D7D7DD',
         'new-card-border': '#EDEDF0',
         'new-white-2': '#F8F9FB',
+        'new-white-3': "#EFF1F4"
       },
       textColor: {
         'new-gray': '#60606A',
