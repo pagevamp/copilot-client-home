@@ -1,6 +1,7 @@
 'use client'
 
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
+import LinkpdfExtension from '@/components/tiptap/pdf/PdfExtension'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
@@ -49,6 +50,7 @@ const ClientPreview = ({ content }: { content: string }) => {
       Italic,
       Strike,
       CalloutExtension,
+      LinkpdfExtension,
       Gapcursor,
       History,
       Hardbreak.configure({
