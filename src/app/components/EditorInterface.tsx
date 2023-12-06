@@ -158,18 +158,22 @@ const EditorInterface = () => {
   useEffect(() => {
     if (appState?.appState.readOnly) return
     setOriginalTemplate(editor?.getHTML())
-  }, [editor?.getJSON(), appState?.appState.readOnly])
+  }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (!appState?.appState.settings) return
-    if (
-      originalTemplate !== appState?.appState.settings.content ||
-      appState?.appState.settings.backgroundColor !==
-        appState?.appState.editorColor ||
-      appState?.appState.settings.bannerImage.url !==
-        appState?.appState.bannerImgUrl
-    ) {
-      appState?.toggleChangesCreated(true)
+    if (appState?.appState.settings && editor) {
+      if (
+        originalTemplate?.toString() !==
+          appState?.appState.settings.content.toString() ||
+        appState?.appState.settings.backgroundColor !==
+          appState?.appState.editorColor ||
+        appState?.appState.settings.bannerImage.url !==
+          appState?.appState.bannerImgUrl
+      ) {
+        appState?.toggleChangesCreated(true)
+      } else {
+        appState?.toggleChangesCreated(false)
+      }
     } else {
       appState?.toggleChangesCreated(false)
     }
@@ -178,22 +182,24 @@ const EditorInterface = () => {
     appState?.appState.editorColor,
     appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
+    editor,
   ])
 
   useEffect(() => {
-    if (!editor) return
+    if (editor) {
+      appState?.setEditor(editor)
+      editor.chain().focus('start')
 
-    appState?.setEditor(editor)
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey && event.key === 'z') {
-        event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
-        editor.chain().focus().undo().run() // Perform undo operation
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.metaKey && event.key === 'z') {
+          event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
+          editor.chain().focus().undo().run() // Perform undo operation
+        }
       }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     }
   }, [editor])
 

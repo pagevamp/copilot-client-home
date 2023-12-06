@@ -1,13 +1,12 @@
-import { PictureAsPdf } from '@mui/icons-material'
+import { PdfIcon } from '@/icons'
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react'
 import React from 'react'
 
-export const Linkpdf = (props: any) => {
-  console.log(props)
+export const Linkpdf = () => {
   return (
-    <NodeViewWrapper className='flex flex-row'>
-      <div className=''>
-        <PictureAsPdf />
+    <NodeViewWrapper className='flex flex-row items-end'>
+      <div className='cursor-pointer'>
+        <PdfIcon />
       </div>
 
       <NodeViewContent as='div' className='content' />
