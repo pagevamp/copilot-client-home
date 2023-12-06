@@ -11,7 +11,7 @@ import BulletList from '@tiptap/extension-bullet-list'
 import ListItem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
 import Table from '@tiptap/extension-table'
-import TableCell from '@tiptap/extension-table-cell'
+import { TableCell } from '@/components/tiptap/table/table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import Underline from '@tiptap/extension-underline'
@@ -194,8 +194,10 @@ const EditorInterface = () => {
       appState?.setLoading(true)
       const res = await fetch(`/api/settings`)
       const { data } = await res.json()
-      setOriginalTemplate(data.content)
-      appState?.setSettings(data)
+      if (data) {
+        setOriginalTemplate(data.content)
+        appState?.setSettings(data)
+      }
       appState?.setLoading(false)
     })()
   }, [])
