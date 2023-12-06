@@ -161,7 +161,7 @@ const EditorInterface = () => {
   }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (appState?.appState.settings && editor) {
+    if (appState?.appState.settings && editor && originalTemplate) {
       if (
         originalTemplate?.toString() !==
           appState?.appState.settings.content.toString() ||
@@ -188,7 +188,7 @@ const EditorInterface = () => {
   useEffect(() => {
     if (editor) {
       appState?.setEditor(editor)
-      // editor.chain().focus('start')
+      editor.chain().focus('start')
 
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.metaKey && event.key === 'z') {
