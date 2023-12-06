@@ -93,8 +93,11 @@ th {
 
 th {
   background-color: #f1f3f5;
-  font-weight: bold;
   text-align: left;
+}
+
+th p {
+  font-weight: 600 !important;
 }
 
 table {

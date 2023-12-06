@@ -103,7 +103,11 @@ const EditorInterface = () => {
       }),
       TableRow,
       TableCell,
-      TableHeader,
+      TableHeader.configure({
+        HTMLAttributes: {
+          class: 'font-bold',
+        },
+      }),
       CodeBlock,
       Code,
     ],
