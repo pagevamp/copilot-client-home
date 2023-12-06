@@ -6,8 +6,10 @@ export const handleBannerImageUpload = async (imageFile: File) => {
       method: 'POST',
       body: formData,
     })
-    const { data } = await res.json()
-    return data
+    if (res.ok) {
+      const { data } = await res.json()
+      return data
+    }
     // appState?.setBannerImgId(data.id)
     // appState?.setBannerImgUrl(data.url)
   } catch (e) {

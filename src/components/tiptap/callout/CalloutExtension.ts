@@ -5,7 +5,6 @@ import { Callout } from './Callout'
 export default Node.create({
   name: 'calloutComponent',
   group: 'block',
-  // content: 'inline*',
   content: 'inline*',
 
   parseHTML() {
@@ -17,20 +16,6 @@ export default Node.create({
   },
 
   whitespace: 'normal',
-
-  // addKeyboardShortcuts() {
-  //   return {
-  //     'Mod-Enter': () => {
-  //       return this.editor
-  //         .chain()
-  //         .insertContentAt(this.editor.state.selection.head, {
-  //           type: this.type.name,
-  //         })
-  //         .focus()
-  //         .run()
-  //     },
-  //   }
-  // },
 
   renderHTML({ HTMLAttributes }) {
     return ['callout', mergeAttributes(HTMLAttributes), 0]

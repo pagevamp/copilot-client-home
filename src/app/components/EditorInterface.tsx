@@ -26,6 +26,7 @@ import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
 import Mention from '@tiptap/extension-mention'
 import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingCommandExtension'
+import Hardbreak from '@tiptap/extension-hard-break'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
@@ -59,6 +60,7 @@ const EditorInterface = () => {
       CalloutExtension,
       Gapcursor,
       History,
+      Hardbreak,
       FloatingCommandExtension.configure({
         suggestion: floatingMenuSuggestion,
       }),
