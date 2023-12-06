@@ -4,6 +4,7 @@ import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { useEffect } from 'react'
 
 export const Footer = () => {
   const appState = useAppState()
@@ -59,6 +60,14 @@ export const Footer = () => {
     }
     appState?.toggleChangesCreated(false)
   }
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      appState?.toggleChangesCreated(false)
+    }, 50)
+
+    return () => clearTimeout(t)
+  }, [])
 
   return (
     <When
