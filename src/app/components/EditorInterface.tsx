@@ -212,11 +212,13 @@ const EditorInterface = () => {
 
   useEffect(() => {
     if (!appState?.appState.settings) return
-    editor
-      ?.chain()
-      .focus()
-      .setContent((appState?.appState.settings as ISettings).content)
-      .run()
+    setTimeout(() => {
+      editor
+        ?.chain()
+        .focus()
+        .setContent((appState?.appState.settings as ISettings).content)
+        .run()
+    })
     appState?.setEditorColor(
       (appState?.appState.settings as ISettings).backgroundColor,
     )
