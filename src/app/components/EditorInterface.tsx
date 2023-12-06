@@ -2,6 +2,7 @@
 
 import Handlebars from 'handlebars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
+import LinkpdfExtension from '@/components/tiptap/pdf/PdfExtension'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
@@ -58,6 +59,7 @@ const EditorInterface = () => {
       Italic,
       Strike,
       CalloutExtension,
+      LinkpdfExtension,
       Gapcursor,
       History,
       Hardbreak,

@@ -124,6 +124,14 @@ export class TiptapEditorUtils {
       .run()
   }
 
+  insertPdf(text: string, url: string) {
+    this.editor
+      .chain()
+      .focus()
+      .insertContent(`<linkpdf><a href=${url}>${text}</a></linkpdf>`)
+      .run()
+  }
+
   insertContent(content: string) {
     this.editor
       .chain()

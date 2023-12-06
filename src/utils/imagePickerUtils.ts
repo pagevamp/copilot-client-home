@@ -10,7 +10,7 @@ export class ImagePickerUtils implements IImagePickerUtils {
   constructor() {
     this.image = document.createElement('input')
     this.image.type = 'file'
-    this.image.accept = 'image/png, image/jpg, image/jpeg'
+    this.image.accept = 'image/png, image/jpg, image/jpeg, application/pdf'
   }
 
   selectImageFromLocalDrive(): Promise<File | null> {
