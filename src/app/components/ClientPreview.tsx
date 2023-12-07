@@ -96,9 +96,10 @@ const ClientPreview = ({ content }: { content: string }) => {
   })
 
   useEffect(() => {
-    if (!editor) return
-    editor.chain().focus().setContent(content).run()
-    editor.setEditable(false)
+    if (editor) {
+      editor.chain().focus().setContent(content).run()
+      editor.setEditable(false)
+    }
   }, [editor])
 
   if (!editor) {

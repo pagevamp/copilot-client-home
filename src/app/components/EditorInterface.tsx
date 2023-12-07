@@ -36,7 +36,7 @@ import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
 import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
@@ -108,7 +108,18 @@ const EditorInterface = () => {
   })
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
-  const [bannerImage, setBannerImage] = useState('')
+
+  const imagePickerUtils = new ImagePickerUtils()
+
+  const bannerImage = useMemo(async () => {
+    if (appState?.appState.bannerImgUrl instanceof Blob) {
+      return (await imagePickerUtils.convertBlobToUrlString(
+        appState?.appState.bannerImgUrl,
+      )) as string
+    } else {
+      return appState?.appState.bannerImgUrl as string
+    }
+  }, [appState?.appState.bannerImgUrl])
 
   useEffect(() => {
     if (editor) {
@@ -212,20 +223,20 @@ const EditorInterface = () => {
     )
   }, [appState?.appState.settings])
 
-  useEffect(() => {
-    ;(async () => {
-      const imagePickerUtils = new ImagePickerUtils()
-      if (appState?.appState.bannerImgUrl instanceof Blob) {
-        setBannerImage(
-          (await imagePickerUtils.convertBlobToUrlString(
-            appState?.appState.bannerImgUrl,
-          )) as string,
-        )
-      } else {
-        setBannerImage(appState?.appState.bannerImgUrl as string)
-      }
-    })()
-  }, [appState?.appState.bannerImgUrl])
+  // useEffect(() => {
+  //   ; (async () => {
+  //     const imagePickerUtils = new ImagePickerUtils()
+  //     if (appState?.appState.bannerImgUrl instanceof Blob) {
+  //       setBannerImage(
+  //         (await imagePickerUtils.convertBlobToUrlString(
+  //           appState?.appState.bannerImgUrl,
+  //         )) as string,
+  //       )
+  //     } else {
+  //       setBannerImage(appState?.appState.bannerImgUrl as string)
+  //     }
+  //   })()
+  // }, [appState?.appState.bannerImgUrl])
 
   if (!editor) return null
 
@@ -240,7 +251,11 @@ const EditorInterface = () => {
         }`}
       >
         <When condition={!!appState?.appState.bannerImgUrl}>
-          <img className='w-full' src={bannerImage} alt='banner image' />
+          <img
+            className='w-full'
+            src={bannerImage as unknown as string}
+            alt='banner image'
+          />
         </When>
         <div
           className='px-14 py-8'

@@ -1,10 +1,11 @@
+import { useEffect } from 'react'
+import { Editor } from '@tiptap/react'
+
+import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
+import { staticAutofillValues } from '@/utils/constants'
 import { useAppState } from '@/hooks/useAppState'
 import { IClient } from '@/types/interfaces'
-import { staticAutofillValues } from '@/utils/constants'
-import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
-import { Editor } from '@tiptap/react'
 import { When } from '../hoc/When'
-import { useEffect } from 'react'
 
 const AutofillFields = () => {
   const appState = useAppState()
