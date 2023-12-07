@@ -14,22 +14,22 @@ const AutofillFields = () => {
   )
 
   useEffect(() => {
-    if (!appState?.appState.selectedClient && !appState?.appState.readOnly)
-      return
-    appState?.setClientCompanyName('')
-    ;(async () => {
-      appState?.setLoading(true)
-      const res = await fetch(
-        `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}`,
-      )
-      const { data } = await res.json()
-      if (data.name) {
-        appState?.setClientCompanyName(data.name)
-      } else {
-        appState?.setClientCompanyName('')
-      }
-      appState?.setLoading(false)
-    })()
+    if (appState?.appState.selectedClient && appState?.appState.readOnly) {
+      appState?.setClientCompanyName('')
+      ;(async () => {
+        appState?.setLoading(true)
+        const res = await fetch(
+          `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}`,
+        )
+        const { data } = await res.json()
+        if (data.name) {
+          appState?.setClientCompanyName(data.name)
+        } else {
+          appState?.setClientCompanyName('')
+        }
+        appState?.setLoading(false)
+      })()
+    }
   }, [appState?.appState.selectedClient])
 
   return (
@@ -65,20 +65,30 @@ const AutofillFields = () => {
               (appState?.appState.selectedClient?.address as string) || ''
             }`}
           />
-          {appState?.appState.selectedClient &&
-            Object.keys(
-              (appState?.appState.selectedClient as IClient)?.customFields,
-            ).length > 0 &&
-            Object.entries(
-              (appState?.appState.selectedClient as IClient)?.customFields,
-            ).map((value, key) => {
-              return (
-                <AutofillTextReadonlyMode
-                  key={key}
-                  label={`${value[0]}: ${value[1]}`}
-                />
-              )
-            })}
+          {/* {appState?.appState.selectedClient && */}
+          {/*   Object.keys( */}
+          {/*     (appState?.appState.selectedClient as IClient)?.customFields, */}
+          {/*   ).length > 0 && */}
+          {/*   Object.entries( */}
+          {/*     (appState?.appState.selectedClient as IClient)?.customFields, */}
+          {/*   ).map((value, key) => { */}
+          {/*     return ( */}
+          {/*       <AutofillTextReadonlyMode */}
+          {/*         key={key} */}
+          {/*         label={`${value[0]}: ${value[1]}`} */}
+          {/*       /> */}
+          {/*     ) */}
+          {/*   })} */}
+          {Object.entries(
+            (appState?.appState.selectedClient as IClient)?.customFields || {},
+          ).map((value, key) => {
+            return (
+              <AutofillTextReadonlyMode
+                key={key}
+                label={`${value[0]}: ${value[1]}`}
+              />
+            )
+          })}
         </When>
 
         {/* edit mode */}

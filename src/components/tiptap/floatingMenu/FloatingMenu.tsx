@@ -15,13 +15,28 @@ import {
 } from '@/icons'
 import { useAppState } from '@/hooks/useAppState'
 
+const FLOATING_MENU_ITEMS = {
+  'Heading 1': <H1Icon />,
+  'Heading 2': <H2Icon />,
+  'Heading 3': <H3Icon />,
+  Text: <TextIcon />,
+  'Autofill Fields': <AutofillIcon />,
+  'Bullet List': <BulletListIcon />,
+  'Numbered List': <NumberedListIcon />,
+  Upload: <UploadIcon2 />,
+  Embed: <EmbedIcon />,
+  Link: <LinkIcon />,
+  Table: <TableIcon />,
+  Callout: <CalloutIcon />,
+}
+
 const FloatingContainerBtn = ({
   handleClick,
   label,
   focus,
 }: {
   handleClick: () => void
-  label: string
+  label?: keyof typeof FLOATING_MENU_ITEMS
   focus: boolean
 }) => {
   return (
@@ -33,38 +48,13 @@ const FloatingContainerBtn = ({
         handleClick()
       }}
     >
-      <div>
-        {label === 'Heading 1' ? (
-          <H1Icon />
-        ) : label === 'Heading 2' ? (
-          <H2Icon />
-        ) : label === 'Heading 3' ? (
-          <H3Icon />
-        ) : label === 'Text' ? (
-          <TextIcon />
-        ) : label === 'Autofill Fields' ? (
-          <AutofillIcon />
-        ) : label === 'Bullet List' ? (
-          <BulletListIcon />
-        ) : label === 'Numbered List' ? (
-          <NumberedListIcon />
-        ) : label === 'Upload' ? (
-          <UploadIcon2 />
-        ) : label === 'Embed' ? (
-          <EmbedIcon />
-        ) : label === 'Link' ? (
-          <LinkIcon />
-        ) : label === 'Table' ? (
-          <TableIcon />
-        ) : label === 'Callout' ? (
-          <CalloutIcon />
-        ) : (
-          <></>
-        )}
-      </div>
-      <div>
-        <p className='text-sm'>{label}</p>
-      </div>
+      {label ? (
+        <div>{FLOATING_MENU_ITEMS[label]}</div>
+      ) : (
+        <div>
+          <p className='text-sm'>No Options</p>
+        </div>
+      )}
     </button>
   )
 }
@@ -141,11 +131,7 @@ export const FloatingMenu = forwardRef((props: any, ref: any) => {
           />
         ))
       ) : (
-        <FloatingContainerBtn
-          label={'No Options'}
-          handleClick={() => {}}
-          focus={false}
-        />
+        <FloatingContainerBtn handleClick={() => {}} focus={false} />
       )}
     </div>
   )

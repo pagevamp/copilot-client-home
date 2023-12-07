@@ -31,3 +31,20 @@ export interface ICustomField {
   order: number
   object: string
 }
+
+export enum Formatter {
+  h1 = 'Heading 1',
+  h2 = 'heading 2',
+  h3 = 'Heading 3',
+  text = 'Text',
+  autofillField = 'Autofill Fields',
+  bulletList = 'Bullet List',
+  numberedList = 'Numbered List',
+  upload = 'Upload',
+  embed = 'Embed',
+  link = 'Link',
+  unlink = 'Unlink',
+  table = 'Table',
+  callout = 'Callout',
+  empty = 'No Options',
+}

@@ -1,5 +1,8 @@
 'use client'
 
+import { useEditor, EditorContent } from '@tiptap/react'
+import { useEffect, useState } from 'react'
+
 import Handlebars from 'handlebars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import Document from '@tiptap/extension-document'
@@ -35,8 +38,6 @@ import NoteDisplay from '@/components/display/NoteDisplay'
 import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
-import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useState } from 'react'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 
@@ -144,20 +145,22 @@ const EditorInterface = () => {
   ])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) return
-    setOriginalTemplate(editor?.getHTML())
+    if (!appState?.appState.readOnly) {
+      setOriginalTemplate(editor?.getHTML())
+    }
   }, [editor?.getText(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (!appState?.appState.settings) return
-    if (
-      originalTemplate !== appState?.appState.settings.content ||
-      appState?.appState.settings.backgroundColor !==
-        appState?.appState.editorColor
-    ) {
-      appState?.toggleChangesCreated(true)
-    } else {
-      appState?.toggleChangesCreated(false)
+    if (appState?.appState.settings) {
+      if (
+        originalTemplate !== appState?.appState.settings.content ||
+        appState?.appState.settings.backgroundColor !==
+          appState?.appState.editorColor
+      ) {
+        appState?.toggleChangesCreated(true)
+      } else {
+        appState?.toggleChangesCreated(false)
+      }
     }
   }, [
     originalTemplate,
@@ -167,19 +170,19 @@ const EditorInterface = () => {
   ])
 
   useEffect(() => {
-    if (!editor) return
+    if (editor) {
+      appState?.setEditor(editor)
 
-    appState?.setEditor(editor)
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey && event.key === 'z') {
-        event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
-        editor.chain().focus().undo().run() // Perform undo operation
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.metaKey && event.key === 'z') {
+          event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
+          editor.chain().focus().undo().run() // Perform undo operation
+        }
       }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     }
   }, [editor])
 
@@ -195,15 +198,16 @@ const EditorInterface = () => {
   }, [])
 
   useEffect(() => {
-    if (!appState?.appState.settings) return
-    editor
-      ?.chain()
-      .focus()
-      .setContent((appState?.appState.settings as ISettings).content)
-      .run()
-    appState?.setEditorColor(
-      (appState?.appState.settings as ISettings).backgroundColor,
-    )
+    if (appState?.appState.settings) {
+      editor
+        ?.chain()
+        .focus()
+        .setContent((appState?.appState.settings as ISettings).content)
+        .run()
+      appState?.setEditorColor(
+        (appState?.appState.settings as ISettings).backgroundColor,
+      )
+    }
   }, [appState?.appState.settings])
 
   if (!editor) return null

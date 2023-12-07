@@ -113,7 +113,7 @@ export const floatingMenuSuggestion = {
           .replace(' ', '')
           .startsWith(query.toLowerCase()),
       )
-      .slice(0, 10)
+      .slice(0, 12)
   },
 
   render: () => {
