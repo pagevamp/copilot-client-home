@@ -52,7 +52,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     readOnly: false,
     selectedClient: null,
     selectedClientCompanyName: '',
-    editorColor: '#f8f9fb',
+    editorColor: '#FFFFFF',
     editor: null,
     changesCreated: false,
     settings: undefined,
