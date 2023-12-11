@@ -106,6 +106,7 @@ table {
   overflow: hidden;
   width: 80%;
   table-layout: fixed;
+  background-color: #fff;
 }
 
 .tableWrapper {
