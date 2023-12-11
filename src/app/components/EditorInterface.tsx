@@ -63,6 +63,9 @@ const EditorInterface = () => {
         suggestion: floatingMenuSuggestion,
       }),
       Mention.configure({
+        HTMLAttributes: {
+          class: 'bg-new-white-3 border-1 rounded-xl py-0.5 px-2',
+        },
         suggestion: autofillMenuSuggestion,
         renderLabel({ node }) {
           return `${node.attrs.label ?? node.attrs.id}`
