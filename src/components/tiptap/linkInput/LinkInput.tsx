@@ -1,4 +1,11 @@
-import { FC, FormEvent, useState } from 'react'
+import {
+  FC,
+  FormEvent,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { Editor } from '@tiptap/react'
 
 import { ArrowForward, CloseRounded } from '@mui/icons-material'
@@ -16,6 +23,8 @@ const LinkInput: FC<ILinkInput> = ({ editor }) => {
 
   const appState = useAppState()
 
+  const urlInputRef = useRef<HTMLInputElement>(null)
+
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
   const handleSubmit = (e: FormEvent) => {
@@ -25,15 +34,26 @@ const LinkInput: FC<ILinkInput> = ({ editor }) => {
     setUrl('')
   }
 
-  const handleEscapeKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape') {
+  const handleKeyDown = (event: SyntheticEvent<HTMLDivElement>) => {
+    //@ts-expect-error event should contain code
+    if (event.code === 'Escape') {
+      event.preventDefault()
       appState?.toggleShowLinkInput(false)
     }
   }
 
+  useEffect(() => {
+    if (urlInputRef.current) {
+      urlInputRef.current.focus()
+    }
+  }, [urlInputRef.current])
+
   return (
-    <Dialog open={appState?.appState.showLinkInput as boolean}>
-      <div className='p-2' onKeyDownCapture={handleEscapeKey} tabIndex={0}>
+    <Dialog
+      open={appState?.appState.showLinkInput as boolean}
+      onKeyDown={handleKeyDown}
+    >
+      <div className='p-2' tabIndex={0}>
         <div className='flex items-center justify-between pb-2'>
           <p>Enter URL</p>
           <CloseRounded
@@ -46,6 +66,7 @@ const LinkInput: FC<ILinkInput> = ({ editor }) => {
         </div>
         <form onSubmit={handleSubmit} className='flex items-center'>
           <input
+            ref={urlInputRef}
             type='text'
             value={url}
             onChange={(e) => setUrl(e.target.value)}

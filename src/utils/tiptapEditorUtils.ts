@@ -1,4 +1,4 @@
-import { Editor } from '@tiptap/react'
+import { Editor, Range } from '@tiptap/react'
 import { Level } from '@tiptap/extension-heading'
 
 export class TiptapEditorUtils {
@@ -49,6 +49,10 @@ export class TiptapEditorUtils {
 
     // Apply the transaction to the editor
     this.editor.view.dispatch(tr)
+  }
+
+  deleteRange(range: Range) {
+    this.editor.chain().focus().deleteRange(range).run()
   }
 
   toggleHeading(level: Level) {

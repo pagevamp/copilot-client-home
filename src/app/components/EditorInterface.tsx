@@ -1,5 +1,8 @@
 'use client'
 
+import { useEditor, EditorContent } from '@tiptap/react'
+import { useEffect, useState } from 'react'
+
 import Handlebars from 'handlebars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import Document from '@tiptap/extension-document'
@@ -23,17 +26,20 @@ import Italic from '@tiptap/extension-italic'
 import Strike from '@tiptap/extension-strike'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import History from '@tiptap/extension-history'
+import Placeholder from '@tiptap/extension-placeholder'
+import Mention from '@tiptap/extension-mention'
+import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingCommandExtension'
+import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
+import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
-import AutofieldSelector from '@/components/tiptap/autofieldSelector/AutofieldSelector'
-import FloatingMenuContainer from '@/components/tiptap/floatingMenu/FloatingMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
 import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import NoteDisplay from '@/components/display/NoteDisplay'
 import { When } from '@/components/hoc/When'
 
 import { useAppState } from '@/hooks/useAppState'
-import { useEditor, EditorContent } from '@tiptap/react'
-import { FC, useEffect, useState } from 'react'
+import { IClient, ISettings } from '@/types/interfaces'
+import LoaderComponent from '@/components/display/Loader'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -53,6 +59,18 @@ const EditorInterface = () => {
       CalloutExtension,
       Gapcursor,
       History,
+      FloatingCommandExtension.configure({
+        suggestion: floatingMenuSuggestion,
+      }),
+      Mention.configure({
+        suggestion: autofillMenuSuggestion,
+        renderLabel({ node }) {
+          return `${node.attrs.label ?? node.attrs.id}`
+        },
+      }),
+      Placeholder.configure({
+        placeholder: initialEditorContent,
+      }),
       Link.extend({
         exitable: true,
       }),
@@ -86,7 +104,7 @@ const EditorInterface = () => {
       CodeBlock,
       Code,
     ],
-    content: initialEditorContent,
+    content: '',
   })
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
@@ -101,46 +119,104 @@ const EditorInterface = () => {
   useEffect(() => {
     if (appState?.appState.readOnly) {
       const template = Handlebars?.compile(originalTemplate || '')
-      const mockData = appState.appState.mockData.filter(
-        (el) => el.givenName === appState.appState.selectedClient,
-      )[0]
-      const c = template({ client: mockData })
-      editor?.chain().focus().setContent(c).run()
+      const _client = appState.appState.clientList.find(
+        (el) => el.id === (appState.appState.selectedClient as IClient).id,
+      )
+      const client = {
+        ..._client,
+        company: appState?.appState.selectedClientCompanyName,
+      }
+      const c = template({ client: client })
+      setTimeout(() => {
+        editor?.chain().focus().setContent(c).run()
+      })
     } else {
-      editor
-        ?.chain()
-        .focus()
-        .setContent(originalTemplate as string)
-        .run()
+      setTimeout(() => {
+        editor
+          ?.chain()
+          .focus()
+          .setContent(originalTemplate as string)
+          .run()
+      })
     }
-  }, [appState?.appState.selectedClient])
+  }, [
+    appState?.appState.selectedClient,
+    appState?.appState.selectedClientCompanyName,
+  ])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) return
-    setOriginalTemplate(editor?.getHTML())
+    if (!appState?.appState.readOnly) {
+      setOriginalTemplate(editor?.getHTML())
+    }
   }, [editor?.getText(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (!editor) return
-
-    appState?.setEditor(editor)
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey && event.key === 'z') {
-        event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
-        editor.chain().focus().undo().run() // Perform undo operation
+    if (appState?.appState.settings) {
+      if (
+        originalTemplate !== appState?.appState.settings.content ||
+        appState?.appState.settings.backgroundColor !==
+          appState?.appState.editorColor
+      ) {
+        appState?.toggleChangesCreated(true)
+      } else {
+        appState?.toggleChangesCreated(false)
       }
     }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
+  }, [
+    originalTemplate,
+    appState?.appState.editorColor,
+    appState?.appState.bannerImg,
+    appState?.appState.readOnly,
+  ])
+
+  useEffect(() => {
+    if (editor) {
+      appState?.setEditor(editor)
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.metaKey && event.key === 'z') {
+          event.preventDefault() // Prevent the default behavior of Cmd+Z (e.g., browser undo)
+          editor.chain().focus().undo().run() // Perform undo operation
+        }
+      }
+      document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     }
   }, [editor])
+
+  useEffect(() => {
+    ;(async () => {
+      appState?.setLoading(true)
+      const res = await fetch(`/api/settings`)
+      const { data } = await res.json()
+      setOriginalTemplate(data.content)
+      appState?.setSettings(data)
+      appState?.setLoading(false)
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (appState?.appState.settings) {
+      editor
+        ?.chain()
+        .focus()
+        .setContent((appState?.appState.settings as ISettings).content)
+        .run()
+      appState?.setEditorColor(
+        (appState?.appState.settings as ISettings).backgroundColor,
+      )
+    }
+  }, [appState?.appState.settings])
 
   if (!editor) return null
 
   return (
     <>
+      <When condition={appState?.appState.loading as boolean}>
+        <LoaderComponent />
+      </When>
       <div
         className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
           appState?.appState.changesCreated && 'pb-10'
@@ -160,20 +236,13 @@ const EditorInterface = () => {
           }}
         >
           <div>
-            <FloatingMenuContainer editor={editor} />
             <BubbleMenuContainer editor={editor} />
             <LinkInput editor={editor} />
-            <AutofieldSelector editor={editor} />
           </div>
 
           <EditorContent
             editor={editor}
             readOnly={appState?.appState.readOnly}
-            onClick={() => {
-              if (editor.getText() === initialEditorContent) {
-                editor.chain().focus().clearContent().run()
-              }
-            }}
           />
         </div>
         <When condition={!!appState?.appState.readOnly}>
