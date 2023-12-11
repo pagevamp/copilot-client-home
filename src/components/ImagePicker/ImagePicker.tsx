@@ -34,16 +34,16 @@ const ImagePicker: FC<IImagePicker> = ({ getImage, showImage }) => {
   return (
     <>
       <div
-        className='p-4 flex items-center justify-between cursor-pointer'
+        className='py-600 px-500 border-1 border-b flex items-center justify-between cursor-pointer'
         {...getRootProps()}
       >
         <input {...getInputProps()} />
         <p className='font-medium'>Banner image</p>
         <div
-          className={`flex justify-center w-8 h-8 ${
+          className={`flex justify-center w-800 h-800 ${
             isDragActive
               ? 'outline-dashed outline-2 outline-slate-200'
-              : ' border border-slate-200'
+              : ' border rounded-100 border-gray-200 hover:border-gray-300'
           }`}
         >
           {imgUrl || showImage ? (
@@ -52,7 +52,7 @@ const ImagePicker: FC<IImagePicker> = ({ getImage, showImage }) => {
               alt={'banner img picker'}
               className='object-cover w-8 h-8 rounded-sm'
             />
-          ) : !imgUrl && !isDragActive ? (
+          ) : imgUrl && !isDragActive ? (
             <div className='self-center'>
               <PlusIcon />
             </div>

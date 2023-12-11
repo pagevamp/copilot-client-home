@@ -62,7 +62,7 @@ const SideBarInterface: FC<IEditorInterface> = ({
 
   return (
     <div>
-      <div className='p-4 flex items-center justify-between'>
+      <div className='py-600 px-500 flex border-1 border-y items-center justify-between'>
         <p className='font-medium'>Preview mode</p>
         <Select
           name='Preview mode'
@@ -102,7 +102,7 @@ const SideBarInterface: FC<IEditorInterface> = ({
         />
       </div>
 
-      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
+      {/* <hr className='bg-slate-300' style={{ padding: 0.1 }} /> */}
 
       <ImagePicker
         showImage={showImage}
@@ -111,15 +111,15 @@ const SideBarInterface: FC<IEditorInterface> = ({
         }}
       />
 
-      <hr />
+      {/* <hr /> */}
 
       <ColorPicker />
 
-      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
+      {/* <hr className='bg-slate-300' style={{ padding: 0.1 }} /> */}
 
       <AutofillFields />
 
-      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
+      {/* <hr className='bg-slate-300' style={{ padding: 0.1 }} /> */}
     </div>
   )
 }

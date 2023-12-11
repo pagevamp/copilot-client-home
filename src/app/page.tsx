@@ -47,7 +47,7 @@ export default async function Page() {
         <div className='basis-3/4 relative'>
           <EditorInterface />
         </div>
-        <div className='basis-1/4 border-t-2 border-l-2 border-slate-300'>
+        <div className='basis-1/4 border-1 border-l border-slate-300'>
           <SideBarInterface
             clientList={clientList}
             customFields={customFields}

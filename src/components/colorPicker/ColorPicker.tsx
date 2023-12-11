@@ -25,7 +25,10 @@ const ColorPicker = () => {
   }, [])
 
   return (
-    <div className='relative flex justify-end p-4 gap-3 z-0' ref={pickerRef}>
+    <div
+      className='py-600 px-500 border-1 border-b relative flex justify-end p-4 gap-3 z-0'
+      ref={pickerRef}
+    >
       <div
         className='border border-slate-200 rounded-100 p-1 flex flex-col justify-center cursor-pointer'
         onClick={() => setShowPicker((prev) => !prev)}
