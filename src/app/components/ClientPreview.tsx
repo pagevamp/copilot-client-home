@@ -23,6 +23,7 @@ import Strike from '@tiptap/extension-strike'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import History from '@tiptap/extension-history'
 import Mention from '@tiptap/extension-mention'
+import Hardbreak from '@tiptap/extension-hard-break'
 import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingCommandExtension'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
@@ -50,6 +51,9 @@ const ClientPreview = ({ content }: { content: string }) => {
       CalloutExtension,
       Gapcursor,
       History,
+      Hardbreak.configure({
+        keepMarks: true,
+      }),
       FloatingCommandExtension.configure({
         suggestion: floatingMenuSuggestion,
       }),

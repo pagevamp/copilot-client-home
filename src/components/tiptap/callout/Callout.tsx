@@ -1,31 +1,7 @@
-import { Editor, NodeViewContent, NodeViewWrapper } from '@tiptap/react'
-import React, { useEffect, useRef } from 'react'
+import { NodeViewContent, NodeViewWrapper } from '@tiptap/react'
+import React from 'react'
 
-export const Callout = (props: any) => {
-  // const ref = useRef(null)
-  // const handleKeyDown = (event: any) => {
-  //   console.log(props.editor.view.dom)
-  //   props.editor.chain().focus().splitBlock().run()
-  //   // if (event.code === 'Enter' && event.metaKey) {
-  //   //   // Prevent the default behavior of Enter key within the Callout
-  //   //   event.preventDefault()
-
-  //   //   // Perform the action you want when 'Mod-Enter' is pressed
-  //   //   // For example, move the cursor to the next line inside the Callout
-  //   //   props.editor.chain().focus().splitBlock().run()
-  //   // }
-  // }
-  // useEffect(() => {
-  //   if (!ref) return
-
-  //   //@ts-ignore
-  //   ref.addEventListener('keydown', handleKeyDown)
-
-  //   return () => {
-  //     //@ts-ignore
-  //     ref.removeEventListener('keydown', handleKeyDown)
-  //   }
-  // }, [ref])
+export const Callout = () => {
   return (
     <NodeViewWrapper className='callout-container'>
       <div className='callout-icon'>
