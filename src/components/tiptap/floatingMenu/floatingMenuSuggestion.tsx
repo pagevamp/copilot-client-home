@@ -4,6 +4,7 @@ import tippy from 'tippy.js'
 import { FloatingMenu } from './FloatingMenu'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
 
 export const floatingMenuSuggestion = {
   items: ({ query }: any) => {
@@ -71,8 +72,12 @@ export const floatingMenuSuggestion = {
           tiptapEditorUtils.deleteRange(range)
           const imagePickerUtils = new ImagePickerUtils()
           const file = await imagePickerUtils.selectImageFromLocalDrive()
-          const imgUrl = await imagePickerUtils.imageUrl(file as File)
-          tiptapEditorUtils.setImage(imgUrl as string)
+          const data = await handleBannerImageUpload(file as File)
+          if (data.contentType === 'application/pdf') {
+            tiptapEditorUtils.insertPdf(data.filename, data.url)
+          } else {
+            tiptapEditorUtils.setImage(data.url as string)
+          }
         },
       },
       {

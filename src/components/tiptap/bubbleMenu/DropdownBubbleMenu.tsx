@@ -31,19 +31,19 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
     const name = parent.type.name
 
     if (name === 'heading' && level === 1) {
-      setSelectedFormatter(Formatter.h1)
+      setSelectedFormatter('Heading 1')
     }
     if (name === 'heading' && level === 2) {
-      setSelectedFormatter(Formatter.h2)
+      setSelectedFormatter('Heading 2')
     }
     if (name === 'heading' && level === 3) {
-      setSelectedFormatter(Formatter.h3)
+      setSelectedFormatter('Heading 3')
     }
     if (name === 'paragraph') {
-      setSelectedFormatter(Formatter.text)
+      setSelectedFormatter('Text')
     }
     if (name === 'calloutComponent') {
-      setSelectedFormatter(Formatter.callout)
+      setSelectedFormatter('Callout')
     }
   }, [editor.state.selection.$anchor.parent])
 
@@ -57,26 +57,26 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       onChange={(event: SelectChangeEvent) => {
         const { value } = event.target
         setSelectedFormatter(value as string)
-        if (value === Formatter.h1) {
+        if (value === 'Heading 1') {
           tiptapEditorUtils.toggleHeading(1)
         }
-        if (value === Formatter.h2) {
+        if (value === 'Heading 2') {
           tiptapEditorUtils.toggleHeading(2)
         }
-        if (value === Formatter.h3) {
+        if (value === 'Heading 3') {
           tiptapEditorUtils.toggleHeading(3)
         }
-        if (value === Formatter.text) {
+        if (value === 'Text') {
           tiptapEditorUtils.setParagraph()
         }
 
-        if (value === Formatter.link) {
+        if (value === 'Link') {
           appState?.toggleShowLinkInput(true)
         }
-        if (value === Formatter.unlink) {
+        if (value === 'Unlink') {
           tiptapEditorUtils.unlink()
         }
-        if (value === Formatter.callout) {
+        if (value === 'Callout') {
           const text = tiptapEditorUtils.getSelectedText()
           tiptapEditorUtils.insertCallout(text)
         }
@@ -84,42 +84,26 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       variant='standard'
       disableUnderline
     >
-      <MenuItem value={Formatter.h1}>
-        <BubbleDropdownBtnContainer icon={<H1Icon />} label={Formatter.h1} />
+      <MenuItem value='Heading 1'>
+        <BubbleDropdownBtnContainer icon={<H1Icon />} label={'Heading 1'} />
       </MenuItem>
-      <MenuItem value={Formatter.h2}>
-        <BubbleDropdownBtnContainer icon={<H2Icon />} label={Formatter.h2} />
+      <MenuItem value='Heading 2'>
+        <BubbleDropdownBtnContainer icon={<H2Icon />} label={'Heading 2'} />
       </MenuItem>
-      <MenuItem value={Formatter.h3}>
-        <BubbleDropdownBtnContainer icon={<H3Icon />} label={Formatter.h3} />
+      <MenuItem value='Heading 3'>
+        <BubbleDropdownBtnContainer icon={<H3Icon />} label={'Heading 3'} />
       </MenuItem>
-      <MenuItem value={Formatter.text}>
-        <BubbleDropdownBtnContainer
-          icon={<TextIcon />}
-          label={Formatter.text}
-        />
+      <MenuItem value='Text'>
+        <BubbleDropdownBtnContainer icon={<TextIcon />} label={'Text'} />
       </MenuItem>
-      <MenuItem
-        value={
-          editor.isActive(Formatter.link)
-            ? `${Formatter.unlink}`
-            : `${Formatter.link}`
-        }
-      >
+      <MenuItem value={editor.isActive('link') ? 'Unlink' : 'Link'}>
         <BubbleDropdownBtnContainer
           icon={<LinkIcon />}
-          label={
-            editor.isActive(Formatter.link)
-              ? `${Formatter.unlink}`
-              : `${Formatter.link}`
-          }
+          label={editor.isActive('link') ? 'Unlink' : 'Link'}
         />
       </MenuItem>
-      <MenuItem value={Formatter.callout}>
-        <BubbleDropdownBtnContainer
-          icon={<CalloutIcon />}
-          label={Formatter.callout}
-        />
+      <MenuItem value='Callout'>
+        <BubbleDropdownBtnContainer icon={<CalloutIcon />} label={'Callout'} />
       </MenuItem>
     </Select>
   )

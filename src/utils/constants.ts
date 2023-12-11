@@ -3,5 +3,4 @@ export const staticAutofillValues = [
   '{{client.familyName}}',
   '{{client.email}}',
   '{{client.company}}',
-  '{{client.address}}',
 ]

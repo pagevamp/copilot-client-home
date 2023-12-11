@@ -20,6 +20,8 @@ const SideBarInterface: FC<IEditorInterface> = ({
 }) => {
   const appState = useAppState()
 
+  const [showImage, setShowImage] = useState('')
+
   const defaultValue = 'Preview mode off'
 
   const [dropdownSelectedClient, setDropdownSelectedClient] = useState<
@@ -37,15 +39,30 @@ const SideBarInterface: FC<IEditorInterface> = ({
   }, [dropdownSelectedClient])
 
   useEffect(() => {
-    if (clientList.length !== 0 || customFields.length !== 0) {
-      appState?.setClientList(clientList)
-      appState?.setCustomFields(customFields)
-    }
+    if (clientList.length === 0 || customFields.length === 0) return
+
+    appState?.setClientList(clientList)
+    appState?.setCustomFields(customFields)
   }, [clientList, customFields])
+
+  useEffect(() => {
+    ;(async () => {
+      const imagePickerUtils = new ImagePickerUtils()
+      if (appState?.appState.bannerImgUrl instanceof Blob) {
+        setShowImage(
+          (await imagePickerUtils.convertBlobToUrlString(
+            appState?.appState.bannerImgUrl,
+          )) as string,
+        )
+      } else {
+        setShowImage(appState?.appState.bannerImgUrl as string)
+      }
+    })()
+  }, [appState?.appState.bannerImgUrl])
 
   return (
     <div>
-      <div className='p-4 flex items-center justify-between'>
+      <div className='py-600 px-500 flex border-1 border-y items-center justify-between'>
         <p className='font-medium'>Preview mode</p>
         <Select
           name='Preview mode'
@@ -85,28 +102,25 @@ const SideBarInterface: FC<IEditorInterface> = ({
         />
       </div>
 
-      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
+      {/* <hr className='bg-slate-300' style={{ padding: 0.1 }} /> */}
 
       <ImagePicker
+        showImage={showImage}
         getImage={async (image) => {
-          const imagePickerUtils = new ImagePickerUtils()
-          appState?.setBannerImg(
-            (await imagePickerUtils.convertBlobToUrlString(
-              image as Blob,
-            )) as string,
-          )
+          appState?.setBannerImgUrl(image as Blob)
+          appState?.setBannerImgId(image?.type as string)
         }}
       />
 
-      <hr />
+      {/* <hr /> */}
 
       <ColorPicker />
 
-      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
+      {/* <hr className='bg-slate-300' style={{ padding: 0.1 }} /> */}
 
       <AutofillFields />
 
-      <hr className='bg-slate-300' style={{ padding: 0.1 }} />
+      {/* <hr className='bg-slate-300' style={{ padding: 0.1 }} /> */}
     </div>
   )
 }

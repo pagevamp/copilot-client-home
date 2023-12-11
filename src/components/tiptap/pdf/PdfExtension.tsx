@@ -1,16 +1,16 @@
 import { mergeAttributes, Node } from '@tiptap/core'
 import { ReactNodeViewRenderer } from '@tiptap/react'
-import { Callout } from './Callout'
+import { Linkpdf } from './Linkpdf'
 
 export default Node.create({
-  name: 'calloutComponent',
+  name: 'linkpdfComponent',
   group: 'block',
   content: 'inline*',
 
   parseHTML() {
     return [
       {
-        tag: 'callout',
+        tag: 'linkpdf',
       },
     ]
   },
@@ -18,10 +18,10 @@ export default Node.create({
   whitespace: 'normal',
 
   renderHTML({ HTMLAttributes }) {
-    return ['callout', mergeAttributes(HTMLAttributes), 0]
+    return ['linkpdf', mergeAttributes(HTMLAttributes), 0]
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(Callout)
+    return ReactNodeViewRenderer(Linkpdf)
   },
 })
