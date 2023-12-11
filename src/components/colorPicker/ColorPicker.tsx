@@ -51,7 +51,7 @@ const ColorPicker = () => {
       </div>
 
       <When condition={showPicker}>
-        <div className='absolute left-12 top-14'>
+        <div className='absolute right-[98px] top-1600'>
           <ChromePicker
             disableAlpha={true}
             color={appState?.appState.editorColor}
