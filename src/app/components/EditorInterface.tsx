@@ -260,14 +260,18 @@ const EditorInterface = () => {
         className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
           appState?.appState.changesCreated && 'pb-10'
         }`}
+        style={{
+          background: `${appState?.appState.editorColor}`,
+        }}
       >
         <When condition={!!appState?.appState.bannerImgUrl}>
           <img className='w-full' src={bannerImage} alt='banner image' />
         </When>
         <div
-          className='px-14 py-8'
+          className='px-14 py-8 max-w-xl'
           style={{
             background: `${appState?.appState.editorColor}`,
+            margin: '0 auto',
           }}
         >
           <div>

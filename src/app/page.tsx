@@ -44,10 +44,15 @@ export default async function Page() {
   return (
     <div>
       <div className='flex flex-row'>
-        <div className='basis-3/4 relative'>
+        <div className='relative w-full'>
           <EditorInterface />
         </div>
-        <div className='basis-1/4 border-1 border-l border-slate-300'>
+        <div
+          className='border-1 border-l border-slate-300'
+          style={{
+            width: '420px',
+          }}
+        >
           <SideBarInterface
             clientList={clientList}
             customFields={customFields}
