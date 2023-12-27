@@ -47,29 +47,33 @@
 .tiptap h1 {
   font-size: 30px;
   font-weight: 500;
-  line-height: 38px;
   font-style: normal;
+  margin-top: 32px;
+  margin-bottom: 4px;
 }
 
 .tiptap h2 {
   font-size: 24px;
   font-weight: 500;
-  line-height: 32px;
   font-style: normal;
+  margin-top: 24px;
+  margin-bottom: 1px;
 }
 
 .tiptap h3 {
   font-size: 20px;
   font-weight: 500;
-  line-height: 28px;
   font-style: normal;
+  margin-top: 16px;
+  margin-bottom: 0px;
 }
 
 .tiptap p {
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
 
 .tiptap a {
@@ -87,13 +91,17 @@ th {
   border: 2px solid #ced4da;
   box-sizing: border-box;
   min-width: 6em;
-  padding: 3px 5px;
   position: relative;
 }
 
 th {
   background-color: #f1f3f5;
   text-align: left;
+  padding: 3px 4px;
+}
+
+td {
+  padding: 8px 4px;
 }
 
 th p {
@@ -102,11 +110,12 @@ th p {
 
 table {
   border-collapse: collapse;
-  margin: 0;
   overflow: hidden;
   width: 80%;
   table-layout: fixed;
   background-color: #fff;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 .tableWrapper {
@@ -141,10 +150,12 @@ table {
   background-color: #f8f9fb;
   border: 1px solid #d7d7dd;
   border-radius: 4px;
-  margin: 1rem 0;
   position: relative;
   display: flex;
   color: #60606a;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 3px 0px;
 }
 
 .callout-container > .callout-icon {
