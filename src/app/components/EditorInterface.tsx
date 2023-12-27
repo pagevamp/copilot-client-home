@@ -77,7 +77,19 @@ const EditorInterface = () => {
         },
       }),
       Placeholder.configure({
-        placeholder: initialEditorContent,
+        placeholder: ({ node }) => {
+          const headingPlaceholders: any = {
+            1: 'Heading 1',
+            2: 'Heading 2',
+            3: 'Heading 3',
+          }
+
+          if (node.type.name === 'heading') {
+            return headingPlaceholders[node.attrs.level]
+          }
+
+          return initialEditorContent
+        },
       }),
       Link.extend({
         exitable: true,
