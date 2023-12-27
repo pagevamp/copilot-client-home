@@ -268,7 +268,7 @@ const EditorInterface = () => {
           <img className='w-full' src={bannerImage} alt='banner image' />
         </When>
         <div
-          className='px-14 py-8 max-w-xl'
+          className='px-14 py-350 max-w-xl'
           style={{
             background: `${appState?.appState.editorColor}`,
             margin: '0 auto',
