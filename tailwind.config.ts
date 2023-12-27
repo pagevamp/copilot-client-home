@@ -81,6 +81,7 @@ const config: Config = {
         'gray-300': '#C9CBCD',
         'gray-200': '#DFE1E4',
         'gray-100': '#C9CBCD',
+        'secondary': '#6B6F76'
       },
       borderColor: {
         'col-1': '#DFE1E4',

@@ -171,7 +171,7 @@ table {
 }
 
 .tiptap p.is-empty::before {
-  color: #adb5bd;
+  color: #6B6F76;
   content: attr(data-placeholder);
   float: left;
   height: 0;
