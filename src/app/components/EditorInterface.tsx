@@ -277,7 +277,14 @@ const EditorInterface = () => {
         }}
       >
         <When condition={!!appState?.appState.bannerImgUrl}>
-          <img className='w-full' src={bannerImage} alt='banner image' />
+          <img
+            className='w-full object-fill xl:object-cover'
+            src={bannerImage}
+            alt='banner image'
+            style={{
+              height: '25vh',
+            }}
+          />
         </When>
         <div
           className='px-14 py-350 max-w-xl'
