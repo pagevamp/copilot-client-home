@@ -1,12 +1,13 @@
+import { copilotAPIKey, copilotAPIUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
 
 export const revalidate = 0
 
 async function listClients() {
-  const res = await fetch('https://api-beta.copilot.com/v1/clients?limit=100', {
+  const res = await fetch(`${copilotAPIUrl}/v1/clients?limit=100`, {
     headers: {
-      'X-API-KEY': process.env.COPILOT_API_KEY as string,
+      'X-API-KEY': copilotAPIKey as string,
     },
   })
 
@@ -19,9 +20,9 @@ async function listClients() {
 }
 
 async function getCustomFields() {
-  const res = await fetch('https://api-beta.copilot.com/v1/custom-fields', {
+  const res = await fetch(`${copilotAPIUrl}/v1/custom-fields`, {
     headers: {
-      'X-API-KEY': process.env.COPILOT_API_KEY as string,
+      'X-API-KEY': copilotAPIKey as string,
     },
   })
 
@@ -44,10 +45,17 @@ export default async function Page() {
   return (
     <div>
       <div className='flex flex-row'>
-        <div className='basis-3/4 relative'>
+        <div className='relative w-full'>
           <EditorInterface />
         </div>
-        <div className='basis-1/4 border-t-2 border-l-2 border-slate-300'>
+        <div
+          className='border-1 border-l border-slate-300 xl:hidden'
+          style={{
+            minWidth: '350px',
+            maxWidth: '350px',
+            wordWrap: 'break-word',
+          }}
+        >
           <SideBarInterface
             clientList={clientList}
             customFields={customFields}

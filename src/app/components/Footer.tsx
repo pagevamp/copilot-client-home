@@ -2,20 +2,42 @@
 
 import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
+import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import { useEffect } from 'react'
 
 export const Footer = () => {
   const appState = useAppState()
 
   const handleSave = async () => {
+    appState?.setLoading(true)
+    //get editor content
     const content = appState?.appState.editor?.getHTML()
+    //upload banner image
+    const imagePickerUtils = new ImagePickerUtils()
+    const imageFile = await imagePickerUtils.blobToFile(
+      appState?.appState.bannerImgUrl as Blob,
+      'bannerImg',
+    )
+    const data = await handleBannerImageUpload(imageFile as File)
+
+    let payload = {}
+    if (appState?.appState.bannerImgId) {
+      payload = {
+        backgroundColor: appState?.appState.editorColor,
+        content: content,
+        bannerImageId: data.id,
+      }
+    } else {
+      payload = {
+        backgroundColor: appState?.appState.editorColor,
+        content: content,
+      }
+    }
     try {
-      appState?.setLoading(true)
       await fetch(`/api/settings`, {
         method: 'PUT',
-        body: JSON.stringify({
-          backgroundColor: appState?.appState.editorColor,
-          content: content,
-        }),
+        body: JSON.stringify(payload),
       })
       appState?.setLoading(false)
       appState?.toggleChangesCreated(false)
@@ -38,6 +60,14 @@ export const Footer = () => {
     }
     appState?.toggleChangesCreated(false)
   }
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      appState?.toggleChangesCreated(false)
+    }, 50)
+
+    return () => clearTimeout(t)
+  }, [])
 
   return (
     <When

@@ -19,7 +19,9 @@ interface IBubbleMenuContainer {
 }
 
 const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
-  const [selectedFormatter, setSelectedFormatter] = useState('Text')
+  const [selectedFormatter, setSelectedFormatter] = useState(
+    Formatter.text as string,
+  )
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
@@ -85,37 +87,26 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       disableUnderline
     >
       <MenuItem value={Formatter.h1}>
-        <BubbleDropdownBtnContainer icon={<H1Icon />} label={Formatter.h1} />
+        <BubbleDropdownBtnContainer icon={<H1Icon />} label={'Heading 1'} />
       </MenuItem>
       <MenuItem value={Formatter.h2}>
-        <BubbleDropdownBtnContainer icon={<H2Icon />} label={Formatter.h2} />
+        <BubbleDropdownBtnContainer icon={<H2Icon />} label={'Heading 2'} />
       </MenuItem>
       <MenuItem value={Formatter.h3}>
-        <BubbleDropdownBtnContainer icon={<H3Icon />} label={Formatter.h3} />
+        <BubbleDropdownBtnContainer icon={<H3Icon />} label={'Heading 3'} />
       </MenuItem>
       <MenuItem value={Formatter.text}>
-        <BubbleDropdownBtnContainer
-          icon={<TextIcon />}
-          label={Formatter.text}
-        />
+        <BubbleDropdownBtnContainer icon={<TextIcon />} label={'Text'} />
       </MenuItem>
       <MenuItem
-        value={
-          editor.isActive(Formatter.link)
-            ? `${Formatter.unlink}`
-            : `${Formatter.link}`
-        }
+        value={editor.isActive('link') ? Formatter.unlink : Formatter.link}
       >
         <BubbleDropdownBtnContainer
           icon={<LinkIcon />}
-          label={
-            editor.isActive(Formatter.link)
-              ? `${Formatter.unlink}`
-              : `${Formatter.link}`
-          }
+          label={editor.isActive('link') ? Formatter.unlink : Formatter.link}
         />
       </MenuItem>
-      <MenuItem value={Formatter.callout}>
+      <MenuItem value='Callout'>
         <BubbleDropdownBtnContainer
           icon={<CalloutIcon />}
           label={Formatter.callout}

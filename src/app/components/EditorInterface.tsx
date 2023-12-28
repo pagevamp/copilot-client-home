@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import Handlebars from 'handlebars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
+import LinkpdfExtension from '@/components/tiptap/pdf/PdfExtension'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
@@ -14,7 +15,7 @@ import BulletList from '@tiptap/extension-bullet-list'
 import ListItem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
 import Table from '@tiptap/extension-table'
-import TableCell from '@tiptap/extension-table-cell'
+import { TableCell } from '@/components/tiptap/table/table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import Underline from '@tiptap/extension-underline'
@@ -29,6 +30,7 @@ import History from '@tiptap/extension-history'
 import Placeholder from '@tiptap/extension-placeholder'
 import Mention from '@tiptap/extension-mention'
 import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingCommandExtension'
+import Hardbreak from '@tiptap/extension-hard-break'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
@@ -40,6 +42,7 @@ import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
+import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -57,19 +60,36 @@ const EditorInterface = () => {
       Italic,
       Strike,
       CalloutExtension,
+      LinkpdfExtension,
       Gapcursor,
       History,
+      Hardbreak,
       FloatingCommandExtension.configure({
         suggestion: floatingMenuSuggestion,
       }),
       Mention.configure({
+        HTMLAttributes: {
+          class: 'bg-new-white-3 border-1 rounded-xl py-0.5 px-2',
+        },
         suggestion: autofillMenuSuggestion,
         renderLabel({ node }) {
           return `${node.attrs.label ?? node.attrs.id}`
         },
       }),
       Placeholder.configure({
-        placeholder: initialEditorContent,
+        placeholder: ({ node }) => {
+          const headingPlaceholders: any = {
+            1: 'Heading 1',
+            2: 'Heading 2',
+            3: 'Heading 3',
+          }
+
+          if (node.type.name === 'heading') {
+            return headingPlaceholders[node.attrs.level]
+          }
+
+          return initialEditorContent
+        },
       }),
       Link.extend({
         exitable: true,
@@ -91,7 +111,7 @@ const EditorInterface = () => {
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'w-5/12 h-60 object-cover',
+          class: 'object-cover',
         },
         allowBase64: true,
       }),
@@ -100,7 +120,11 @@ const EditorInterface = () => {
       }),
       TableRow,
       TableCell,
-      TableHeader,
+      TableHeader.configure({
+        HTMLAttributes: {
+          class: 'font-bold',
+        },
+      }),
       CodeBlock,
       Code,
     ],
@@ -108,8 +132,8 @@ const EditorInterface = () => {
   })
 
   const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
+  const [bannerImage, setBannerImage] = useState('')
 
-  //both useEffects should be refactored once api is connected
   useEffect(() => {
     if (editor) {
       editor?.setEditable(!appState?.appState.readOnly as boolean)
@@ -126,7 +150,7 @@ const EditorInterface = () => {
         ..._client,
         company: appState?.appState.selectedClientCompanyName,
       }
-      const c = template({ client: client })
+      const c = template({ client })
       setTimeout(() => {
         editor?.chain().focus().setContent(c).run()
       })
@@ -145,33 +169,39 @@ const EditorInterface = () => {
   ])
 
   useEffect(() => {
-    if (!appState?.appState.readOnly) {
-      setOriginalTemplate(editor?.getHTML())
-    }
-  }, [editor?.getText(), appState?.appState.readOnly])
+    if (appState?.appState.readOnly) return
+    setOriginalTemplate(editor?.getHTML())
+  }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (appState?.appState.settings) {
+    if (appState?.appState.settings && editor && originalTemplate) {
       if (
-        originalTemplate !== appState?.appState.settings.content ||
+        originalTemplate?.toString() !==
+          appState?.appState.settings.content.toString() ||
         appState?.appState.settings.backgroundColor !==
-          appState?.appState.editorColor
+          appState?.appState.editorColor ||
+        appState?.appState.settings.bannerImage.url !==
+          appState?.appState.bannerImgUrl
       ) {
         appState?.toggleChangesCreated(true)
       } else {
         appState?.toggleChangesCreated(false)
       }
+    } else {
+      appState?.toggleChangesCreated(false)
     }
   }, [
     originalTemplate,
     appState?.appState.editorColor,
-    appState?.appState.bannerImg,
+    appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
+    editor,
   ])
 
   useEffect(() => {
     if (editor) {
       appState?.setEditor(editor)
+      editor.chain().focus('start')
 
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.metaKey && event.key === 'z') {
@@ -191,24 +221,45 @@ const EditorInterface = () => {
       appState?.setLoading(true)
       const res = await fetch(`/api/settings`)
       const { data } = await res.json()
-      setOriginalTemplate(data.content)
-      appState?.setSettings(data)
+      if (data) {
+        setOriginalTemplate(data.content)
+        appState?.setSettings(data)
+      }
       appState?.setLoading(false)
     })()
   }, [])
 
   useEffect(() => {
-    if (appState?.appState.settings) {
+    if (!appState?.appState.settings) return
+    setTimeout(() => {
       editor
         ?.chain()
         .focus()
         .setContent((appState?.appState.settings as ISettings).content)
         .run()
-      appState?.setEditorColor(
-        (appState?.appState.settings as ISettings).backgroundColor,
-      )
-    }
+    })
+    appState?.setEditorColor(
+      (appState?.appState.settings as ISettings).backgroundColor,
+    )
+    appState?.setBannerImgUrl(
+      (appState?.appState.settings as ISettings).bannerImage.url,
+    )
   }, [appState?.appState.settings])
+
+  useEffect(() => {
+    ;(async () => {
+      const imagePickerUtils = new ImagePickerUtils()
+      if (appState?.appState.bannerImgUrl instanceof Blob) {
+        setBannerImage(
+          (await imagePickerUtils.convertBlobToUrlString(
+            appState?.appState.bannerImgUrl,
+          )) as string,
+        )
+      } else {
+        setBannerImage(appState?.appState.bannerImgUrl as string)
+      }
+    })()
+  }, [appState?.appState.bannerImgUrl])
 
   if (!editor) return null
 
@@ -221,18 +272,25 @@ const EditorInterface = () => {
         className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
           appState?.appState.changesCreated && 'pb-10'
         }`}
+        style={{
+          background: `${appState?.appState.editorColor}`,
+        }}
       >
-        <When condition={appState?.appState.bannerImg !== ''}>
+        <When condition={!!appState?.appState.bannerImgUrl}>
           <img
-            className='w-full'
-            src={appState?.appState.bannerImg as string}
+            className='w-full object-fill xl:object-cover'
+            src={bannerImage}
             alt='banner image'
+            style={{
+              height: '25vh',
+            }}
           />
         </When>
         <div
-          className='px-14 py-8'
+          className='px-14 py-350 max-w-xl'
           style={{
             background: `${appState?.appState.editorColor}`,
+            margin: '0 auto',
           }}
         >
           <div>
