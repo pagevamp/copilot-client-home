@@ -7,6 +7,19 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      '2xs': { 'max': '320px' },
+      xs: { 'max': '384px' },
+      sm: { 'max': '480px' },
+      md: { 'max': '560px' },
+      lg: { 'max': '640px' },
+      xl: { 'max': '768px' },
+      '2xl': { 'max': '1024px' },
+      '3xl': { 'max': '1280px' },
+      '4xl': { 'max': '1440px' },
+      '5px': { 'max': '1600px' },
+      '6xl': { 'max': '1920px' },
+    },
     extend: {
       spacing: {
         none: '0px',
@@ -16,6 +29,7 @@ const config: Config = {
         '150': '6px',
         '200': '8px',
         '300': '12px',
+        '350': '13px',
         '400': '16px',
         '500': '20px',
         '600': '24px',
@@ -51,6 +65,21 @@ const config: Config = {
         '6xl': '1920px',
         'paragraph-max-width': '720px',
       },
+      maxWidth: {
+        '100': '563px',
+        '2xs': '320px',
+        xs: '384px',
+        sm: '480px',
+        md: '560px',
+        lg: '640px',
+        xl: '768px',
+        '2xl': '1024px',
+        '3xl': '1280px',
+        '4xl': '1440px',
+        '5px': '1600px',
+        '6xl': '1920px',
+        'paragraph-max-width': '720px',
+      },
       backgroundColor: {
         'new-dark': '#0E0E10',
         'new-white': '#D7D7DD',
@@ -65,6 +94,7 @@ const config: Config = {
         'gray-300': '#C9CBCD',
         'gray-200': '#DFE1E4',
         'gray-100': '#C9CBCD',
+        'secondary': '#6B6F76'
       },
       borderColor: {
         'col-1': '#DFE1E4',
