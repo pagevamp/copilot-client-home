@@ -1,4 +1,4 @@
-import { copilotAPIUrl } from '@/config'
+import { copilotAPIKey, copilotAPIUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
 
@@ -7,7 +7,7 @@ export const revalidate = 0
 async function listClients() {
   const res = await fetch(`${copilotAPIUrl}/v1/clients?limit=100`, {
     headers: {
-      'X-API-KEY': process.env.COPILOT_API_KEY as string,
+      'X-API-KEY': copilotAPIKey as string,
     },
   })
 
@@ -22,7 +22,7 @@ async function listClients() {
 async function getCustomFields() {
   const res = await fetch(`${copilotAPIUrl}/v1/custom-fields`, {
     headers: {
-      'X-API-KEY': process.env.COPILOT_API_KEY as string,
+      'X-API-KEY': copilotAPIKey as string,
     },
   })
 

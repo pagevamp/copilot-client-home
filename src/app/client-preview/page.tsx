@@ -1,28 +1,25 @@
 import Handlebars from 'handlebars'
 import { IClient, ISettings } from '@/types/interfaces'
 import ClientPreview from '../components/ClientPreview'
+import { apiUrl } from '@/config'
 
 export const revalidate = 0
 
 async function getSettings(): Promise<ISettings> {
-  const { data } = await fetch(`${process.env.API_URL}/api/settings`).then(
-    (res) => res.json(),
+  const { data } = await fetch(`${apiUrl}/api/settings`).then((res) =>
+    res.json(),
   )
   return data
 }
 
 async function getClient(clientId: string): Promise<IClient> {
-  const res = await fetch(
-    `${process.env.API_URL}/api/client?clientId=${clientId}`,
-  )
+  const res = await fetch(`${apiUrl}/api/client?clientId=${clientId}`)
   const { data } = await res.json()
   return data
 }
 
 async function getCompany(companyId: string) {
-  const res = await fetch(
-    `${process.env.API_URL}/api/companies?companyId=${companyId}`,
-  )
+  const res = await fetch(`${apiUrl}/api/companies?companyId=${companyId}`)
   const { data } = await res.json()
   return data
 }

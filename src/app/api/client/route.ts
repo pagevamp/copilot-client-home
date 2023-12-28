@@ -1,4 +1,4 @@
-import { copilotAPIUrl } from '@/config'
+import { copilotAPIKey, copilotAPIUrl } from '@/config'
 import { NextResponse, NextRequest } from 'next/server'
 
 export async function GET(req: NextRequest) {
@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      'X-API-KEY': process.env.COPILOT_API_KEY as string,
+      'X-API-KEY': copilotAPIKey as string,
     },
   }
 
