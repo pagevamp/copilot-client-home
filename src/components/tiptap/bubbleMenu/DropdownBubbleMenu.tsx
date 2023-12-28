@@ -19,7 +19,9 @@ interface IBubbleMenuContainer {
 }
 
 const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
-  const [selectedFormatter, setSelectedFormatter] = useState('Text')
+  const [selectedFormatter, setSelectedFormatter] = useState(
+    Formatter.text as string,
+  )
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
@@ -31,19 +33,19 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
     const name = parent.type.name
 
     if (name === 'heading' && level === 1) {
-      setSelectedFormatter('Heading 1')
+      setSelectedFormatter(Formatter.h1)
     }
     if (name === 'heading' && level === 2) {
-      setSelectedFormatter('Heading 2')
+      setSelectedFormatter(Formatter.h2)
     }
     if (name === 'heading' && level === 3) {
-      setSelectedFormatter('Heading 3')
+      setSelectedFormatter(Formatter.h3)
     }
     if (name === 'paragraph') {
-      setSelectedFormatter('Text')
+      setSelectedFormatter(Formatter.text)
     }
     if (name === 'calloutComponent') {
-      setSelectedFormatter('Callout')
+      setSelectedFormatter(Formatter.callout)
     }
   }, [editor.state.selection.$anchor.parent])
 
@@ -57,26 +59,26 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       onChange={(event: SelectChangeEvent) => {
         const { value } = event.target
         setSelectedFormatter(value as string)
-        if (value === 'Heading 1') {
+        if (value === Formatter.h1) {
           tiptapEditorUtils.toggleHeading(1)
         }
-        if (value === 'Heading 2') {
+        if (value === Formatter.h2) {
           tiptapEditorUtils.toggleHeading(2)
         }
-        if (value === 'Heading 3') {
+        if (value === Formatter.h3) {
           tiptapEditorUtils.toggleHeading(3)
         }
-        if (value === 'Text') {
+        if (value === Formatter.text) {
           tiptapEditorUtils.setParagraph()
         }
 
-        if (value === 'Link') {
+        if (value === Formatter.link) {
           appState?.toggleShowLinkInput(true)
         }
-        if (value === 'Unlink') {
+        if (value === Formatter.unlink) {
           tiptapEditorUtils.unlink()
         }
-        if (value === 'Callout') {
+        if (value === Formatter.callout) {
           const text = tiptapEditorUtils.getSelectedText()
           tiptapEditorUtils.insertCallout(text)
         }
@@ -84,26 +86,31 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       variant='standard'
       disableUnderline
     >
-      <MenuItem value='Heading 1'>
+      <MenuItem value={Formatter.h1}>
         <BubbleDropdownBtnContainer icon={<H1Icon />} label={'Heading 1'} />
       </MenuItem>
-      <MenuItem value='Heading 2'>
+      <MenuItem value={Formatter.h2}>
         <BubbleDropdownBtnContainer icon={<H2Icon />} label={'Heading 2'} />
       </MenuItem>
-      <MenuItem value='Heading 3'>
+      <MenuItem value={Formatter.h3}>
         <BubbleDropdownBtnContainer icon={<H3Icon />} label={'Heading 3'} />
       </MenuItem>
-      <MenuItem value='Text'>
+      <MenuItem value={Formatter.text}>
         <BubbleDropdownBtnContainer icon={<TextIcon />} label={'Text'} />
       </MenuItem>
-      <MenuItem value={editor.isActive('link') ? 'Unlink' : 'Link'}>
+      <MenuItem
+        value={editor.isActive('link') ? Formatter.unlink : Formatter.link}
+      >
         <BubbleDropdownBtnContainer
           icon={<LinkIcon />}
-          label={editor.isActive('link') ? 'Unlink' : 'Link'}
+          label={editor.isActive('link') ? Formatter.unlink : Formatter.link}
         />
       </MenuItem>
       <MenuItem value='Callout'>
-        <BubbleDropdownBtnContainer icon={<CalloutIcon />} label={'Callout'} />
+        <BubbleDropdownBtnContainer
+          icon={<CalloutIcon />}
+          label={Formatter.callout}
+        />
       </MenuItem>
     </Select>
   )
