@@ -6,7 +6,7 @@ export async function GET() {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      'X-API-KEY': copilotAPIUrl as string,
+      'X-API-KEY': process.env.COPILOT_API_KEY as string,
     },
   }
 
