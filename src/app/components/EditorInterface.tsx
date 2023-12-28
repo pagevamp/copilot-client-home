@@ -150,7 +150,7 @@ const EditorInterface = () => {
         ..._client,
         company: appState?.appState.selectedClientCompanyName,
       }
-      const c = template({ client: client })
+      const c = template({ client })
       setTimeout(() => {
         editor?.chain().focus().setContent(c).run()
       })

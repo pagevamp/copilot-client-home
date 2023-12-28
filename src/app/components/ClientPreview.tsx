@@ -85,7 +85,7 @@ const ClientPreview = ({ content }: { content: string }) => {
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'w-5/12 h-60 object-cover',
+          class: 'object-cover',
         },
         allowBase64: true,
       }),

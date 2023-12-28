@@ -53,7 +53,9 @@ export default async function Page() {
         <div
           className='border-1 border-l border-slate-300 xl:hidden'
           style={{
-            width: '420px',
+            minWidth: '350px',
+            maxWidth: '350px',
+            wordWrap: 'break-word',
           }}
         >
           <SideBarInterface
