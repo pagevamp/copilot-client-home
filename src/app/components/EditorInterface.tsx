@@ -77,7 +77,19 @@ const EditorInterface = () => {
         },
       }),
       Placeholder.configure({
-        placeholder: initialEditorContent,
+        placeholder: ({ node }) => {
+          const headingPlaceholders: any = {
+            1: 'Heading 1',
+            2: 'Heading 2',
+            3: 'Heading 3',
+          }
+
+          if (node.type.name === 'heading') {
+            return headingPlaceholders[node.attrs.level]
+          }
+
+          return initialEditorContent
+        },
       }),
       Link.extend({
         exitable: true,
@@ -265,10 +277,17 @@ const EditorInterface = () => {
         }}
       >
         <When condition={!!appState?.appState.bannerImgUrl}>
-          <img className='w-full' src={bannerImage} alt='banner image' />
+          <img
+            className='w-full object-fill xl:object-cover'
+            src={bannerImage}
+            alt='banner image'
+            style={{
+              height: '25vh',
+            }}
+          />
         </When>
         <div
-          className='px-14 py-8 max-w-xl'
+          className='px-14 py-350 max-w-xl'
           style={{
             background: `${appState?.appState.editorColor}`,
             margin: '0 auto',

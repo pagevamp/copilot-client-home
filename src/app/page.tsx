@@ -48,7 +48,7 @@ export default async function Page() {
           <EditorInterface />
         </div>
         <div
-          className='border-1 border-l border-slate-300'
+          className='border-1 border-l border-slate-300 xl:hidden'
           style={{
             width: '420px',
           }}
