@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   }
 
   const res = await fetch(
-    `https://api-beta.copilot.com/v1/companies/${companyId}`,
+    `${process.env.COPILOT_API_URL}/v1/companies/${companyId}`,
     options,
   )
   const company = await res.json()

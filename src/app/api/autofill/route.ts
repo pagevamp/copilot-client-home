@@ -10,7 +10,7 @@ export async function GET() {
   }
 
   const res = await fetch(
-    'https://api-beta.copilot.com/v1/custom-fields',
+    `${process.env.COPILOT_API_URL}/v1/custom-fields`,
     options,
   )
   const { data } = await res.json()

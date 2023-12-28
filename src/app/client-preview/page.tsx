@@ -41,7 +41,7 @@ export default async function ClientPreviewPage() {
     company: company.name,
   }
 
-  const htmlContent = template({ client: client })
+  const htmlContent = template({ client })
 
   return (
     <div className={`overflow-y-auto overflow-x-hidden max-h-screen w-full`}>

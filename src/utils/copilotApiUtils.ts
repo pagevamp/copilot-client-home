@@ -1,4 +1,4 @@
-const BaseApiURL = 'https://api-beta.copilot.com/v1'
+const BaseApiURL = `${process.env.COPILOT_API_URL}/v1`
 
 export type MeResponse = {
   id: string
