@@ -1,3 +1,4 @@
+import { copilotAPIUrl } from '@/config'
 import { NextResponse, NextRequest } from 'next/server'
 
 export async function GET(req: NextRequest) {
@@ -11,10 +12,7 @@ export async function GET(req: NextRequest) {
     },
   }
 
-  const res = await fetch(
-    `${process.env.COPILOT_API_URL}/v1/companies/${companyId}`,
-    options,
-  )
+  const res = await fetch(`${copilotAPIUrl}/v1/companies/${companyId}`, options)
   const company = await res.json()
   return NextResponse.json({ data: company })
 }

@@ -1,17 +1,15 @@
+import { copilotAPIUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
 
 export const revalidate = 0
 
 async function listClients() {
-  const res = await fetch(
-    `${process.env.COPILOT_API_URL}/v1/clients?limit=100`,
-    {
-      headers: {
-        'X-API-KEY': process.env.COPILOT_API_KEY as string,
-      },
+  const res = await fetch(`${copilotAPIUrl}/v1/clients?limit=100`, {
+    headers: {
+      'X-API-KEY': process.env.COPILOT_API_KEY as string,
     },
-  )
+  })
 
   if (!res.ok) {
     throw new Error('Something went wrong while fetching client list!')
@@ -22,7 +20,7 @@ async function listClients() {
 }
 
 async function getCustomFields() {
-  const res = await fetch(`${process.env.COPILOT_API_URL}/v1/custom-fields`, {
+  const res = await fetch(`${copilotAPIUrl}/v1/custom-fields`, {
     headers: {
       'X-API-KEY': process.env.COPILOT_API_KEY as string,
     },
