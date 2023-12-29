@@ -15,6 +15,7 @@ export interface IAppState {
   editorColor: string
   changesCreated: boolean
   settings: ISettings | undefined
+  originalTemplate: string | undefined
   loading: boolean
   //this data should be fetched from API in the future
   clientList: IClient[]
@@ -30,6 +31,7 @@ export interface IAppContext {
   setEditor: (editor: Editor | null) => void
   toggleChangesCreated: (v: boolean) => void
   setSettings: (settings: ISettings) => void
+  setOriginalTemplate: (template: string) => void
   setLoading: (v: boolean) => void
   setClientList: (clientList: IClient[]) => void
   setCustomFields: (customFields: ICustomField[]) => void
@@ -56,6 +58,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     editor: null,
     changesCreated: false,
     settings: undefined,
+    originalTemplate: undefined,
     loading: false,
     clientList: [],
     customFields: [],
@@ -87,6 +90,10 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
 
   const setSettings = (settings: ISettings) => {
     setState((prev) => ({ ...prev, settings: settings }))
+  }
+
+  const setOriginalTemplate = (template: string) => {
+    setState((prev) => ({ ...prev, originalTemplate: template }))
   }
 
   const setLoading = (v: boolean) => {
@@ -124,6 +131,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setEditor,
         toggleChangesCreated,
         setSettings,
+        setOriginalTemplate,
         setLoading,
         setClientList,
         setCustomFields,

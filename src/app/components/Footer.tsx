@@ -39,6 +39,12 @@ export const Footer = () => {
         method: 'PUT',
         body: JSON.stringify(payload),
       })
+      const res = await fetch(`/api/settings`)
+      const { data } = await res.json()
+      if (data) {
+        appState?.setOriginalTemplate(data.content)
+        appState?.setSettings(data)
+      }
       appState?.setLoading(false)
       appState?.toggleChangesCreated(false)
     } catch (e) {

@@ -131,7 +131,7 @@ const EditorInterface = () => {
     content: '',
   })
 
-  const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
+  // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
   const [bannerImage, setBannerImage] = useState('')
 
   useEffect(() => {
@@ -142,7 +142,9 @@ const EditorInterface = () => {
 
   useEffect(() => {
     if (appState?.appState.readOnly) {
-      const template = Handlebars?.compile(originalTemplate || '')
+      const template = Handlebars?.compile(
+        appState?.appState.originalTemplate || '',
+      )
       const _client = appState.appState.clientList.find(
         (el) => el.id === (appState.appState.selectedClient as IClient).id,
       )
@@ -159,7 +161,7 @@ const EditorInterface = () => {
         editor
           ?.chain()
           .focus()
-          .setContent(originalTemplate as string)
+          .setContent(appState?.appState.originalTemplate as string)
           .run()
       })
     }
@@ -170,13 +172,17 @@ const EditorInterface = () => {
 
   useEffect(() => {
     if (appState?.appState.readOnly) return
-    setOriginalTemplate(editor?.getHTML())
+    appState?.setOriginalTemplate(editor?.getHTML() as string)
   }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (appState?.appState.settings && editor && originalTemplate) {
+    if (
+      appState?.appState.settings &&
+      editor &&
+      appState?.appState.originalTemplate
+    ) {
       if (
-        originalTemplate?.toString() !==
+        appState?.appState.originalTemplate?.toString() !==
           appState?.appState.settings.content.toString() ||
         appState?.appState.settings.backgroundColor !==
           appState?.appState.editorColor ||
@@ -191,7 +197,7 @@ const EditorInterface = () => {
       appState?.toggleChangesCreated(false)
     }
   }, [
-    originalTemplate,
+    appState?.appState.originalTemplate,
     appState?.appState.editorColor,
     appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
@@ -222,7 +228,7 @@ const EditorInterface = () => {
       const res = await fetch(`/api/settings`)
       const { data } = await res.json()
       if (data) {
-        setOriginalTemplate(data.content)
+        appState?.setOriginalTemplate(data.content)
         appState?.setSettings(data)
       }
       appState?.setLoading(false)
