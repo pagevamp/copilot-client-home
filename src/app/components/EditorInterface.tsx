@@ -1,7 +1,7 @@
 'use client'
 
 import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Handlebars from 'handlebars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
@@ -267,6 +267,28 @@ const EditorInterface = () => {
     })()
   }, [appState?.appState.bannerImgUrl])
 
+  const container = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    function handleScroll() {
+      container.current?.classList.add('on-scroll')
+      const t = setTimeout(() => {
+        if (container.current?.classList.contains('on-scroll')) {
+          container.current?.classList.remove('on-scroll')
+        }
+      }, 1500)
+      return () => {
+        clearTimeout(t)
+      }
+    }
+    if (container.current) {
+      container.current.addEventListener('scroll', handleScroll)
+      return () => {
+        container.current?.removeEventListener('scroll', handleScroll)
+      }
+    }
+  }, [container.current])
+
   if (!editor) return null
 
   return (
@@ -276,11 +298,12 @@ const EditorInterface = () => {
       </When>
       <div
         className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
-          appState?.appState.changesCreated && 'pb-10'
+          appState?.appState.changesCreated ? 'pb-10' : ''
         }`}
         style={{
           background: `${appState?.appState.editorColor}`,
         }}
+        ref={container}
       >
         <When condition={!!appState?.appState.bannerImgUrl}>
           <img
