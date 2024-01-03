@@ -2,34 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 10px;
-  background-color: transparent;
-  display: none;
-}
-.on-scroll::-webkit-scrollbar {
-  display: block;
-}
-/* Track */
-::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius:10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  transition: all 0.3s ease-in-out;
-  background-color: transparent;
-}
-
-.on-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.5);
-  display: block;
-  padding-right: 0;
-}
-
 .tiptap {
   min-height: 100vh;
   width: 100%;

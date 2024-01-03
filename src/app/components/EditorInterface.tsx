@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import { useEffect, useRef, useState } from 'react'
 
 import Handlebars from 'handlebars'
+import { Scrollbars } from 'react-custom-scrollbars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import LinkpdfExtension from '@/components/tiptap/pdf/PdfExtension'
 import Document from '@tiptap/extension-document'
@@ -267,28 +268,6 @@ const EditorInterface = () => {
     })()
   }, [appState?.appState.bannerImgUrl])
 
-  const container = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    function handleScroll() {
-      container.current?.classList.add('on-scroll')
-      const t = setTimeout(() => {
-        if (container.current?.classList.contains('on-scroll')) {
-          container.current?.classList.remove('on-scroll')
-        }
-      }, 1500)
-      return () => {
-        clearTimeout(t)
-      }
-    }
-    if (container.current) {
-      container.current.addEventListener('scroll', handleScroll)
-      return () => {
-        container.current?.removeEventListener('scroll', handleScroll)
-      }
-    }
-  }, [container.current])
-
   if (!editor) return null
 
   return (
@@ -296,55 +275,62 @@ const EditorInterface = () => {
       <When condition={appState?.appState.loading as boolean}>
         <LoaderComponent />
       </When>
-      <div
-        className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
-          appState?.appState.changesCreated ? 'pb-10' : ''
-        }`}
+      <Scrollbars
+        autoHide={true}
+        hideTracksWhenNotNeeded
         style={{
+          width: '100vw',
+          height: '100vh',
           background: `${appState?.appState.editorColor}`,
+          marginBottom: appState?.appState.changesCreated ? '60px' : '0px',
         }}
-        ref={container}
       >
-        <When condition={!!appState?.appState.bannerImgUrl}>
-          <img
-            className='w-full object-fill xl:object-cover'
-            src={bannerImage}
-            alt='banner image'
-            style={{
-              height: '25vh',
-            }}
-          />
-        </When>
         <div
-          className='px-14 py-350 max-w-xl'
           style={{
             background: `${appState?.appState.editorColor}`,
-            margin: '0 auto',
           }}
         >
-          <div>
-            <BubbleMenuContainer editor={editor} />
-            <LinkInput editor={editor} />
-          </div>
-
-          <EditorContent
-            editor={editor}
-            readOnly={appState?.appState.readOnly}
-          />
-        </div>
-        <When condition={!!appState?.appState.readOnly}>
+          <When condition={!!appState?.appState.bannerImgUrl}>
+            <img
+              className='w-full object-fill xl:object-cover'
+              src={bannerImage}
+              alt='banner image'
+              style={{
+                height: '25vh',
+              }}
+            />
+          </When>
           <div
+            className='px-14 py-350 max-w-xl'
             style={{
-              width: '330px',
+              background: `${appState?.appState.editorColor}`,
               margin: '0 auto',
-              position: 'sticky',
-              bottom: '5em',
             }}
           >
-            <NoteDisplay content='Edits cannot be made while in preview mode' />
+            <div>
+              <BubbleMenuContainer editor={editor} />
+              <LinkInput editor={editor} />
+            </div>
+
+            <EditorContent
+              editor={editor}
+              readOnly={appState?.appState.readOnly}
+            />
           </div>
-        </When>
-      </div>
+          <When condition={!!appState?.appState.readOnly}>
+            <div
+              style={{
+                width: '330px',
+                margin: '0 auto',
+                position: 'sticky',
+                bottom: '5em',
+              }}
+            >
+              <NoteDisplay content='Edits cannot be made while in preview mode' />
+            </div>
+          </When>
+        </div>
+      </Scrollbars>
     </>
   )
 }
