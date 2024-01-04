@@ -54,6 +54,7 @@ export default async function Page() {
             minWidth: '350px',
             maxWidth: '350px',
             wordWrap: 'break-word',
+            height: '100vh',
           }}
         >
           <SideBarInterface
