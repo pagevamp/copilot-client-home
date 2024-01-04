@@ -4,7 +4,9 @@ import { AutofillMenu } from './AutofillMenu'
 import { staticAutofillValues } from '@/utils/constants'
 
 async function getCustomFields() {
-  const res = await fetch(`/api/autofill`)
+  const res = await fetch(`/api/autofill`, {
+    next: { revalidate: 0 },
+  })
   const { autofillFields } = await res.json()
 
   return autofillFields

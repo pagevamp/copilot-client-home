@@ -275,62 +275,63 @@ const EditorInterface = () => {
       <When condition={appState?.appState.loading as boolean}>
         <LoaderComponent />
       </When>
-      <Scrollbars
-        autoHide={true}
-        hideTracksWhenNotNeeded
-        style={{
-          width: '100vw',
-          height: '100vh',
-          background: `${appState?.appState.editorColor}`,
-          marginBottom: appState?.appState.changesCreated ? '60px' : '0px',
-        }}
-      >
-        <div
+      <When condition={!appState?.appState.loading as boolean}>
+        <Scrollbars
+          autoHide={true}
+          hideTracksWhenNotNeeded
           style={{
+            height: '100vh',
             background: `${appState?.appState.editorColor}`,
+            marginBottom: appState?.appState.changesCreated ? '60px' : '0px',
           }}
         >
-          <When condition={!!appState?.appState.bannerImgUrl}>
-            <img
-              className='w-full object-fill xl:object-cover'
-              src={bannerImage}
-              alt='banner image'
-              style={{
-                height: '25vh',
-              }}
-            />
-          </When>
           <div
-            className='px-14 py-350 max-w-xl'
             style={{
               background: `${appState?.appState.editorColor}`,
-              margin: '0 auto',
             }}
           >
-            <div>
-              <BubbleMenuContainer editor={editor} />
-              <LinkInput editor={editor} />
-            </div>
-
-            <EditorContent
-              editor={editor}
-              readOnly={appState?.appState.readOnly}
-            />
-          </div>
-          <When condition={!!appState?.appState.readOnly}>
+            <When condition={!!appState?.appState.bannerImgUrl}>
+              <img
+                className='w-full object-fill xl:object-cover'
+                src={bannerImage}
+                alt='banner image'
+                style={{
+                  height: '25vh',
+                }}
+              />
+            </When>
             <div
+              className='px-14 py-350 max-w-xl'
               style={{
-                width: '330px',
+                background: `${appState?.appState.editorColor}`,
                 margin: '0 auto',
-                position: 'sticky',
-                bottom: '5em',
               }}
             >
-              <NoteDisplay content='Edits cannot be made while in preview mode' />
+              <div>
+                <BubbleMenuContainer editor={editor} />
+                <LinkInput editor={editor} />
+              </div>
+
+              <EditorContent
+                editor={editor}
+                readOnly={appState?.appState.readOnly}
+              />
             </div>
-          </When>
-        </div>
-      </Scrollbars>
+            <When condition={!!appState?.appState.readOnly}>
+              <div
+                style={{
+                  width: '330px',
+                  margin: '0 auto',
+                  position: 'sticky',
+                  bottom: '5em',
+                }}
+              >
+                <NoteDisplay content='Edits cannot be made while in preview mode' />
+              </div>
+            </When>
+          </div>
+        </Scrollbars>
+      </When>
     </>
   )
 }

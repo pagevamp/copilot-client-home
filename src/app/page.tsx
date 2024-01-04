@@ -45,15 +45,16 @@ export default async function Page() {
   return (
     <div>
       <div className='flex flex-row'>
-        {/* <div className='relative w-full'> */}
-        <EditorInterface />
-        {/* </div> */}
+        <div className='relative w-full'>
+          <EditorInterface />
+        </div>
         <div
           className='border-1 border-l border-slate-300 xl:hidden'
           style={{
             minWidth: '350px',
             maxWidth: '350px',
             wordWrap: 'break-word',
+            height: '100vh',
           }}
         >
           <SideBarInterface
