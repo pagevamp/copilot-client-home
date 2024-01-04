@@ -171,8 +171,9 @@ const EditorInterface = () => {
   ])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) return
-    appState?.setOriginalTemplate(editor?.getHTML() as string)
+    if (appState?.appState.readOnly) {
+      appState?.setOriginalTemplate(editor?.getHTML() as string)
+    }
   }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
