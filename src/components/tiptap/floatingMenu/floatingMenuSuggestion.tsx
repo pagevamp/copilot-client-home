@@ -143,7 +143,20 @@ export const floatingMenuSuggestion = {
           showOnCreate: true,
           interactive: true,
           trigger: 'manual',
-          placement: 'bottom-start',
+          placement: 'auto-start',
+          offset: [0, 5],
+          popperOptions: {
+            strategy: 'fixed',
+            modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  allowedAutoPlacements: ['top-start', 'bottom-start'],
+                  fallbackPlacements: ['top-start', 'bottom-start'],
+                },
+              },
+            ],
+          },
         })
       },
 

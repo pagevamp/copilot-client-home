@@ -1,9 +1,10 @@
 'use client'
 
 import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Handlebars from 'handlebars'
+import { Scrollbars } from 'react-custom-scrollbars'
 import CalloutExtension from '@/components/tiptap/callout/CalloutExtension'
 import LinkpdfExtension from '@/components/tiptap/pdf/PdfExtension'
 import Document from '@tiptap/extension-document'
@@ -131,7 +132,7 @@ const EditorInterface = () => {
     content: '',
   })
 
-  const [originalTemplate, setOriginalTemplate] = useState<string | undefined>()
+  // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
   const [bannerImage, setBannerImage] = useState('')
 
   useEffect(() => {
@@ -142,7 +143,9 @@ const EditorInterface = () => {
 
   useEffect(() => {
     if (appState?.appState.readOnly) {
-      const template = Handlebars?.compile(originalTemplate || '')
+      const template = Handlebars?.compile(
+        appState?.appState.originalTemplate || '',
+      )
       const _client = appState.appState.clientList.find(
         (el) => el.id === (appState.appState.selectedClient as IClient).id,
       )
@@ -159,7 +162,7 @@ const EditorInterface = () => {
         editor
           ?.chain()
           .focus()
-          .setContent(originalTemplate as string)
+          .setContent(appState?.appState.originalTemplate as string)
           .run()
       })
     }
@@ -169,14 +172,19 @@ const EditorInterface = () => {
   ])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) return
-    setOriginalTemplate(editor?.getHTML())
+    if (appState?.appState.readOnly) {
+      appState?.setOriginalTemplate(editor?.getHTML() as string)
+    }
   }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
-    if (appState?.appState.settings && editor && originalTemplate) {
+    if (
+      appState?.appState.settings &&
+      editor &&
+      appState?.appState.originalTemplate
+    ) {
       if (
-        originalTemplate?.toString() !==
+        appState?.appState.originalTemplate?.toString() !==
           appState?.appState.settings.content.toString() ||
         appState?.appState.settings.backgroundColor !==
           appState?.appState.editorColor ||
@@ -191,7 +199,7 @@ const EditorInterface = () => {
       appState?.toggleChangesCreated(false)
     }
   }, [
-    originalTemplate,
+    appState?.appState.originalTemplate,
     appState?.appState.editorColor,
     appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
@@ -222,7 +230,7 @@ const EditorInterface = () => {
       const res = await fetch(`/api/settings`)
       const { data } = await res.json()
       if (data) {
-        setOriginalTemplate(data.content)
+        appState?.setOriginalTemplate(data.content)
         appState?.setSettings(data)
       }
       appState?.setLoading(false)
@@ -268,54 +276,63 @@ const EditorInterface = () => {
       <When condition={appState?.appState.loading as boolean}>
         <LoaderComponent />
       </When>
-      <div
-        className={`overflow-y-auto overflow-x-hidden max-h-screen w-full ${
-          appState?.appState.changesCreated && 'pb-10'
-        }`}
-        style={{
-          background: `${appState?.appState.editorColor}`,
-        }}
-      >
-        <When condition={!!appState?.appState.bannerImgUrl}>
-          <img
-            className='w-full object-fill xl:object-cover'
-            src={bannerImage}
-            alt='banner image'
-            style={{
-              height: '25vh',
-            }}
-          />
-        </When>
-        <div
-          className='px-14 py-350 max-w-xl'
+      <When condition={!appState?.appState.loading as boolean}>
+        <Scrollbars
+          autoHide={true}
+          hideTracksWhenNotNeeded
           style={{
+            height: '100vh',
             background: `${appState?.appState.editorColor}`,
-            margin: '0 auto',
+            marginBottom: appState?.appState.changesCreated ? '60px' : '0px',
           }}
         >
-          <div>
-            <BubbleMenuContainer editor={editor} />
-            <LinkInput editor={editor} />
-          </div>
-
-          <EditorContent
-            editor={editor}
-            readOnly={appState?.appState.readOnly}
-          />
-        </div>
-        <When condition={!!appState?.appState.readOnly}>
           <div
             style={{
-              width: '330px',
-              margin: '0 auto',
-              position: 'sticky',
-              bottom: '5em',
+              background: `${appState?.appState.editorColor}`,
             }}
           >
-            <NoteDisplay content='Edits cannot be made while in preview mode' />
+            <When condition={!!appState?.appState.bannerImgUrl}>
+              <img
+                className='w-full object-fill xl:object-cover'
+                src={bannerImage}
+                alt='banner image'
+                style={{
+                  height: '25vh',
+                }}
+              />
+            </When>
+            <div
+              className='px-14 py-350 max-w-xl'
+              style={{
+                background: `${appState?.appState.editorColor}`,
+                margin: '0 auto',
+              }}
+            >
+              <div>
+                <BubbleMenuContainer editor={editor} />
+                <LinkInput editor={editor} />
+              </div>
+
+              <EditorContent
+                editor={editor}
+                readOnly={appState?.appState.readOnly}
+              />
+            </div>
+            <When condition={!!appState?.appState.readOnly}>
+              <div
+                style={{
+                  width: '330px',
+                  margin: '0 auto',
+                  position: 'sticky',
+                  bottom: '5em',
+                }}
+              >
+                <NoteDisplay content='Edits cannot be made while in preview mode' />
+              </div>
+            </When>
           </div>
-        </When>
-      </div>
+        </Scrollbars>
+      </When>
     </>
   )
 }
