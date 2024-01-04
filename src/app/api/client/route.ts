@@ -1,18 +1,25 @@
-import { copilotAPIKey, copilotAPIUrl } from '@/config'
+import { errorHandler } from '@/utils/common'
+import { CopilotAPI } from '@/utils/copilotApiUtils'
 import { NextResponse, NextRequest } from 'next/server'
+import { z } from 'zod'
 
-export async function GET(req: NextRequest) {
-  const clientId = req.nextUrl.searchParams.get('clientId') as string
-
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      'X-API-KEY': copilotAPIKey as string,
-    },
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const clientId = searchParams.get('clientId')
+  const token = searchParams.get('token')
+  if (!token) {
+    errorHandler('Missing token', 422)
   }
+  if (!clientId) {
+    errorHandler('Missing client Id', 422)
+  }
+  const copilotClient = new CopilotAPI(z.string().parse(token))
+  try {
+    const client = await copilotClient.getClient(z.string().parse(clientId))
 
-  const res = await fetch(`${copilotAPIUrl}/v1/clients/${clientId}`, options)
-  const client = await res.json()
-  return NextResponse.json({ data: client })
+    return NextResponse.json({ data: client })
+  } catch (error) {
+    console.log(error)
+    return NextResponse.json({ data: {} })
+  }
 }

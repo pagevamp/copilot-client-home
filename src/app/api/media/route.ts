@@ -11,7 +11,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     if (!file) {
       return errorHandler('File is missing.', 422)
     }
-    const mediaRequest = MediaRequestSchema.safeParse({ file })
+    const token = form.get('token') as string
+    const mediaRequest = MediaRequestSchema.safeParse({ file, token })
     if (!mediaRequest.success) {
       return NextResponse.json(mediaRequest.error.issues)
     }
@@ -34,12 +35,15 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     if (!data.url) {
       return errorHandler('Url is required.', 422)
     }
+    if (!data.token) {
+      return errorHandler('Token is required.', 422)
+    }
     const mediaService = new MediaService()
     const media = await mediaService.findByUrl(data.url)
     if (media === null) {
       return errorHandler('Image not found.', 404)
     }
-    const currentUser = await getCurrentUser()
+    const currentUser = await getCurrentUser(data.token)
     if (media.createdById !== currentUser.id) {
       return errorHandler('Permission denied.', 403)
     }

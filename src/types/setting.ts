@@ -5,6 +5,7 @@ export const SettingRequestSchema = z.object({
   bannerImageId: z.string().nullable().optional(),
   backgroundColor: z.string().nullable().optional(),
   content: z.string().nullable().optional(),
+  token: z.string(),
 })
 export type SettingRequest = z.infer<typeof SettingRequestSchema>
 
