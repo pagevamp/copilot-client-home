@@ -172,7 +172,7 @@ const EditorInterface = () => {
   ])
 
   useEffect(() => {
-    if (appState?.appState.readOnly) {
+    if (!appState?.appState.readOnly) {
       appState?.setOriginalTemplate(editor?.getHTML() as string)
     }
   }, [editor?.getHTML(), appState?.appState.readOnly])
