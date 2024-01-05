@@ -85,6 +85,9 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
       }}
       variant='standard'
       disableUnderline
+      sx={{
+        borderRight: '1px solid #DFE1E4',
+      }}
     >
       <MenuItem value={Formatter.h1}>
         <BubbleDropdownBtnContainer icon={<H1Icon />} label={'Heading 1'} />

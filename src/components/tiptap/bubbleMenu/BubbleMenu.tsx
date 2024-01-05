@@ -2,7 +2,12 @@ import { BubbleMenu, Editor } from '@tiptap/react'
 import { FC, ReactNode } from 'react'
 import { Divider } from '@mui/material'
 
-import { BulletListIcon2, NumberedListIcon2 } from '@/icons'
+import {
+  BulletListIcon2,
+  DollarIcon,
+  LinkIcon2,
+  NumberedListIcon2,
+} from '@/icons'
 
 import DropdownBubbleMenu from './DropdownBubbleMenu'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
@@ -16,7 +21,7 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
 
   return (
     <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <div className='flex flex-row border border-slate-200 rounded bg-white'>
+      <div className='flex flex-row border border-slate-300 rounded bg-white w-fit'>
         <DropdownBubbleMenu editor={editor} />
 
         <BubbleMenuBtnContainer
@@ -24,53 +29,53 @@ const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
           handleOnClick={() => {
             tiptapEditorUtils.toggleBold()
           }}
+          className='border-r-2'
         />
-
-        <Divider flexItem orientation='vertical' />
 
         <BubbleMenuBtnContainer
           icon={'i'}
           handleOnClick={() => {
             tiptapEditorUtils.toggleItalic()
           }}
+          className='border-r-2'
         />
-
-        <Divider flexItem orientation='vertical' />
 
         <BubbleMenuBtnContainer
           icon={'U'}
           handleOnClick={() => {
             tiptapEditorUtils.toggleUnderline()
           }}
+          className='border-r-2'
         />
 
-        <Divider flexItem orientation='vertical' />
-
         <BubbleMenuBtnContainer
-          icon={'$'}
+          icon={<DollarIcon />}
           handleOnClick={() => {
             tiptapEditorUtils.toggleStrike()
           }}
+          className={'pt-4 border-r-2'}
         />
-
-        <Divider flexItem orientation='vertical' />
 
         <BubbleMenuBtnContainer
           icon={<BulletListIcon2 />}
           handleOnClick={() => {
             tiptapEditorUtils.toggleBulletList()
           }}
-          className={'pt-4'}
+          className={'pt-4 border-r-2'}
         />
-
-        <Divider flexItem orientation='vertical' />
 
         <BubbleMenuBtnContainer
           icon={<NumberedListIcon2 />}
           handleOnClick={() => {
             tiptapEditorUtils.toggleNumberedList()
           }}
-          className={'pt-4'}
+          className={'pt-4 border-r-2'}
+        />
+
+        <BubbleMenuBtnContainer
+          icon={<LinkIcon2 />}
+          handleOnClick={() => {}}
+          className={'pt-4 rounded-r'}
         />
       </div>
     </BubbleMenu>
