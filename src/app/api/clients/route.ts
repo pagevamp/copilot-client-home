@@ -1,6 +1,6 @@
 import { errorHandler } from '@/utils/common'
 import { CopilotAPI } from '@/utils/copilotApiUtils'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { z } from 'zod'
 
 export async function GET(request: NextRequest) {
@@ -9,8 +9,15 @@ export async function GET(request: NextRequest) {
   if (!token) {
     errorHandler('Missing token', 422)
   }
-  const copilotClient = new CopilotAPI(z.string().parse(token))
-  const { data } = await copilotClient.getCustomFields()
 
-  return NextResponse.json({ autofillFields: data })
+  const copilotClient = new CopilotAPI(z.string().parse(token))
+  try {
+    const clients = await copilotClient.getClients()
+    console.log({ clients: clients })
+
+    return NextResponse.json(clients)
+  } catch (error) {
+    console.log(error)
+    return NextResponse.json({ data: {} })
+  }
 }

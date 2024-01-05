@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SettingService } from '@/app/api/settings/services/setting.service'
 import { SettingRequestSchema } from '@/types/setting'
-import { getCurrentUser } from '@/utils/common'
+import { errorHandler, getCurrentUser } from '@/utils/common'
+import { z } from 'zod'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const token = searchParams.get('token')
+  if (!token) {
+    errorHandler('Missing token', 422)
+  }
   const settingService = new SettingService()
-  const currentUser = await getCurrentUser()
+  const currentUser = await getCurrentUser(z.string().parse(token))
   const setting = await settingService.findByUserId(currentUser.id)
 
   return NextResponse.json(setting ? { data: setting } : { data: null })

@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server'
-import { CopilotAPI, MeResponse } from './copilotApiUtils'
-import { copilotAPIKey } from '@/config'
+import { CopilotAPI } from './copilotApiUtils'
+import { MeResponse } from '@/types/common'
 
-export async function getCurrentUser(): Promise<MeResponse> {
-  if (!copilotAPIKey) {
-    throw new Error('Copilot API key is not set.')
-  }
-  const copilotClient = new CopilotAPI(copilotAPIKey)
+export async function getCurrentUser(apiToken: string): Promise<MeResponse> {
+  const copilotClient = new CopilotAPI(apiToken)
 
   return await copilotClient.me()
 }

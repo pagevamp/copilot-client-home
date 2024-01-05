@@ -16,6 +16,7 @@ export const MediaRequestSchema = z.object({
     }, 'Invalid file MIME type'),
     size: z.number().lte(MAX_FILE_SIZE, 'File size is too big.'),
   }),
+  token: z.string(),
 })
 export type MediaRequest = z.infer<typeof MediaRequestSchema>
 

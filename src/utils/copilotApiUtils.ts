@@ -1,57 +1,51 @@
-const BaseApiURL = `${process.env.COPILOT_API_URL}/v1`
-
-export type MeResponse = {
-  id: string
-  givenName: string
-  familyName: string
-  email: string
-  portalName: string
-}
-
-type ClientCustomField = string | string[]
-
-export type Client = {
-  id: string
-  givenName: string
-  familyName: string
-  email: string
-  companyId: string
-  customFields: Record<string, ClientCustomField>
-}
-
-export type Company = {
-  id: string
-  name: string
-  iconImageUrl: string
-}
+import { copilotApi } from 'copilot-node-sdk'
+import { DefaultService as Copilot } from 'copilot-node-sdk/codegen/api/services/DefaultService'
+import {
+  ClientResponse,
+  ClientResponseSchema,
+  ClientsResponseSchema,
+  CompanyResponse,
+  CompanyResponseSchema,
+  CustomFieldResponse,
+  CustomFieldResponseSchema,
+  MeResponse,
+  MeResponseSchema,
+} from '@/types/common'
+import { copilotAPIKey } from '@/config'
 
 export class CopilotAPI {
-  apiKey: string
+  copilot: typeof Copilot
 
-  constructor(apiKey: string) {
-    this.apiKey = apiKey
-  }
-
-  async getApiData<T>(path: string): Promise<T> {
-    const response = await fetch(`${BaseApiURL}/${path}`, {
-      headers: {
-        'x-api-key': this.apiKey,
-      },
+  constructor(apiToken: string) {
+    this.copilot = copilotApi({
+      apiKey: copilotAPIKey,
+      token: apiToken,
     })
-
-    const data = await response.json()
-    return data
   }
 
-  async me() {
-    return this.getApiData<MeResponse>('me')
+  async me(): Promise<MeResponse> {
+    return MeResponseSchema.parse(await this.copilot.getUserAndPortalInfo())
   }
 
-  async getClient(clientId: string) {
-    return this.getApiData<Client>(`clients/${clientId}`)
+  async getClient(clientId: string): Promise<ClientResponse> {
+    return ClientResponseSchema.parse(
+      await this.copilot.retrieveAClient({ id: clientId }),
+    )
   }
 
-  async getCompany(companyId: string) {
-    return this.getApiData<Company>(`companies/${companyId}`)
+  async getClients() {
+    return ClientsResponseSchema.parse(await this.copilot.listClients({}))
+  }
+
+  async getCompany(companyId: string): Promise<CompanyResponse> {
+    return CompanyResponseSchema.parse(
+      await this.copilot.retrieveACompany({ id: companyId }),
+    )
+  }
+
+  async getCustomFields(): Promise<CustomFieldResponse> {
+    return CustomFieldResponseSchema.parse(
+      await this.copilot.listCustomFields(),
+    )
   }
 }
