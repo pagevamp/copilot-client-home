@@ -1,6 +1,5 @@
 import { BubbleMenu, Editor } from '@tiptap/react'
 import { FC, ReactNode } from 'react'
-import { Divider } from '@mui/material'
 
 import {
   BulletListIcon2,
@@ -11,6 +10,7 @@ import {
 
 import DropdownBubbleMenu from './DropdownBubbleMenu'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
+import { useAppState } from '@/hooks/useAppState'
 
 interface IBubbleMenuContainer {
   editor: Editor
@@ -18,67 +18,68 @@ interface IBubbleMenuContainer {
 
 const BubbleMenuContainer: FC<IBubbleMenuContainer> = ({ editor }) => {
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
+  const appState = useAppState()
 
   return (
-    <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <div className='flex flex-row border border-slate-300 rounded bg-white w-fit'>
-        <DropdownBubbleMenu editor={editor} />
+    <div className='flex flex-row border border-slate-300 rounded bg-white w-fit shadow-variant-1'>
+      <DropdownBubbleMenu editor={editor} />
 
-        <BubbleMenuBtnContainer
-          icon={'B'}
-          handleOnClick={() => {
-            tiptapEditorUtils.toggleBold()
-          }}
-          className='border-r-2'
-        />
+      <BubbleMenuBtnContainer
+        icon={'B'}
+        handleOnClick={() => {
+          tiptapEditorUtils.toggleBold()
+        }}
+        className='border-r-2'
+      />
 
-        <BubbleMenuBtnContainer
-          icon={'i'}
-          handleOnClick={() => {
-            tiptapEditorUtils.toggleItalic()
-          }}
-          className='border-r-2'
-        />
+      <BubbleMenuBtnContainer
+        icon={'i'}
+        handleOnClick={() => {
+          tiptapEditorUtils.toggleItalic()
+        }}
+        className='border-r-2'
+      />
 
-        <BubbleMenuBtnContainer
-          icon={'U'}
-          handleOnClick={() => {
-            tiptapEditorUtils.toggleUnderline()
-          }}
-          className='border-r-2'
-        />
+      <BubbleMenuBtnContainer
+        icon={'U'}
+        handleOnClick={() => {
+          tiptapEditorUtils.toggleUnderline()
+        }}
+        className='border-r-2'
+      />
 
-        <BubbleMenuBtnContainer
-          icon={<DollarIcon />}
-          handleOnClick={() => {
-            tiptapEditorUtils.toggleStrike()
-          }}
-          className={'pt-4 border-r-2'}
-        />
+      <BubbleMenuBtnContainer
+        icon={<DollarIcon />}
+        handleOnClick={() => {
+          tiptapEditorUtils.toggleStrike()
+        }}
+        className={'pt-4 border-r-2'}
+      />
 
-        <BubbleMenuBtnContainer
-          icon={<BulletListIcon2 />}
-          handleOnClick={() => {
-            tiptapEditorUtils.toggleBulletList()
-          }}
-          className={'pt-4 border-r-2'}
-        />
+      <BubbleMenuBtnContainer
+        icon={<BulletListIcon2 />}
+        handleOnClick={() => {
+          tiptapEditorUtils.toggleBulletList()
+        }}
+        className={'pt-4 border-r-2'}
+      />
 
-        <BubbleMenuBtnContainer
-          icon={<NumberedListIcon2 />}
-          handleOnClick={() => {
-            tiptapEditorUtils.toggleNumberedList()
-          }}
-          className={'pt-4 border-r-2'}
-        />
+      <BubbleMenuBtnContainer
+        icon={<NumberedListIcon2 />}
+        handleOnClick={() => {
+          tiptapEditorUtils.toggleNumberedList()
+        }}
+        className={'pt-4 border-r-2'}
+      />
 
-        <BubbleMenuBtnContainer
-          icon={<LinkIcon2 />}
-          handleOnClick={() => {}}
-          className={'pt-4 rounded-r'}
-        />
-      </div>
-    </BubbleMenu>
+      <BubbleMenuBtnContainer
+        icon={<LinkIcon2 />}
+        handleOnClick={() => {
+          appState?.toggleShowLinkInput(!appState?.appState.showLinkInput)
+        }}
+        className={'pt-4 rounded-r'}
+      />
+    </div>
   )
 }
 
