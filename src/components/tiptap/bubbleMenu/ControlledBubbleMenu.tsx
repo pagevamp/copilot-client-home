@@ -15,6 +15,7 @@ const ControlledBubbleMenu: React.FC<Props> = ({
   offset,
 }: Props) => (
   <Popper
+    id='controlled-bubble-menu'
     open={open()}
     placement='top'
     modifiers={[
