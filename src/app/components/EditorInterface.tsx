@@ -1,7 +1,7 @@
 'use client'
 
 import { useEditor, EditorContent } from '@tiptap/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Handlebars from 'handlebars'
 import { Scrollbars } from 'react-custom-scrollbars'
@@ -35,8 +35,8 @@ import Hardbreak from '@tiptap/extension-hard-break'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
 
+import ControlledBubbleMenu from '@/components/tiptap/bubbleMenu/ControlledBubbleMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
-import LinkInput from '@/components/tiptap/linkInput/LinkInput'
 import NoteDisplay from '@/components/display/NoteDisplay'
 import { When } from '@/components/hoc/When'
 
@@ -44,6 +44,7 @@ import { useAppState } from '@/hooks/useAppState'
 import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
+import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
 
 const EditorInterface = () => {
   const appState = useAppState()
@@ -269,6 +270,10 @@ const EditorInterface = () => {
     })()
   }, [appState?.appState.bannerImgUrl])
 
+  useEffect(() => {
+    appState?.toggleShowLinkInput(false)
+  }, [editor?.isFocused])
+
   if (!editor) return null
 
   return (
@@ -309,8 +314,27 @@ const EditorInterface = () => {
               }}
             >
               <div>
-                <BubbleMenuContainer editor={editor} />
-                <LinkInput editor={editor} />
+                <ControlledBubbleMenu
+                  editor={editor}
+                  open={() => appState?.appState.showLinkInput as boolean}
+                  offset={[0, 6]}
+                >
+                  <BubbleLinkInput />
+                </ControlledBubbleMenu>
+                <ControlledBubbleMenu
+                  editor={editor}
+                  open={() => {
+                    const { view, state } = editor
+                    const { from, to } = view.state.selection
+                    const text = state.doc.textBetween(from, to, '')
+                    if (text !== '' && !appState?.appState.showLinkInput)
+                      return true
+                    return false
+                  }}
+                  offset={[0, 10]}
+                >
+                  <BubbleMenuContainer editor={editor} />
+                </ControlledBubbleMenu>
               </div>
 
               <EditorContent

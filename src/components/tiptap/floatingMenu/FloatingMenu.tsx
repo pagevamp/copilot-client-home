@@ -52,8 +52,6 @@ const FloatingContainerBtn = ({
           <UploadIcon2 />
         ) : label === 'Embed' ? (
           <EmbedIcon />
-        ) : label === 'Link' ? (
-          <LinkIcon />
         ) : label === 'Table' ? (
           <TableIcon />
         ) : label === 'Callout' ? (

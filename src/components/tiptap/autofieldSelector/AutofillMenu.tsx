@@ -76,7 +76,7 @@ export const AutofillMenu = forwardRef((props: any, ref: any) => {
   const { items } = props
 
   return (
-    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 top-3 w-fit overflow-hidden relative'>
+    <div className='flex flex-col gap-0.5 bg-white py-2 border border-new-card-border rounded shadow-vairant-1 w-fit overflow-hidden relative'>
       {items && items?.length ? (
         items.map((item: any, index: any) => (
           <AutofillContainerBtn

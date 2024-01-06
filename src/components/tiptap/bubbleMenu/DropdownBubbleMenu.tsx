@@ -1,31 +1,41 @@
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { FC, ReactNode, useEffect, useState } from 'react'
-
 import {
-  CalloutIcon,
-  H1Icon,
-  H2Icon,
-  H3Icon,
-  LinkIcon,
-  TextIcon,
-} from '@/icons'
+  Box,
+  Button,
+  MenuItem,
+  Popper,
+  Select,
+  SelectChangeEvent,
+  Stack,
+} from '@mui/material'
+import { FC, ReactNode, useEffect, useState, MouseEvent } from 'react'
+
+import { CalloutIcon, H1Icon, H2Icon, H3Icon, TextIcon } from '@/icons'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { Editor } from '@tiptap/react'
 import { useAppState } from '@/hooks/useAppState'
 import { Formatter } from '@/types/interfaces'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 
 interface IBubbleMenuContainer {
   editor: Editor
 }
 
 const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
-  const [selectedFormatter, setSelectedFormatter] = useState(
-    Formatter.text as string,
+  const [selectedFormatter, setSelectedFormatter] = useState<Formatter>(
+    Formatter.text,
   )
 
   const tiptapEditorUtils = new TiptapEditorUtils(editor)
 
   const appState = useAppState()
+
+  const formatterIcon = {
+    [Formatter.h1]: <H1Icon />,
+    [Formatter.h2]: <H2Icon />,
+    [Formatter.h3]: <H3Icon />,
+    [Formatter.text]: <TextIcon />,
+    [Formatter.callout]: <CalloutIcon />,
+  }
 
   useEffect(() => {
     const parent = editor.state.selection.$anchor.parent
@@ -49,70 +59,126 @@ const DropdownBubbleMenu: FC<IBubbleMenuContainer> = ({ editor }) => {
     }
   }, [editor.state.selection.$anchor.parent])
 
-  return (
-    <Select
-      labelId='formatter-select-label'
-      id='formatter-select-id'
-      value={selectedFormatter}
-      defaultValue={Formatter.text}
-      label={Formatter.text}
-      onChange={(event: SelectChangeEvent) => {
-        const { value } = event.target
-        setSelectedFormatter(value as string)
-        if (value === Formatter.h1) {
-          tiptapEditorUtils.toggleHeading(1)
-        }
-        if (value === Formatter.h2) {
-          tiptapEditorUtils.toggleHeading(2)
-        }
-        if (value === Formatter.h3) {
-          tiptapEditorUtils.toggleHeading(3)
-        }
-        if (value === Formatter.text) {
-          tiptapEditorUtils.setParagraph()
-        }
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-        if (value === Formatter.link) {
-          appState?.toggleShowLinkInput(true)
-        }
-        if (value === Formatter.unlink) {
-          tiptapEditorUtils.unlink()
-        }
-        if (value === Formatter.callout) {
-          const text = tiptapEditorUtils.getSelectedText()
-          tiptapEditorUtils.insertCallout(text)
-        }
-      }}
-      variant='standard'
-      disableUnderline
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popper' : undefined
+
+  return (
+    <Stack
+      borderRight='2px solid rgb(203 213 225)'
+      direction='column'
+      justifyContent='center'
     >
-      <MenuItem value={Formatter.h1}>
-        <BubbleDropdownBtnContainer icon={<H1Icon />} label={'Heading 1'} />
-      </MenuItem>
-      <MenuItem value={Formatter.h2}>
-        <BubbleDropdownBtnContainer icon={<H2Icon />} label={'Heading 2'} />
-      </MenuItem>
-      <MenuItem value={Formatter.h3}>
-        <BubbleDropdownBtnContainer icon={<H3Icon />} label={'Heading 3'} />
-      </MenuItem>
-      <MenuItem value={Formatter.text}>
-        <BubbleDropdownBtnContainer icon={<TextIcon />} label={'Text'} />
-      </MenuItem>
-      <MenuItem
-        value={editor.isActive('link') ? Formatter.unlink : Formatter.link}
+      <Button
+        variant='text'
+        aria-describedby={id}
+        type='button'
+        onClick={handleClick}
+        disableRipple
+        startIcon={
+          formatterIcon[selectedFormatter as keyof typeof formatterIcon]
+        }
+        endIcon={
+          open ? (
+            <KeyboardArrowUp sx={{ color: '#212B36' }} />
+          ) : (
+            <KeyboardArrowDown sx={{ color: '#212B36' }} />
+          )
+        }
+        sx={{
+          textTransform: 'none',
+          color: '#212B36',
+        }}
       >
-        <BubbleDropdownBtnContainer
-          icon={<LinkIcon />}
-          label={editor.isActive('link') ? Formatter.unlink : Formatter.link}
-        />
-      </MenuItem>
-      <MenuItem value='Callout'>
-        <BubbleDropdownBtnContainer
-          icon={<CalloutIcon />}
-          label={Formatter.callout}
-        />
-      </MenuItem>
-    </Select>
+        {selectedFormatter}
+      </Button>
+      <Popper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        placement='bottom-start'
+        modifiers={[
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 10],
+            },
+          },
+          {
+            name: 'flip',
+            enabled: true,
+            options: {
+              boundary: editor.options.element,
+              fallbackPlacements: [
+                'bottom',
+                'top-start',
+                'bottom-start',
+                'top-end',
+                'bottom-end',
+              ],
+              padding: 8,
+            },
+          },
+        ]}
+      >
+        <Stack
+          direction='column'
+          sx={{
+            bgcolor: '#fff',
+            padding: '8px 0px',
+            width: '180px',
+            borderRadius: '4px',
+          }}
+        >
+          <BubbleDropdownBtnContainer
+            icon={formatterIcon[Formatter.h1]}
+            label={Formatter.h1}
+            handleClick={() => {
+              tiptapEditorUtils.toggleHeading(1)
+              setAnchorEl(null)
+            }}
+          />
+          <BubbleDropdownBtnContainer
+            icon={formatterIcon[Formatter.h2]}
+            label={Formatter.h2}
+            handleClick={() => {
+              tiptapEditorUtils.toggleHeading(2)
+              setAnchorEl(null)
+            }}
+          />
+          <BubbleDropdownBtnContainer
+            icon={formatterIcon[Formatter.h3]}
+            label={Formatter.h3}
+            handleClick={() => {
+              tiptapEditorUtils.toggleHeading(3)
+              setAnchorEl(null)
+            }}
+          />
+          <BubbleDropdownBtnContainer
+            icon={formatterIcon[Formatter.text]}
+            label={Formatter.text}
+            handleClick={() => {
+              tiptapEditorUtils.setParagraph()
+              setAnchorEl(null)
+            }}
+          />
+          <BubbleDropdownBtnContainer
+            icon={formatterIcon[Formatter.callout]}
+            label={Formatter.callout}
+            handleClick={() => {
+              const text = tiptapEditorUtils.getSelectedText()
+              tiptapEditorUtils.insertCallout(text)
+              setAnchorEl(null)
+            }}
+          />
+        </Stack>
+      </Popper>
+    </Stack>
   )
 }
 
@@ -121,12 +187,17 @@ export default DropdownBubbleMenu
 const BubbleDropdownBtnContainer = ({
   icon,
   label,
+  handleClick,
 }: {
   icon: ReactNode
   label: string
+  handleClick: () => void
 }) => {
   return (
-    <button className='flex flex-row gap-x-2.5 items-center py-1.5 px-3 focus:bg-new-white-2 cursor-pointer outline-none'>
+    <button
+      className={`flex flex-row gap-x-2.5 items-center py-1.5 px-3 hover:bg-new-white-2 cursor-pointer outline-none`}
+      onClick={() => handleClick()}
+    >
       <div>{icon}</div>
       <div>
         <p className='text-sm'>{label}</p>
