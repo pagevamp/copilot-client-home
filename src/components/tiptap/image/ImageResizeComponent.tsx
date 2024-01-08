@@ -32,13 +32,7 @@ export const ImageResizeComponent = (props: any) => {
 
   return (
     <NodeViewWrapper className='image-resizer'>
-      {props.extension.options.useFigure ? (
-        <figure>
-          <img {...props.node.attrs} className='postimage' />
-        </figure>
-      ) : (
-        <img {...props.node.attrs} className='postimage' />
-      )}
+      <img {...props.node.attrs} className='postimage' />
       {!appState?.appState.readOnly && (
         <div className='resize-trigger' onMouseDown={handler}>
           <Resize />
