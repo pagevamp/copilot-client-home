@@ -8,6 +8,7 @@ export interface ImageOptions {
   allowBase64: boolean
   HTMLAttributes: Record<string, any>
   useFigure: boolean
+  readOnly: boolean
 }
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -32,6 +33,7 @@ export const ImageResize = Image.extend<ImageOptions>({
       allowBase64: false,
       HTMLAttributes: {},
       useFigure: false,
+      readOnly: false,
     }
   },
   addAttributes() {

@@ -3,6 +3,7 @@ import React from 'react'
 import { NodeViewWrapper } from '@tiptap/react'
 import { Resize } from './resizeIcon'
 import { useAppState } from '@/hooks/useAppState'
+import { usePathname } from 'next/navigation'
 
 export const ImageResizeComponent = (props: any) => {
   const handler = (mouseDownEvent: React.MouseEvent<HTMLImageElement>) => {
@@ -30,10 +31,12 @@ export const ImageResizeComponent = (props: any) => {
 
   const appState = useAppState()
 
+  const pathname = usePathname()
+
   return (
     <NodeViewWrapper className='image-resizer'>
       <img {...props.node.attrs} className='postimage' />
-      {!appState?.appState.readOnly && (
+      {!pathname.includes('client-preview') && !appState?.appState.readOnly && (
         <div className='resize-trigger' onMouseDown={handler}>
           <Resize />
         </div>
