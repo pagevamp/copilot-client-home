@@ -31,6 +31,7 @@ import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/au
 
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useEffect } from 'react'
+import { ImageResize } from '@/components/tiptap/image/image'
 
 const ClientPreview = ({ content }: { content: string }) => {
   /**
@@ -83,11 +84,8 @@ const ClientPreview = ({ content }: { content: string }) => {
           class: 'list-disc',
         },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: 'object-cover',
-        },
-        allowBase64: true,
+      ImageResize.configure({
+        readOnly: true,
       }),
       Table.configure({
         resizable: true,
@@ -98,16 +96,16 @@ const ClientPreview = ({ content }: { content: string }) => {
       CodeBlock,
       Code,
     ],
-    content: '',
+    content: content,
   })
 
   useEffect(() => {
-    if (editor) {
+    if (editor && content) {
       editor.chain().focus().setContent(content).run()
       editor.setEditable(false)
       editor.chain().focus('start').run()
     }
-  }, [editor])
+  }, [editor, content])
 
   if (!editor) {
     return null

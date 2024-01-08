@@ -14,7 +14,6 @@ import Text from '@tiptap/extension-text'
 import OrderedList from '@tiptap/extension-ordered-list'
 import BulletList from '@tiptap/extension-bullet-list'
 import ListItem from '@tiptap/extension-list-item'
-import Image from '@tiptap/extension-image'
 import Table from '@tiptap/extension-table'
 import { TableCell } from '@/components/tiptap/table/table-cell'
 import TableHeader from '@tiptap/extension-table-header'
@@ -34,6 +33,7 @@ import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingC
 import Hardbreak from '@tiptap/extension-hard-break'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
+import { ImageResize } from '@/components/tiptap/image/image'
 
 import ControlledBubbleMenu from '@/components/tiptap/bubbleMenu/ControlledBubbleMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
@@ -111,12 +111,7 @@ const EditorInterface = () => {
           class: 'list-disc',
         },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: 'object-cover',
-        },
-        allowBase64: true,
-      }),
+      ImageResize,
       Table.configure({
         resizable: true,
       }),
