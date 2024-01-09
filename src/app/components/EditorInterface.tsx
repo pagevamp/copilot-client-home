@@ -45,7 +45,12 @@ import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 
-const EditorInterface = () => {
+interface IEditorInterface {
+  settings: ISettings
+  token: string
+}
+
+const EditorInterface = ({ settings, token }: IEditorInterface) => {
   const appState = useAppState()
 
   const initialEditorContent = 'Type "/" for commands'
@@ -204,6 +209,7 @@ const EditorInterface = () => {
     appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
     editor,
+    appState?.appState.settings,
   ])
 
   useEffect(() => {
@@ -227,15 +233,14 @@ const EditorInterface = () => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      const res = await fetch(`/api/settings`)
-      const { data } = await res.json()
-      if (data) {
-        appState?.setOriginalTemplate(data.content)
-        appState?.setSettings(data)
+      if (settings) {
+        appState?.setOriginalTemplate(settings.content)
+        appState?.setSettings(settings)
+        appState?.setToken(token)
       }
       appState?.setLoading(false)
     })()
-  }, [])
+  }, [settings, token])
 
   useEffect(() => {
     if (!appState?.appState.settings) return

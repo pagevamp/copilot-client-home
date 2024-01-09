@@ -1,8 +1,12 @@
-export const handleBannerImageUpload = async (imageFile: File) => {
+export const handleBannerImageUpload = async (
+  imageFile: File,
+  token: string,
+) => {
   try {
     const formData = new FormData()
     formData.append('file', imageFile)
-    const res = await fetch('/api/media', {
+    formData.append('token', token)
+    const res = await fetch(`/api/media`, {
       method: 'POST',
       body: formData,
     })

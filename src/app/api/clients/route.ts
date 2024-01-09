@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
   const copilotClient = new CopilotAPI(z.string().parse(token))
   try {
     const clients = await copilotClient.getClients()
-    console.log({ clients: clients })
 
     return NextResponse.json(clients)
   } catch (error) {

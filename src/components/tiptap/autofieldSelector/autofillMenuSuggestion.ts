@@ -3,8 +3,8 @@ import tippy from 'tippy.js'
 import { AutofillMenu } from './AutofillMenu'
 import { staticAutofillValues } from '@/utils/constants'
 
-async function getCustomFields() {
-  const res = await fetch(`/api/autofill`, {
+async function getCustomFields(token: string) {
+  const res = await fetch(`/api/autofill?token=${token}`, {
     next: { revalidate: 0 },
   })
   const { autofillFields } = await res.json()
@@ -14,7 +14,9 @@ async function getCustomFields() {
 
 export const autofillMenuSuggestion = {
   items: async ({ query }: any) => {
-    const customFields = await getCustomFields()
+    const token = new URLSearchParams(document.location.search).get('token')
+
+    const customFields = await getCustomFields(token || '')
 
     return [
       ...staticAutofillValues,
@@ -34,6 +36,14 @@ export const autofillMenuSuggestion = {
     let popup: any
 
     return {
+      addAttributes() {
+        return {
+          customFields: {
+            default: [],
+          },
+        }
+      },
+
       onStart: (props: any) => {
         component = new ReactRenderer(AutofillMenu, {
           props,

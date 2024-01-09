@@ -19,7 +19,10 @@ export const Footer = () => {
       appState?.appState.bannerImgUrl as Blob,
       'bannerImg',
     )
-    const data = await handleBannerImageUpload(imageFile as File)
+    const data = await handleBannerImageUpload(
+      imageFile as File,
+      appState?.appState.token as string,
+    )
 
     let payload = {}
     if (appState?.appState.bannerImgId) {
@@ -27,11 +30,13 @@ export const Footer = () => {
         backgroundColor: appState?.appState.editorColor,
         content: content,
         bannerImageId: data.id,
+        token: appState?.appState.token,
       }
     } else {
       payload = {
         backgroundColor: appState?.appState.editorColor,
         content: content,
+        token: appState?.appState.token,
       }
     }
     try {
@@ -70,7 +75,7 @@ export const Footer = () => {
   useEffect(() => {
     const t = setTimeout(() => {
       appState?.toggleChangesCreated(false)
-    }, 50)
+    }, 100)
 
     return () => clearTimeout(t)
   }, [])
