@@ -32,7 +32,12 @@ const BubbleLinkInput = () => {
     //@ts-expect-error event should contain code
     if (event.code === 'Enter') {
       event.preventDefault()
-      tiptapEditorUtils.insertLink(url)
+      const regex = /^https:\/\//
+      if (!regex.test(url)) {
+        tiptapEditorUtils.insertLink(`https://${url}`)
+      } else {
+        tiptapEditorUtils.insertLink(url)
+      }
       appState?.toggleShowLinkInput(false)
       setUrl('')
     }
