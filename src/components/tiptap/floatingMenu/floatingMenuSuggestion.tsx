@@ -72,7 +72,13 @@ export const floatingMenuSuggestion = {
           tiptapEditorUtils.deleteRange(range)
           const imagePickerUtils = new ImagePickerUtils()
           const file = await imagePickerUtils.selectImageFromLocalDrive()
-          const data = await handleBannerImageUpload(file as File)
+          const token = new URLSearchParams(document.location.search).get(
+            'token',
+          )
+          const data = await handleBannerImageUpload(
+            file as File,
+            token as string,
+          )
           if (data.contentType === 'application/pdf') {
             tiptapEditorUtils.insertPdf(data.filename, data.url)
           } else {
