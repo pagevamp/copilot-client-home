@@ -8,17 +8,17 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      '2xs': { 'max': '320px' },
-      xs: { 'max': '384px' },
-      sm: { 'max': '480px' },
-      md: { 'max': '560px' },
-      lg: { 'max': '640px' },
-      xl: { 'max': '768px' },
-      '2xl': { 'max': '1024px' },
-      '3xl': { 'max': '1280px' },
-      '4xl': { 'max': '1440px' },
-      '5px': { 'max': '1600px' },
-      '6xl': { 'max': '1920px' },
+      '2xs': { max: '320px' },
+      xs: { max: '384px' },
+      sm: { max: '480px' },
+      md: { max: '560px' },
+      lg: { max: '640px' },
+      xl: { max: '768px' },
+      '2xl': { max: '1024px' },
+      '3xl': { max: '1280px' },
+      '4xl': { max: '1440px' },
+      '5px': { max: '1600px' },
+      '6xl': { max: '1920px' },
     },
     extend: {
       spacing: {
@@ -94,7 +94,7 @@ const config: Config = {
         'gray-300': '#C9CBCD',
         'gray-200': '#DFE1E4',
         'gray-100': '#C9CBCD',
-        'secondary': '#6B6F76'
+        secondary: '#6B6F76',
       },
       borderColor: {
         'col-1': '#DFE1E4',
