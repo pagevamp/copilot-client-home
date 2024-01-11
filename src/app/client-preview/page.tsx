@@ -6,6 +6,7 @@ import { apiUrl } from '@/config'
 export const revalidate = 0
 
 async function getSettings(): Promise<ISettings> {
+  console.log('url', apiUrl)
   const { data } = await fetch(`${apiUrl}/api/settings`).then((res) =>
     res.json(),
   )
