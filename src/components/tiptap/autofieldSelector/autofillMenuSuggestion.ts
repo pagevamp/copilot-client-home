@@ -2,6 +2,7 @@ import { ReactRenderer } from '@tiptap/react'
 import tippy from 'tippy.js'
 import { AutofillMenu } from './AutofillMenu'
 import { staticAutofillValues } from '@/utils/constants'
+import { ICustomField } from '@/types/interfaces'
 
 async function getCustomFields(token: string) {
   const res = await fetch(`/api/autofill?token=${token}`, {
@@ -12,11 +13,15 @@ async function getCustomFields(token: string) {
   return autofillFields
 }
 
+const token = new URLSearchParams(document.location.search).get('token')
+let customFields: ICustomField[] = []
+;(async () => {
+  customFields = await getCustomFields(token || '')
+})()
+
 export const autofillMenuSuggestion = {
   items: async ({ query }: any) => {
-    const token = new URLSearchParams(document.location.search).get('token')
-
-    const customFields = await getCustomFields(token || '')
+    console.log(customFields)
 
     return [
       ...staticAutofillValues,

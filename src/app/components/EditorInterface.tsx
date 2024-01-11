@@ -134,7 +134,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       CodeBlock,
       Code,
     ],
-    content: '',
+    content: settings.content,
   })
 
   // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
@@ -244,13 +244,13 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
 
   useEffect(() => {
     if (!appState?.appState.settings) return
-    setTimeout(() => {
-      editor
-        ?.chain()
-        .focus()
-        .setContent((appState?.appState.settings as ISettings).content)
-        .run()
-    })
+    // setTimeout(() => {
+    //   editor
+    //     ?.chain()
+    //     .focus()
+    //     .setContent((appState?.appState.settings as ISettings).content)
+    //     .run()
+    // })
     appState?.setEditorColor(
       (appState?.appState.settings as ISettings).backgroundColor,
     )
