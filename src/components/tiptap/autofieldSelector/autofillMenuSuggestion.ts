@@ -14,6 +14,7 @@ async function getCustomFields(token: string) {
 }
 
 const token = new URLSearchParams(document.location.search).get('token')
+
 let customFields: ICustomField[] = []
 ;(async () => {
   customFields = await getCustomFields(token || '')
@@ -21,8 +22,6 @@ let customFields: ICustomField[] = []
 
 export const autofillMenuSuggestion = {
   items: async ({ query }: any) => {
-    console.log(customFields)
-
     return [
       ...staticAutofillValues,
       ...customFields.map((el: any) => `{{client.customFields.${el.key}}}`),
