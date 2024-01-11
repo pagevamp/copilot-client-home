@@ -5,7 +5,7 @@
 .editable .autofill-pill {
   background-color: #eff1f4;
   border-radius: 0.75rem;
-  padding: 0.125rem 0.5rem
+  padding: 0.125rem 0.5rem;
 }
 
 .tiptap {
@@ -161,7 +161,7 @@ table {
 }
 
 .tiptap p.is-empty::before {
-  color: #6B6F76;
+  color: #6b6f76;
   content: attr(data-placeholder);
   float: left;
   height: 0;
