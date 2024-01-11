@@ -19,6 +19,8 @@ const SelectOptions: FC<ISelectOptions> = ({ customOptions }) => {
       className='bg-white absolute top-12 right-0 w-full py-2 cursor-pointer border border-gray-200 rounded z-50 hover:border-gray-300'
       style={{
         boxShadow: '0px 6px 20px 0px rgba(0, 0, 0, 0.12)',
+        maxHeight: '250px',
+        overflowY: 'auto',
       }}
     >
       {customOptions}
@@ -45,7 +47,13 @@ const Select: FC<IDropDown> = ({
       </When>
 
       <div className='absolute top-3 right-2'>
-        <SelectArrowIcon />
+        <div
+          style={{
+            rotate: showDropDown ? '180deg' : '',
+          }}
+        >
+          <SelectArrowIcon />
+        </div>
       </div>
 
       <div>{selected}</div>

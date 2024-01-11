@@ -40,11 +40,11 @@ export const Footer = () => {
       }
     }
     try {
-      await fetch(`/api/settings`, {
+      await fetch(`/api/settings?token=${appState?.appState.token}`, {
         method: 'PUT',
         body: JSON.stringify(payload),
       })
-      const res = await fetch(`/api/settings`)
+      const res = await fetch(`/api/settings?token=${appState?.appState.token}`)
       const { data } = await res.json()
       if (data) {
         appState?.setOriginalTemplate(data.content)
@@ -75,7 +75,7 @@ export const Footer = () => {
   useEffect(() => {
     const t = setTimeout(() => {
       appState?.toggleChangesCreated(false)
-    }, 100)
+    }, 50)
 
     return () => clearTimeout(t)
   }, [])

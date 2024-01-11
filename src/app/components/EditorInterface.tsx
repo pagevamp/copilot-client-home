@@ -75,7 +75,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       }),
       Mention.configure({
         HTMLAttributes: {
-          class: 'bg-new-white-3 border-1 rounded-xl py-0.5 px-2',
+          class: 'autofill-pill',
         },
         suggestion: autofillMenuSuggestion,
         renderLabel({ node }) {
@@ -209,7 +209,6 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
     editor,
-    appState?.appState.settings,
   ])
 
   useEffect(() => {
@@ -233,7 +232,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      if (settings) {
+      if (settings && token) {
         appState?.setOriginalTemplate(settings.content)
         appState?.setSettings(settings)
         appState?.setToken(token)
@@ -244,13 +243,6 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
 
   useEffect(() => {
     if (!appState?.appState.settings) return
-    // setTimeout(() => {
-    //   editor
-    //     ?.chain()
-    //     .focus()
-    //     .setContent((appState?.appState.settings as ISettings).content)
-    //     .run()
-    // })
     appState?.setEditorColor(
       (appState?.appState.settings as ISettings).backgroundColor,
     )
@@ -321,6 +313,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
               <EditorContent
                 editor={editor}
                 readOnly={appState?.appState.readOnly}
+                className={appState?.appState.readOnly ? '' : 'editable'}
               />
             </div>
             <When condition={!!appState?.appState.readOnly}>
