@@ -6,8 +6,6 @@ import { apiUrl } from '@/config'
 export const revalidate = 0
 
 async function getSettings(): Promise<ISettings> {
-  console.log('url', apiUrl)
-  console.log('url', process.env.NEXT_PUBLIC_VERCEL_URL)
   const { data } = await fetch(`${apiUrl}/api/settings`).then((res) =>
     res.json(),
   )
