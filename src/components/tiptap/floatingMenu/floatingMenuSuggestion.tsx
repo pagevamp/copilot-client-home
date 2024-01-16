@@ -75,14 +75,13 @@ export const floatingMenuSuggestion = {
           const token = new URLSearchParams(document.location.search).get(
             'token',
           )
-          const data = await handleBannerImageUpload(
-            file as File,
-            token as string,
-          )
-          if (data.contentType === 'application/pdf') {
-            tiptapEditorUtils.insertPdf(data.filename, data.url)
-          } else {
-            tiptapEditorUtils.setImage(data.url as string)
+          if (file && token) {
+            const data = await handleBannerImageUpload(file, token)
+            if (data.contentType === 'application/pdf') {
+              tiptapEditorUtils.insertPdf(data.filename, data.url)
+            } else {
+              tiptapEditorUtils.setImage(data.url as string)
+            }
           }
         },
       },

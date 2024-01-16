@@ -27,9 +27,14 @@ async function getCustomFields(token: string) {
 }
 
 async function getSettings(token: string) {
-  const { data } = await fetch(`${apiUrl}/api/settings?token=${token}`).then(
-    (res) => res.json(),
-  )
+  const res = await fetch(`${apiUrl}/api/settings?token=${token}`)
+
+  if (!res.ok) {
+    throw new Error('Something went wrong while fetching settings!')
+  }
+
+  const { data } = await res.json()
+
   return data
 }
 export default async function Page({
