@@ -6,7 +6,7 @@
   background-color: #eff1f4;
   border-radius: 0.75rem;
   padding: 0.125rem 0.5rem;
-  padding: 0.125rem 0.5rem
+  padding: 0.125rem 0.5rem;
 }
 
 .image-resizer {
@@ -26,7 +26,6 @@
 }
 .image-resizer:hover .resize-trigger {
   opacity: 1;
-
 }
 
 .tiptap {

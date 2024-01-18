@@ -13,9 +13,9 @@ async function getCustomFields(token: string) {
   return autofillFields
 }
 
-const token = new URLSearchParams(document.location.search).get('token')
-
 let customFields: ICustomField[] = []
+
+const token = new URLSearchParams(document?.location?.search).get('token')
 ;(async () => {
   customFields = await getCustomFields(token || '')
 })()

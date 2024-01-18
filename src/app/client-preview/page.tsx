@@ -24,7 +24,14 @@ async function getCompany(companyId: string, token: string) {
   const res = await fetch(
     `${apiUrl}/api/companies?companyId=${companyId}&token=${token}`,
   )
+
   const { data } = await res.json()
+  return data
+}
+
+async function getMe(token: string) {
+  const res = await fetch(`${apiUrl}/api/me?token=${token}`)
+  const data = await res.json()
   return data
 }
 
@@ -36,8 +43,9 @@ export default async function ClientPreviewPage({
   const { token } = searchParams
   const settings = await getSettings(token)
 
-  //the clientId will be dynamic later
-  const _client = await getClient('80ca5645-73e8-4a22-9bf5-cc5327355972', token)
+  const me = await getMe(token)
+
+  const _client = await getClient(me.id, token)
 
   const company = await getCompany(_client.companyId, token)
 
