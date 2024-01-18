@@ -16,6 +16,9 @@ async function getClient(clientId: string, token: string): Promise<IClient> {
   const res = await fetch(
     `${apiUrl}/api/client?clientId=${clientId}&token=${token}`,
   )
+  if (!res.ok) {
+    throw new Error(`No client found with '${token}' token`)
+  }
   const { data } = await res.json()
   return data
 }
