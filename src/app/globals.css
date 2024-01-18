@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.editable .autofill-pill {
+  background-color: #eff1f4;
+  border-radius: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  padding: 0.125rem 0.5rem;
+}
+
 .image-resizer {
   display: inline-flex;
   position: relative;

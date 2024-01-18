@@ -1,15 +1,11 @@
-import { copilotAPIKey, copilotAPIUrl } from '@/config'
+import { apiUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
 
 export const revalidate = 0
 
-async function listClients() {
-  const res = await fetch(`${copilotAPIUrl}/v1/clients?limit=100`, {
-    headers: {
-      'X-API-KEY': copilotAPIKey as string,
-    },
-  })
+async function listClients(token: string) {
+  const res = await fetch(`${apiUrl}/api/clients?token=${token}`)
 
   if (!res.ok) {
     throw new Error('Something went wrong while fetching client list!')
@@ -19,34 +15,44 @@ async function listClients() {
   return data
 }
 
-async function getCustomFields() {
-  const res = await fetch(`${copilotAPIUrl}/v1/custom-fields`, {
-    headers: {
-      'X-API-KEY': copilotAPIKey as string,
-    },
-  })
+async function getCustomFields(token: string) {
+  const res = await fetch(`${apiUrl}/api/autofill?token=${token}`)
 
   if (!res.ok) {
     throw new Error('Something went wrong while fetching client list!')
   }
 
-  const { data } = await res.json()
-  return data
+  const { autofillFields } = await res.json()
+  return autofillFields
 }
 
-// async function getSettings() {
-//   const { data } = await fetch("http://localhost:3000/api/settings").then(res => res.json())
-//   return data
-// }
-export default async function Page() {
-  const clientList = await listClients()
-  const customFields = await getCustomFields()
+async function getSettings(token: string) {
+  const res = await fetch(`${apiUrl}/api/settings?token=${token}`)
+
+  if (!res.ok) {
+    throw new Error('Something went wrong while fetching settings!')
+  }
+
+  const { data } = await res.json()
+
+  return data
+}
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { token: string }
+}) {
+  const { token } = searchParams
+
+  const clientList = await listClients(token)
+  const customFields = await getCustomFields(token)
+  const settings = await getSettings(token)
 
   return (
     <div>
       <div className='flex flex-row'>
         <div className='relative w-full'>
-          <EditorInterface />
+          <EditorInterface settings={settings} token={token} />
         </div>
         <div
           className='border-1 border-l border-slate-300 xl:hidden'

@@ -19,7 +19,10 @@ export const Footer = () => {
       appState?.appState.bannerImgUrl as Blob,
       'bannerImg',
     )
-    const data = await handleBannerImageUpload(imageFile as File)
+    const data = await handleBannerImageUpload(
+      imageFile as File,
+      appState?.appState.token as string,
+    )
 
     let payload = {}
     if (appState?.appState.bannerImgId) {
@@ -27,19 +30,21 @@ export const Footer = () => {
         backgroundColor: appState?.appState.editorColor,
         content: content,
         bannerImageId: data.id,
+        token: appState?.appState.token,
       }
     } else {
       payload = {
         backgroundColor: appState?.appState.editorColor,
         content: content,
+        token: appState?.appState.token,
       }
     }
     try {
-      await fetch(`/api/settings`, {
+      await fetch(`/api/settings?token=${appState?.appState.token}`, {
         method: 'PUT',
         body: JSON.stringify(payload),
       })
-      const res = await fetch(`/api/settings`)
+      const res = await fetch(`/api/settings?token=${appState?.appState.token}`)
       const { data } = await res.json()
       if (data) {
         appState?.setOriginalTemplate(data.content)

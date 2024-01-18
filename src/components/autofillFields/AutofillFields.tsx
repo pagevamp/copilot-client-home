@@ -20,7 +20,7 @@ const AutofillFields = () => {
     ;(async () => {
       appState?.setLoading(true)
       const res = await fetch(
-        `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}`,
+        `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}&token=${appState?.appState.token}`,
       )
       const { data } = await res.json()
       if (data.name) {

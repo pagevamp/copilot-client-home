@@ -39,8 +39,6 @@ const SideBarInterface: FC<IEditorInterface> = ({
   }, [dropdownSelectedClient])
 
   useEffect(() => {
-    if (clientList.length === 0 || customFields.length === 0) return
-
     appState?.setClientList(clientList)
     appState?.setCustomFields(customFields)
   }, [clientList, customFields])

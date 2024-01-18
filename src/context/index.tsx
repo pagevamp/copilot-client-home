@@ -20,6 +20,7 @@ export interface IAppState {
   //this data should be fetched from API in the future
   clientList: IClient[]
   customFields: ICustomField[]
+  token: string
 }
 
 export interface IAppContext {
@@ -38,6 +39,7 @@ export interface IAppContext {
   setClientCompanyName: (companyName: string) => void
   setBannerImgUrl: (imageUrl: string | Blob) => void
   setBannerImgId: (imageId: string) => void
+  setToken: (token: string) => void
 }
 
 interface IAppCoreProvider {
@@ -62,6 +64,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     loading: false,
     clientList: [],
     customFields: [],
+    token: '',
   })
 
   const toggleShowLinkInput = (v: boolean) => {
@@ -120,6 +123,10 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, bannerImgId: imageId }))
   }
 
+  const setToken = (token: string) => {
+    setState((prev) => ({ ...prev, token: token }))
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -138,6 +145,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         setClientCompanyName,
         setBannerImgUrl,
         setBannerImgId,
+        setToken,
       }}
     >
       {children}

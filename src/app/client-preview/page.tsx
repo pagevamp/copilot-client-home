@@ -5,32 +5,52 @@ import { apiUrl } from '@/config'
 
 export const revalidate = 0
 
-async function getSettings(): Promise<ISettings> {
-  const { data } = await fetch(`${apiUrl}/api/settings`).then((res) =>
-    res.json(),
+async function getSettings(token: string) {
+  const { data } = await fetch(`${apiUrl}/api/settings?token=${token}`).then(
+    (res) => res.json(),
   )
   return data
 }
 
-async function getClient(clientId: string): Promise<IClient> {
-  const res = await fetch(`${apiUrl}/api/client?clientId=${clientId}`)
+async function getClient(clientId: string, token: string): Promise<IClient> {
+  const res = await fetch(
+    `${apiUrl}/api/client?clientId=${clientId}&token=${token}`,
+  )
+  if (!res.ok) {
+    throw new Error(`No client found with '${token}' token`)
+  }
   const { data } = await res.json()
   return data
 }
 
-async function getCompany(companyId: string) {
-  const res = await fetch(`${apiUrl}/api/companies?companyId=${companyId}`)
+async function getCompany(companyId: string, token: string) {
+  const res = await fetch(
+    `${apiUrl}/api/companies?companyId=${companyId}&token=${token}`,
+  )
+
   const { data } = await res.json()
   return data
 }
 
-export default async function ClientPreviewPage() {
-  const settings = await getSettings()
+async function getMe(token: string) {
+  const res = await fetch(`${apiUrl}/api/me?token=${token}`)
+  const data = await res.json()
+  return data
+}
 
-  //the clientId will be dynamic later
-  const _client = await getClient('a2b66ac1-eedb-4b1c-8b6e-941b71583f3f')
+export default async function ClientPreviewPage({
+  searchParams,
+}: {
+  searchParams: { token: string }
+}) {
+  const { token } = searchParams
+  const settings = await getSettings(token)
 
-  const company = await getCompany(_client.companyId)
+  const me = await getMe(token)
+
+  const _client = await getClient(me.id, token)
+
+  const company = await getCompany(_client.companyId, token)
 
   const template = Handlebars?.compile(settings.content)
   const client = {

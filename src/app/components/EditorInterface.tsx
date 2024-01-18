@@ -46,7 +46,12 @@ import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
 
-const EditorInterface = () => {
+interface IEditorInterface {
+  settings: ISettings
+  token: string
+}
+
+const EditorInterface = ({ settings, token }: IEditorInterface) => {
   const appState = useAppState()
 
   const initialEditorContent = 'Type "/" for commands'
@@ -71,7 +76,7 @@ const EditorInterface = () => {
       }),
       Mention.configure({
         HTMLAttributes: {
-          class: 'bg-new-white-3 border-1 rounded-xl py-0.5 px-2',
+          class: 'autofill-pill',
         },
         suggestion: autofillMenuSuggestion,
         renderLabel({ node }) {
@@ -125,7 +130,7 @@ const EditorInterface = () => {
       CodeBlock,
       Code,
     ],
-    content: '',
+    content: settings.content,
   })
 
   // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
@@ -223,25 +228,17 @@ const EditorInterface = () => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      const res = await fetch(`/api/settings`)
-      const { data } = await res.json()
-      if (data) {
-        appState?.setOriginalTemplate(data.content)
-        appState?.setSettings(data)
+      if (settings && token) {
+        appState?.setOriginalTemplate(settings.content)
+        appState?.setSettings(settings)
+        appState?.setToken(token)
       }
       appState?.setLoading(false)
     })()
-  }, [])
+  }, [settings, token])
 
   useEffect(() => {
     if (!appState?.appState.settings) return
-    setTimeout(() => {
-      editor
-        ?.chain()
-        .focus()
-        .setContent((appState?.appState.settings as ISettings).content)
-        .run()
-    })
     appState?.setEditorColor(
       (appState?.appState.settings as ISettings).backgroundColor,
     )
@@ -335,6 +332,7 @@ const EditorInterface = () => {
               <EditorContent
                 editor={editor}
                 readOnly={appState?.appState.readOnly}
+                className={appState?.appState.readOnly ? '' : 'editable'}
               />
             </div>
             <When condition={!!appState?.appState.readOnly}>
