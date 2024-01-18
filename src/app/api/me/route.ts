@@ -5,21 +5,18 @@ import { z } from 'zod'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
-  const clientId = searchParams.get('clientId')
   const token = searchParams.get('token')
   if (!token) {
     errorHandler('Missing token', 422)
   }
-  if (!clientId) {
-    errorHandler('Missing client Id', 422)
-  }
+
   const copilotClient = new CopilotAPI(z.string().parse(token))
   try {
-    const client = await copilotClient.getClient(z.string().parse(clientId))
+    const me = await copilotClient.me()
 
-    return NextResponse.json({ data: client })
+    return NextResponse.json(me)
   } catch (error) {
     console.log(error)
-    return errorHandler('Client not found.', 404)
+    return errorHandler('User not found.', 404)
   }
 }
