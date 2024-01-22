@@ -1,15 +1,10 @@
 import { useAppState } from '@/hooks/useAppState'
 import { DeleteIcon } from '@/icons'
+import { fixUrl } from '@/utils/fixUrl'
 import { TiptapEditorUtils } from '@/utils/tiptapEditorUtils'
 import { InputAdornment, TextField } from '@mui/material'
 import { Editor } from '@tiptap/react'
-import React, {
-  FormEvent,
-  SyntheticEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react'
 
 const BubbleLinkInput = () => {
   const appState = useAppState()
@@ -32,12 +27,7 @@ const BubbleLinkInput = () => {
     //@ts-expect-error event should contain code
     if (event.code === 'Enter') {
       event.preventDefault()
-      const regex = /^https:\/\//
-      if (!regex.test(url)) {
-        tiptapEditorUtils.insertLink(`https://${url}`)
-      } else {
-        tiptapEditorUtils.insertLink(url)
-      }
+      tiptapEditorUtils.insertLink(fixUrl(url))
       appState?.toggleShowLinkInput(false)
       setUrl('')
     }
