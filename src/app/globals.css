@@ -82,7 +82,7 @@
 
 .tiptap ul,
 .tiptap ol {
-  padding: 0 1rem;
+  padding: 0 2.5rem;
 }
 
 td,
@@ -110,7 +110,7 @@ th p {
 table {
   border-collapse: collapse;
   overflow: hidden;
-  width: 80%;
+  width: 100%;
   table-layout: fixed;
   background-color: #fff;
   margin-top: 4px;
