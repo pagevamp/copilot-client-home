@@ -87,7 +87,7 @@ export const Footer = () => {
         !appState?.appState.readOnly
       }
     >
-      <div className='w-full flex flex-row justify-end gap-6 py-4 px-6 fixed bottom-0 bg-white'>
+      <div className='w-full flex flex-row justify-end gap-6 py-4 px-6 fixed bottom-0 bg-white border-t border-slate-300'>
         <button
           className='py-1 px-3 text-new-dark rounded text-[13px] rounded bg-white border border-slate-300'
           onClick={handleCancel}
