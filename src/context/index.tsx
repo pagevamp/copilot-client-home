@@ -115,7 +115,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, selectedClientCompanyName: companyName }))
   }
 
-  const setBannerImgUrl = (imageUrl: string | Blob) => {
+  const setBannerImgUrl = (imageUrl: string | Blob | null) => {
     setState((prev) => ({ ...prev, bannerImgUrl: imageUrl }))
   }
 
