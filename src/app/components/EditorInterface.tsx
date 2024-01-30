@@ -130,7 +130,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       CodeBlock,
       Code,
     ],
-    content: settings.content,
+    content: settings?.content || '',
   })
 
   // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
@@ -186,7 +186,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     ) {
       if (
         appState?.appState.originalTemplate?.toString() !==
-          appState?.appState.settings.content.toString() ||
+          appState?.appState.settings?.content.toString() ||
         appState?.appState.settings.backgroundColor !==
           appState?.appState.editorColor ||
         appState?.appState.settings.bannerImage.url !==
@@ -229,7 +229,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     ;(async () => {
       appState?.setLoading(true)
       if (settings && token) {
-        appState?.setOriginalTemplate(settings.content)
+        appState?.setOriginalTemplate(settings?.content)
         appState?.setSettings(settings)
         appState?.setToken(token)
       }
