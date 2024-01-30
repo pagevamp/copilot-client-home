@@ -105,7 +105,9 @@ export class TiptapEditorUtils {
   }
 
   setImage(imgUrl: string) {
-    this.editor.chain().focus().setImage({ src: imgUrl }).run()
+    // this.editor.chain().focus().setImage({ src: imgUrl }).run()
+    //@ts-expect-error addImage() is a method
+    this.editor.chain().focus().addImage().run()
   }
 
   insertTable({ rows, cols }: { rows: number; cols: number }) {
@@ -125,6 +127,7 @@ export class TiptapEditorUtils {
   }
 
   insertPdf(text: string, url: string) {
+    console.log('helloworld', text, url)
     this.editor
       .chain()
       .focus()
