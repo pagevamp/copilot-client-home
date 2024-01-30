@@ -37,7 +37,7 @@ export interface IAppContext {
   setClientList: (clientList: IClient[]) => void
   setCustomFields: (customFields: ICustomField[]) => void
   setClientCompanyName: (companyName: string) => void
-  setBannerImgUrl: (imageUrl: string | Blob) => void
+  setBannerImgUrl: (imageUrl: string | Blob | null) => void
   setBannerImgId: (imageId: string) => void
   setToken: (token: string) => void
 }
@@ -115,7 +115,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     setState((prev) => ({ ...prev, selectedClientCompanyName: companyName }))
   }
 
-  const setBannerImgUrl = (imageUrl: string | Blob) => {
+  const setBannerImgUrl = (imageUrl: string | Blob | null) => {
     setState((prev) => ({ ...prev, bannerImgUrl: imageUrl }))
   }
 
