@@ -37,7 +37,7 @@ export interface IAppContext {
   setClientList: (clientList: IClient[]) => void
   setCustomFields: (customFields: ICustomField[]) => void
   setClientCompanyName: (companyName: string) => void
-  setBannerImgUrl: (imageUrl: string | Blob) => void
+  setBannerImgUrl: (imageUrl: string | Blob | null) => void
   setBannerImgId: (imageId: string) => void
   setToken: (token: string) => void
 }

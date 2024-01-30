@@ -189,7 +189,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
           appState?.appState.settings?.content.toString() ||
         appState?.appState.settings?.backgroundColor !==
           appState?.appState.editorColor ||
-        appState?.appState.settings.bannerImage.url !==
+        appState?.appState.settings.bannerImage?.url !==
           appState?.appState.bannerImgUrl
       ) {
         appState?.toggleChangesCreated(true)
@@ -259,7 +259,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       (appState?.appState.settings as ISettings).backgroundColor,
     )
     appState?.setBannerImgUrl(
-      (appState?.appState.settings as ISettings).bannerImage.url,
+      (appState?.appState.settings as ISettings).bannerImage?.url || '',
     )
   }, [appState?.appState.settings])
 
