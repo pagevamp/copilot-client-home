@@ -4,8 +4,8 @@ import { AutofillMenu } from './AutofillMenu'
 import { staticAutofillValues } from '@/utils/constants'
 import { ICustomField } from '@/types/interfaces'
 
-async function getCustomFields() {
-  const res = await fetch(`/api/autofill?token=test`, {
+async function getCustomFields(token: string) {
+  const res = await fetch(`/api/autofill?token=${token}`, {
     next: { revalidate: 0 },
   })
   const { autofillFields } = await res.json()
@@ -17,7 +17,7 @@ let customFields: ICustomField[] = []
 
 // const token = new URLSearchParams(document?.location?.search).get('token')
 ;(async () => {
-  customFields = await getCustomFields()
+  customFields = await getCustomFields('test')
 })()
 
 export const autofillMenuSuggestion = {
