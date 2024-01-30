@@ -1,14 +1,15 @@
 /* eslint-disable */
-import { Plugin } from '@tiptap/pm/state'
-import { Decoration, DecorationSet } from '@tiptap/pm/view'
-import { mergeAttributes, Node, nodeInputRule } from '@tiptap/core'
-import './upload-image.css'
-import { ImageResizeComponent } from './ImageResizeComponent'
-import { ReactNodeViewRenderer } from '@tiptap/react'
 
-export const inputRegex = /(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/
-let imagePreview = null
-let uploadFn = null
+import { Plugin } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
+import { mergeAttributes, Node, nodeInputRule } from '@tiptap/core'
+import "./upload-image.css";
+import { ReactNodeViewRenderer } from '@tiptap/react';
+import { ImageResizeComponent } from './ImageResizeComponent';
+
+export const inputRegex = /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/
+let imagePreview = null;
+let uploadFn = null;
 
 export const UploadImage = Node.create({
   name: 'uploadImage',
@@ -32,11 +33,6 @@ export const UploadImage = Node.create({
     return {
       src: {
         default: null,
-        renderHTML: (attributes) => {
-          return {
-            src: attributes.src,
-          }
-        },
       },
       alt: {
         default: null,
@@ -60,64 +56,51 @@ export const UploadImage = Node.create({
           }
         },
       },
-      // isDraggable: {
-      //   default: true,
-      //   renderHTML: (attributes) => {
-      //     return {}
-      //   },
-      // },
+      isDraggable: {
+        default: true,
+        renderHTML: (attributes) => {
+          return {}
+        },
+      },
     }
   },
   parseHTML() {
     return [
       {
-        tag: 'img[src]',
-      },
-      {
-        tag: 'image-resizer',
+        tag: 'img[src]'
       },
     ]
   },
-  // renderHTML({ HTMLAttributes }) {
-  //   return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)]
-  // },
   renderHTML({ HTMLAttributes }) {
-    return [
-      'image-resizer',
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-    ]
+    return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)]
   },
   addNodeView() {
     return ReactNodeViewRenderer(ImageResizeComponent)
   },
   addCommands() {
     return {
-      addImage:
-        () =>
-          ({ commands }) => {
-            let fileHolder = document.createElement('input')
-            fileHolder.setAttribute('type', 'file')
-            fileHolder.setAttribute('accept', 'image/*')
-            fileHolder.setAttribute('style', 'visibility:hidden')
-            document.body.appendChild(fileHolder)
+      addImage: () => ({ commands }) => {
+        let fileHolder = document.createElement("input");
+        fileHolder.setAttribute("type", "file");
+        fileHolder.setAttribute("accept", "image/*");
+        fileHolder.setAttribute("style", "visibility:hidden");
+        document.body.appendChild(fileHolder);
 
-            let view = this.editor.view
-            let schema = this.editor.schema
+        let view = this.editor.view;
+        let schema = this.editor.schema;
 
-            fileHolder.addEventListener('change', (e) => {
-              if (
-                view.state.selection.$from.parent.inlineContent &&
-                e.target.files.length
-              )
-                if (typeof uploadFn !== 'function') {
-                  console.warn('uploadFn should be a function')
-                  return
-                }
-              startImageUpload(view, e.target.files[0], schema)
-              view.focus()
-            })
-            fileHolder.click()
-          },
+        fileHolder.addEventListener("change", e => {
+          if (view.state.selection.$from.parent.inlineContent && e.target.files.length)
+            if (typeof uploadFn !== "function") {
+              console.warn('uploadFn should be a function');
+              return;
+            }
+          startImageUpload(view, e.target.files[0], schema)
+          view.focus()
+        })
+        fileHolder.click();
+
+      }
     }
   },
   addInputRules() {
@@ -125,59 +108,53 @@ export const UploadImage = Node.create({
       nodeInputRule({
         find: inputRegex,
         type: this.type,
-        getAttributes: (match) => {
-          const [, , alt, src, title] = match
-
-          return { src, alt, title }
+        getAttributes: match => {
+          const [, , alt, src, title, height, width, isDraggable] = match
+          return { src, alt, title, height, width, isDraggable }
         },
       }),
     ]
   },
   addProseMirrorPlugins() {
-    return [placeholderPlugin]
+    return [
+      placeholderPlugin
+    ]
   },
 })
 
 //Plugin for placeholder
 let placeholderPlugin = new Plugin({
   state: {
-    init() {
-      return DecorationSet.empty
-    },
+    init() { return DecorationSet.empty },
     apply(tr, set) {
       // Adjust decoration positions to changes made by the transaction
       set = set.map(tr.mapping, tr.doc)
       // See if the transaction adds or removes any placeholders
       let action = tr.getMeta(this)
       if (action && action.add) {
-        let widget = document.createElement('div')
-        let img = document.createElement('img')
-        widget.classList = 'image-uploading'
-        img.src = imagePreview
-        widget.appendChild(img)
-        let deco = Decoration.widget(action.add.pos, widget, {
-          id: action.add.id,
-        })
+        let widget = document.createElement("div")
+        let img = document.createElement('img');
+        widget.classList = "image-uploading";
+        img.src = imagePreview;
+        widget.appendChild(img);
+        let deco = Decoration.widget(action.add.pos, widget, { id: action.add.id })
         set = set.add(tr.doc, [deco])
       } else if (action && action.remove) {
-        set = set.remove(
-          set.find(null, null, (spec) => spec.id == action.remove.id),
-        )
+        set = set.remove(set.find(null, null,
+          spec => spec.id == action.remove.id))
       }
       return set
-    },
+    }
   },
   props: {
-    decorations(state) {
-      return this.getState(state)
-    },
-  },
-})
+    decorations(state) { return this.getState(state) }
+  }
+});
 
 //Find the placeholder in editor
 function findPlaceholder(state, id) {
   let decos = placeholderPlugin.getState(state)
-  let found = decos.find(null, null, (spec) => spec.id == id)
+  let found = decos.find(null, null, spec => spec.id == id)
   return found.length ? found[0].from : null
 }
 
@@ -191,37 +168,19 @@ function startImageUpload(view, file, schema) {
   if (!tr.selection.empty) tr.deleteSelection()
   tr.setMeta(placeholderPlugin, { add: { id, pos: tr.selection.from } })
   view.dispatch(tr)
-  uploadFn(file).then(
-    (data) => {
-      const url = data.url
+  uploadFn(file).then(url => {
 
-      let pos = findPlaceholder(view.state, id)
-      // If the content around the placeholder has been deleted, drop
-      // the image
-      if (pos == null) return
-      // Otherwise, insert it at the placeholder's position, and remove
-      // the placeholder
-      view.dispatch(
-        view.state.tr
-          .replaceWith(pos, pos, schema.nodes.uploadImage.create({ src: url }))
-          .setMeta(placeholderPlugin, { remove: { id } }),
-      )
-    },
-    (e) => {
-      // On failure, just clean up the placeholder
-      view.dispatch(tr.setMeta(placeholderPlugin, { remove: { id } }))
-    },
-  )
-}
-
-function startPdfUpload(view, file, schema) {
-  uploadFn(file).then(
-    (data) => {
-      console.log(data)
-    },
-    (e) => {
-      // On failure, just clean up the placeholder
-      view.dispatch(tr.setMeta(placeholderPlugin, { remove: { id } }))
-    },
-  )
+    let pos = findPlaceholder(view.state, id)
+    // If the content around the placeholder has been deleted, drop
+    // the image
+    if (pos == null) return
+    // Otherwise, insert it at the placeholder's position, and remove
+    // the placeholder
+    view.dispatch(view.state.tr
+      .replaceWith(pos, pos, schema.nodes.uploadImage.create({ src: url }))
+      .setMeta(placeholderPlugin, { remove: { id } }))
+  }, (e) => {
+    // On failure, just clean up the placeholder
+    view.dispatch(tr.setMeta(placeholderPlugin, { remove: { id } }))
+  })
 }
