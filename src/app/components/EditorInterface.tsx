@@ -246,7 +246,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
           createdById: '',
         }
         appState?.setOriginalTemplate(settings?.content || '')
-        appState?.setSettings(settings ? settings : _settings)
+        appState?.setSettings(settings || _settings)
         appState?.setToken(token)
       }
       appState?.setLoading(false)
