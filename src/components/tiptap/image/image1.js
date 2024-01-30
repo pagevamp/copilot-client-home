@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Plugin } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
 import { mergeAttributes, Node, nodeInputRule } from '@tiptap/core'
@@ -94,25 +95,28 @@ export const UploadImage = Node.create({
       addImage:
         () =>
           ({ commands }) => {
-            let fileHolder = document.createElement("input");
-            fileHolder.setAttribute("type", "file");
-            fileHolder.setAttribute("accept", "image/*");
-            fileHolder.setAttribute("style", "visibility:hidden");
-            document.body.appendChild(fileHolder);
+            let fileHolder = document.createElement('input')
+            fileHolder.setAttribute('type', 'file')
+            fileHolder.setAttribute('accept', 'image/*')
+            fileHolder.setAttribute('style', 'visibility:hidden')
+            document.body.appendChild(fileHolder)
 
-            let view = this.editor.view;
-            let schema = this.editor.schema;
+            let view = this.editor.view
+            let schema = this.editor.schema
 
-            fileHolder.addEventListener("change", e => {
-              if (view.state.selection.$from.parent.inlineContent && e.target.files.length)
-                if (typeof uploadFn !== "function") {
-                  console.warn('uploadFn should be a function');
-                  return;
+            fileHolder.addEventListener('change', (e) => {
+              if (
+                view.state.selection.$from.parent.inlineContent &&
+                e.target.files.length
+              )
+                if (typeof uploadFn !== 'function') {
+                  console.warn('uploadFn should be a function')
+                  return
                 }
               startImageUpload(view, e.target.files[0], schema)
               view.focus()
             })
-            fileHolder.click();
+            fileHolder.click()
           },
     }
   },
