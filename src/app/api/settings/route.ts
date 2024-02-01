@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const token = searchParams.get('token')
   if (!token) {
-    errorHandler('Missing token', 422)
+    return errorHandler('Missing token', 422)
   }
   const settingService = new SettingService()
   const currentUser = await getCurrentUser(z.string().parse(token))

@@ -8,10 +8,10 @@ export async function GET(request: NextRequest) {
   const companyId = searchParams.get('companyId')
   const token = searchParams.get('token')
   if (!token) {
-    errorHandler('Missing token', 422)
+    return errorHandler('Missing token', 422)
   }
   if (!companyId) {
-    errorHandler('Missing company Id', 422)
+    return errorHandler('Missing company Id', 422)
   }
   const copilotClient = new CopilotAPI(z.string().parse(token))
   try {

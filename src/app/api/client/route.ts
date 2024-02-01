@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const clientId = searchParams.get('clientId')
   const token = searchParams.get('token')
   if (!token) {
-    errorHandler('Missing token', 422)
+    return errorHandler('Missing token', 422)
   }
   if (!clientId) {
     errorHandler('Missing client Id', 422)
