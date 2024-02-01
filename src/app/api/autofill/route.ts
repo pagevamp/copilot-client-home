@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const token = searchParams.get('token')
   if (!token) {
-    errorHandler('Missing token', 422)
+    return errorHandler('Missing token', 422)
   }
   const copilotClient = new CopilotAPI(z.string().parse(token))
   const { data } = await copilotClient.getCustomFields()
