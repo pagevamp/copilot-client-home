@@ -1,3 +1,4 @@
+import { copilotAPIKey } from '@/config'
 import { errorHandler } from '@/utils/common'
 import { CopilotAPI } from '@/utils/copilotApiUtils'
 import { NextResponse, NextRequest } from 'next/server'
@@ -7,9 +8,10 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const token = searchParams.get('token')
   if (!token) {
-    errorHandler('Missing token', 422)
+    return errorHandler('Missing token', 422)
   }
 
+  console.log('token api key', token, copilotAPIKey)
   const copilotClient = new CopilotAPI(z.string().parse(token))
   try {
     const clients = await copilotClient.getClients()

@@ -3,6 +3,7 @@ import tippy from 'tippy.js'
 import { AutofillMenu } from './AutofillMenu'
 import { staticAutofillValues } from '@/utils/constants'
 import { ICustomField } from '@/types/interfaces'
+import { z } from 'zod'
 
 async function getCustomFields(token: string) {
   const res = await fetch(`/api/autofill?token=${token}`, {
@@ -17,7 +18,7 @@ let customFields: ICustomField[] = []
 
 const token = new URLSearchParams(document?.location?.search).get('token')
 ;(async () => {
-  customFields = await getCustomFields(token || '')
+  customFields = await getCustomFields(z.string().parse(token))
 })()
 
 export const autofillMenuSuggestion = {

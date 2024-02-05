@@ -9,7 +9,7 @@ export interface ISettings {
     contentType: string
     size: number
     createdById: string
-  }
+  } | null
   createdById: string
 }
 

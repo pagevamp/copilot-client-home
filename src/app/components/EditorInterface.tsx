@@ -47,7 +47,7 @@ import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
 
 interface IEditorInterface {
-  settings: ISettings
+  settings: ISettings | null
   token: string
 }
 
@@ -130,7 +130,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       CodeBlock,
       Code,
     ],
-    content: settings.content,
+    content: settings?.content || '',
   })
 
   // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
@@ -186,10 +186,10 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     ) {
       if (
         appState?.appState.originalTemplate?.toString() !==
-          appState?.appState.settings.content.toString() ||
-        appState?.appState.settings.backgroundColor !==
+          appState?.appState.settings?.content.toString() ||
+        appState?.appState.settings?.backgroundColor !==
           appState?.appState.editorColor ||
-        appState?.appState.settings.bannerImage.url !==
+        appState?.appState.settings.bannerImage?.url !==
           appState?.appState.bannerImgUrl
       ) {
         appState?.toggleChangesCreated(true)
@@ -204,6 +204,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     appState?.appState.editorColor,
     appState?.appState.bannerImgUrl,
     appState?.appState.readOnly,
+    appState?.appState.settings,
     editor,
   ])
 
@@ -228,9 +229,24 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
   useEffect(() => {
     ;(async () => {
       appState?.setLoading(true)
-      if (settings && token) {
-        appState?.setOriginalTemplate(settings.content)
-        appState?.setSettings(settings)
+
+      if (token) {
+        const _settings = {
+          content: '',
+          backgroundColor: '#fff',
+          id: '',
+          bannerImage: {
+            id: '',
+            url: '',
+            filename: '',
+            contentType: '',
+            size: 0,
+            createdById: '',
+          },
+          createdById: '',
+        }
+        appState?.setOriginalTemplate(settings?.content || '')
+        appState?.setSettings(settings || _settings)
         appState?.setToken(token)
       }
       appState?.setLoading(false)
@@ -243,7 +259,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       (appState?.appState.settings as ISettings).backgroundColor,
     )
     appState?.setBannerImgUrl(
-      (appState?.appState.settings as ISettings).bannerImage.url,
+      (appState?.appState.settings as ISettings).bannerImage?.url || '',
     )
   }, [appState?.appState.settings])
 
