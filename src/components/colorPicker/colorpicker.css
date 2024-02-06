@@ -1,0 +1,3 @@
+.flexbox-fix:nth-child(2) {
+  display: none !important;
+}

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChromePicker, SketchPicker } from 'react-color'
+import { ChromePicker } from 'react-color'
 import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
+import './colorpicker.css'
 
 const ColorPicker = () => {
   const [showPicker, setShowPicker] = useState(false)
