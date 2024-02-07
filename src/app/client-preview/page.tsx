@@ -76,7 +76,7 @@ export default async function ClientPreviewPage({
     <div
       className={`overflow-y-auto overflow-x-hidden max-h-screen w-full`}
       style={{
-        background: `${settings?.backgroundColor || '#ffffff'}`,
+        background: `${settings.backgroundColor}`,
       }}
     >
       <img
