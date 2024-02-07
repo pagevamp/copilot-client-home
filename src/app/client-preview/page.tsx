@@ -38,13 +38,33 @@ export default async function ClientPreviewPage({
   searchParams: { token: string; clientId: string }
 }) {
   const { token, clientId } = searchParams
-  const settings = await getSettings(token)
+
+  let settings: ISettings = {
+    content: '',
+    backgroundColor: '#ffffff',
+    id: '',
+    bannerImage: {
+      id: '',
+      url: '',
+      filename: '',
+      contentType: '',
+      size: 0,
+      createdById: '',
+    },
+    createdById: '',
+  }
+
+  const s = await getSettings(token)
+
+  if (s) {
+    settings = s
+  }
 
   const _client = await getClient(clientId, token)
 
   const company = await getCompany(_client.companyId, token)
 
-  const template = Handlebars?.compile(settings.content)
+  const template = Handlebars?.compile(settings?.content)
   const client = {
     ..._client,
     company: company.name,
@@ -56,12 +76,12 @@ export default async function ClientPreviewPage({
     <div
       className={`overflow-y-auto overflow-x-hidden max-h-screen w-full`}
       style={{
-        background: `${settings.backgroundColor}`,
+        background: `${settings?.backgroundColor || '#ffffff'}`,
       }}
     >
       <img
         className='w-full object-fill xl:object-cover'
-        src={settings.bannerImage.url}
+        src={settings?.bannerImage?.url}
         alt='banner image'
         style={{
           height: '25vh',
