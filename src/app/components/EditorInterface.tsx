@@ -233,7 +233,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       if (token) {
         const _settings = {
           content: '',
-          backgroundColor: '#fff',
+          backgroundColor: '#ffffff',
           id: '',
           bannerImage: {
             id: '',
