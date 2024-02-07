@@ -79,14 +79,16 @@ export default async function ClientPreviewPage({
         background: `${settings.backgroundColor}`,
       }}
     >
-      <img
-        className='w-full object-fill xl:object-cover'
-        src={settings?.bannerImage?.url}
-        alt='banner image'
-        style={{
-          height: '25vh',
-        }}
-      />
+      {settings?.bannerImage?.url && (
+        <img
+          className='w-full object-fill xl:object-cover'
+          src={settings?.bannerImage?.url}
+          alt='banner image'
+          style={{
+            height: '25vh',
+          }}
+        />
+      )}
       <div
         className='px-14 py-350 max-w-xl'
         style={{
