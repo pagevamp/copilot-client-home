@@ -54,10 +54,10 @@ export default async function ClientPreviewPage({
     createdById: '',
   }
 
-  const s = await getSettings(token)
+  const _settings = await getSettings(token)
 
-  if (s) {
-    settings = s
+  if (_settings) {
+    settings = _settings
   }
 
   const _client = await getClient(clientId, token)
