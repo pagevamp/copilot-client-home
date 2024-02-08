@@ -16,7 +16,10 @@ export const ClientResponseSchema = z.object({
   email: z.string(),
   companyId: z.string(),
   customFields: z
-    .record(z.string(), z.union([z.string(), z.array(z.string())]))
+    .record(
+      z.string(),
+      z.union([z.string().nullable(), z.array(z.string()).nullable()]),
+    )
     .nullable(),
 })
 export type ClientResponse = z.infer<typeof ClientResponseSchema>
