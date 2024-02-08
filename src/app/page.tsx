@@ -1,4 +1,4 @@
-import { apiUrl } from '@/config'
+import { apiUrl, copilotAPIKey } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
 import { copilotApi } from 'copilot-node-sdk'
@@ -7,13 +7,19 @@ export const revalidate = 0
 
 async function listClients(token: string) {
   console.log(`API URL: ${apiUrl}`)
-  // @todo - Use SDK to fetch client list
-  const copilotClient = copilotApi({ apiKey: token })
-  const clientList = await copilotClient.listClients({})
-  console.log('Client list through SDK', clientList.data)
+  try {
+    // @todo - Use SDK to fetch client list
+    const copilotClient = copilotApi({ apiKey: copilotAPIKey, token })
+    const clientList = await copilotClient.listClients({})
+    console.log('Client list through SDK', clientList.data)
+  } catch (e) {
+    console.error('Error while fetching client list through SDK', e)
+  }
+
   const res = await fetch(`${apiUrl}/api/clients?token=${token}`)
 
   if (!res.ok) {
+    console.log('Error fetch clients through API call', res.body)
     throw new Error('Something went wrong while fetching client list!')
   }
 
