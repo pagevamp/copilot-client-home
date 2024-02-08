@@ -1,42 +1,22 @@
-import { apiUrl, copilotAPIKey } from '@/config'
+import { apiUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
-import { copilotApi } from 'copilot-node-sdk'
+import { CopilotAPI } from '@/utils/copilotApiUtils'
 
 export const revalidate = 0
 
 async function listClients(token: string) {
-  console.log(`API URL: ${apiUrl}`)
-  try {
-    // @todo - Use SDK to fetch client list
-    const copilotClient = copilotApi({ apiKey: copilotAPIKey, token })
-    const clientList = await copilotClient.listClients({})
-    console.log('Client list through SDK', clientList.data)
-  } catch (e) {
-    console.error('Error while fetching client list through SDK', e)
-  }
+  const copilotClient = new CopilotAPI(token)
+  const clientList = await copilotClient.getClients()
 
-  const res = await fetch(`${apiUrl}/api/clients?token=${token}`)
-
-  if (!res.ok) {
-    console.log('Error fetch clients through API call', res.body)
-    throw new Error('Something went wrong while fetching client list!')
-  }
-
-  const { data } = await res.json()
-  return data
+  return clientList.data
 }
 
 async function getCustomFields(token: string) {
-  console.log(`API URL: ${apiUrl}`)
-  const res = await fetch(`${apiUrl}/api/autofill?token=${token}`)
+  const copilotClient = new CopilotAPI(token)
+  const customFieldsList = await copilotClient.getCustomFields()
 
-  if (!res.ok) {
-    throw new Error('Something went wrong while fetching client list!')
-  }
-
-  const { autofillFields } = await res.json()
-  return autofillFields
+  return customFieldsList.data
 }
 
 async function getSettings(token: string) {
@@ -50,6 +30,7 @@ async function getSettings(token: string) {
 
   return data
 }
+
 export default async function Page({
   searchParams,
 }: {
