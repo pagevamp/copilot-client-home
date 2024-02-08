@@ -34,6 +34,17 @@ export class CopilotAPI {
   }
 
   async getClients() {
+    console.log(
+      (await this.copilot.listClients({})).data?.map(
+        (el: any) => el.customFields,
+      ),
+    )
+    const a = ClientsResponseSchema.safeParse(
+      await this.copilot.listClients({}),
+    )
+    if (!a.success) {
+      console.log(a.error)
+    }
     return ClientsResponseSchema.parse(await this.copilot.listClients({}))
   }
 
