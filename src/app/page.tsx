@@ -1,10 +1,16 @@
 import { apiUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
+import { copilotApi } from 'copilot-node-sdk'
 
 export const revalidate = 0
 
 async function listClients(token: string) {
+  console.log(`API URL: ${apiUrl}`)
+  // @todo - Use SDK to fetch client list
+  const copilotClient = copilotApi({ apiKey: token })
+  const clientList = await copilotClient.listClients({})
+  console.log('Client list through SDK', clientList.data)
   const res = await fetch(`${apiUrl}/api/clients?token=${token}`)
 
   if (!res.ok) {
@@ -16,6 +22,7 @@ async function listClients(token: string) {
 }
 
 async function getCustomFields(token: string) {
+  console.log(`API URL: ${apiUrl}`)
   const res = await fetch(`${apiUrl}/api/autofill?token=${token}`)
 
   if (!res.ok) {

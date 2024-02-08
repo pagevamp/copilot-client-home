@@ -15,7 +15,8 @@ export async function GET(request: NextRequest) {
     const clients = await copilotClient.getClients()
 
     return NextResponse.json(clients)
-  } catch (error) {
+  } catch (error: unknown) {
+    console.log(`There was an error getting clients: ${error}`)
     return errorHandler('Clients not found.', 404)
   }
 }
