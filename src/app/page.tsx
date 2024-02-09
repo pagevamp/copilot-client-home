@@ -1,7 +1,6 @@
 import { apiUrl, copilotAPIKey } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
-import { CopilotAPI } from '@/utils/copilotApiUtils'
 import { copilotApi } from 'copilot-node-sdk'
 
 export const revalidate = 0
@@ -10,7 +9,7 @@ async function listClients(token: string) {
   const res = await fetch(`${apiUrl}/api/clients?token=${token}`)
 
   if (!res.ok) {
-    throw new Error('Something went wrong while fetching client list!')
+    return []
   }
 
   const { data } = await res.json()
