@@ -49,11 +49,15 @@ export default async function Page({
   const clientList = await listClients(token)
   const customFields = await getCustomFields(token)
   const settings = await getSettings(token)
-  const copilot = copilotApi({
-    apiKey: copilotAPIKey,
-    token: token,
-  })
-  console.log('clients', await copilot.listClients({}))
+  try {
+    const copilot = copilotApi({
+      apiKey: copilotAPIKey,
+      token: token,
+    })
+    console.log('clients', await copilot.listClients({}))
+  } catch (e) {
+    console.log('clients Error', e)
+  }
 
   return (
     <div>
