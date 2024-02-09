@@ -34,6 +34,7 @@ export class CopilotAPI {
   }
 
   async getClients() {
+    console.log('clients', await this.copilot.listClients({}))
     return ClientsResponseSchema.parse(await this.copilot.listClients({}))
   }
 
