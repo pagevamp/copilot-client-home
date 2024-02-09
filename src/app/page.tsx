@@ -25,13 +25,6 @@ async function getCustomFields(token: string) {
 
 async function getSettings(token: string) {
   const res = await fetch(`${apiUrl}/api/settings?token=${token}`)
-  console.log(
-    `${apiUrl}/api/settings`,
-    res.ok,
-    res.statusText,
-    res.status,
-    res.url,
-  )
 
   if (!res.ok) {
     throw new Error('Something went wrong while fetching settings!')
