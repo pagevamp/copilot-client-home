@@ -1,6 +1,8 @@
-import { apiUrl } from '@/config'
+import { apiUrl, copilotAPIKey } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
+import { CopilotAPI } from '@/utils/copilotApiUtils'
+import { copilotApi } from 'copilot-node-sdk'
 
 export const revalidate = 0
 
@@ -47,6 +49,11 @@ export default async function Page({
   const clientList = await listClients(token)
   const customFields = await getCustomFields(token)
   const settings = await getSettings(token)
+  const copilot = copilotApi({
+    apiKey: copilotAPIKey,
+    token: token,
+  })
+  console.log('clients', await copilot.listClients({}))
 
   return (
     <div>
