@@ -2,25 +2,36 @@ import { apiUrl } from '@/config'
 import EditorInterface from './components/EditorInterface'
 import SideBarInterface from './components/SideBarInterface'
 import { CopilotAPI } from '@/utils/copilotApiUtils'
+import { ClientsResponseSchema } from '@/types/common'
+import { IClient, ICustomField } from '@/types/interfaces'
 
 export const revalidate = 0
 
 async function listClients(token: string) {
   const copilotClient = new CopilotAPI(token)
-  const clientList = await copilotClient.getClients()
+  const clientList = ClientsResponseSchema.parse(
+    await copilotClient.getClients(),
+  )
 
-  return clientList.data
+  return (clientList.data || []) as IClient[]
 }
 
 async function getCustomFields(token: string) {
   const copilotClient = new CopilotAPI(token)
   const customFieldsList = await copilotClient.getCustomFields()
 
-  return customFieldsList.data
+  return (customFieldsList.data || []) as ICustomField[]
 }
 
 async function getSettings(token: string) {
   const res = await fetch(`${apiUrl}/api/settings?token=${token}`)
+  console.log(
+    `${apiUrl}/api/settings`,
+    res.ok,
+    res.statusText,
+    res.status,
+    res.url,
+  )
 
   if (!res.ok) {
     throw new Error('Something went wrong while fetching settings!')

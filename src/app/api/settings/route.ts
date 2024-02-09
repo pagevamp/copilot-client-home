@@ -14,7 +14,23 @@ export async function GET(request: NextRequest) {
   const currentUser = await getCurrentUser(z.string().parse(token))
   const setting = await settingService.findByUserId(currentUser.id)
 
-  return NextResponse.json(setting ? { data: setting } : { data: null })
+  const defaultSetting = {
+    content: '',
+    backgroundColor: '#ffffff',
+    id: '',
+    bannerImage: {
+      id: '',
+      url: '',
+      filename: '',
+      contentType: '',
+      size: 0,
+      createdById: '',
+    },
+    createdById: '',
+  }
+  return NextResponse.json(
+    setting ? { data: setting } : { data: defaultSetting },
+  )
 }
 
 export async function PUT(request: NextRequest) {
