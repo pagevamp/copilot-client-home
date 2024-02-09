@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(clients)
   } catch (error) {
+    console.log('error', error)
     return errorHandler('Clients not found.', 404)
   }
 }
