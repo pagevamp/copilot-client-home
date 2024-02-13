@@ -24,7 +24,7 @@ export class CopilotAPI {
   }
 
   async me(): Promise<MeResponse> {
-    //updated method
+    //updated method here
     return MeResponseSchema.parse(await this.copilot.getUserInfo())
   }
 
