@@ -45,6 +45,7 @@ import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
+import Image from 'next/image'
 
 interface IEditorInterface {
   settings: ISettings | null
@@ -304,16 +305,21 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
               background: `${appState?.appState.editorColor}`,
             }}
           >
-            <When condition={!!appState?.appState.bannerImgUrl}>
-              <img
-                className='w-full object-fill xl:object-cover'
+            {!!appState?.appState.bannerImgUrl && bannerImage ? (
+              <Image
+                className='w-full'
                 src={bannerImage}
                 alt='banner image'
+                width={0}
+                height={0}
+                sizes='100vw'
                 style={{
+                  width: '100%',
                   height: '25vh',
+                  objectFit: 'cover',
                 }}
               />
-            </When>
+            ) : null}
             <div
               className='px-14 py-350 max-w-xl'
               style={{
