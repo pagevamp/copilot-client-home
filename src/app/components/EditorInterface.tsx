@@ -135,8 +135,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     content: settings?.content || defaultState,
   })
 
-  // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
-  const [bannerImage, setBannerImage] = useState('')
+  const [bannerImage, setBannerImage] = useState<string>('')
 
   useEffect(() => {
     if (editor) {
@@ -309,7 +308,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
             {!!appState?.appState.bannerImgUrl && bannerImage ? (
               <Image
                 className='w-full'
-                src={bannerImage}
+                src={bannerImage || '/default_banner.png'}
                 alt='banner image'
                 width={0}
                 height={0}
@@ -320,7 +319,21 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
                   objectFit: 'cover',
                 }}
               />
-            ) : null}
+            ) : (
+              <Image
+                className='w-full'
+                src={'/default_banner.png'}
+                alt='banner image'
+                width={0}
+                height={0}
+                sizes='100vw'
+                style={{
+                  width: '100%',
+                  height: '25vh',
+                  objectFit: 'cover',
+                }}
+              />
+            )}
             <div
               className='px-14 py-350 max-w-xl'
               style={{
