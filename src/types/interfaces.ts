@@ -28,6 +28,7 @@ export interface IClient {
   lastLoginDate: string
   lastActiveDate: string
   customFields: object
+  avatarImageUrl: string | null
 }
 
 export interface ICustomField {

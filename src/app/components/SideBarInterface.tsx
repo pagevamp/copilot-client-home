@@ -8,6 +8,9 @@ import { useAppState } from '@/hooks/useAppState'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import { FC, useEffect, useState } from 'react'
 import { IClient, ICustomField } from '@/types/interfaces'
+import { Box, Stack } from '@mui/material'
+import Image from 'next/image'
+import { generateRandomHexColor } from '@/utils/generateRandomHexColor'
 
 interface IEditorInterface {
   clientList: IClient[]
@@ -77,17 +80,55 @@ const SideBarInterface: FC<IEditorInterface> = ({
               {appState?.appState.clientList &&
                 appState?.appState.clientList.map((val, key) => {
                   return (
-                    <div
+                    <Stack
                       key={key}
-                      className={`hover:bg-slate-50 py-2 px-3 ${
-                        dropdownSelectedClient === val.givenName
-                          ? 'bg-slate-50'
-                          : ''
-                      }`}
-                      onClick={() => setDropdownSelectedClient(val)}
+                      direction='row'
+                      alignItems='flex-start'
+                      columnGap={0.5}
+                      className='py-2 px-3'
                     >
-                      {val.givenName}
-                    </div>
+                      {val.avatarImageUrl ? (
+                        <Box key={key}>
+                          <Image
+                            src={val.avatarImageUrl}
+                            alt={val.givenName}
+                            width={20}
+                            height={10}
+                            style={{ borderRadius: '50%', marginTop: '2px' }}
+                          />
+                        </Box>
+                      ) : (
+                        <Stack
+                          key={key}
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: '50%',
+                            background: `${generateRandomHexColor()}`,
+                            opacity: 0.8,
+                            alignItems: 'center',
+                            padding: '10px',
+                            justifyContent: 'center',
+                            marginTop: '2px',
+                          }}
+                        >
+                          <p style={{ fontSize: '14px' }}>
+                            {val.givenName.charAt(0)}
+                          </p>
+                        </Stack>
+                      )}
+                      <div
+                        key={key}
+                        className={`hover:bg-slate-50 ${
+                          dropdownSelectedClient === val.givenName
+                            ? 'bg-slate-50'
+                            : ''
+                        }`}
+                        onClick={() => setDropdownSelectedClient(val)}
+                      >
+                        {val.givenName} {val.familyName}
+                      </div>
+                    </Stack>
                   )
                 })}
             </>
