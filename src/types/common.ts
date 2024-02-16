@@ -21,6 +21,7 @@ export const ClientResponseSchema = z.object({
       z.union([z.string().nullable(), z.array(z.string()).nullable()]),
     )
     .nullable(),
+  avatarImageUrl: z.string().nullable(),
 })
 export type ClientResponse = z.infer<typeof ClientResponseSchema>
 

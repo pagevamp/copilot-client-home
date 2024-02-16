@@ -13,7 +13,9 @@ async function listClients(token: string) {
     await copilotClient.getClients(),
   )
 
-  return (clientList.data || []) as IClient[]
+  return (clientList.data?.sort((a, b) =>
+    a.givenName.localeCompare(b.givenName),
+  ) || []) as IClient[]
 }
 
 async function getCustomFields(token: string) {
