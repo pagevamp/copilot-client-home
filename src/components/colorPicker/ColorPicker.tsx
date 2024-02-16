@@ -3,6 +3,7 @@ import { ChromePicker } from 'react-color'
 import { When } from '@/components/hoc/When'
 import { useAppState } from '@/hooks/useAppState'
 import './colorpicker.css'
+import { TextField, styled } from '@mui/material'
 
 const ColorPicker = () => {
   const [showPicker, setShowPicker] = useState(false)
@@ -43,12 +44,18 @@ const ColorPicker = () => {
             className='w-5 h-5 rounded'
           ></div>
         </div>
-        <div
-          className='py-1.5 px-3.5 border border-slate-200 text-xs'
+        <StyledTextInput
           onClick={() => setShowPicker((prev) => !prev)}
+          value={appState?.appState.editorColor}
+          onChange={(e) => {
+            const hexColor = e.target.value.includes('#')
+              ? e.target.value
+              : `#${e.target.value}`
+            appState?.setEditorColor(hexColor)
+          }}
         >
           {appState?.appState.editorColor}
-        </div>
+        </StyledTextInput>
       </div>
 
       <When condition={showPicker}>
@@ -65,5 +72,37 @@ const ColorPicker = () => {
     </div>
   )
 }
+
+export const StyledTextInput = styled(TextField, {
+  shouldForwardProp: (prop) => prop !== 'padding',
+})<{ padding?: string }>(({ padding }) => ({
+  width: '80px',
+  '& .MuiInputBase-root': {
+    paddingLeft: '8px',
+  },
+  '& .MuiOutlinedInput-input': {
+    padding: padding ? padding : '3px 8px 3px 0px',
+  },
+  '& label.Mui-focused': {
+    color: '#000',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#DFE1E4',
+    },
+    '&:hover fieldset': {
+      borderColor: '#DFE1E4',
+    },
+    '&.Mui-focused fieldset': {
+      border: `1px solid #000`,
+    },
+  },
+  input: {
+    '&::placeholder': {
+      opacity: 1,
+      fontSize: '13px',
+    },
+  },
+}))
 
 export default ColorPicker
