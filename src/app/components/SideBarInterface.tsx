@@ -113,7 +113,7 @@ const SideBarInterface: FC<IEditorInterface> = ({
                           }}
                         >
                           <p style={{ fontSize: '14px' }}>
-                            {val.givenName.split('')[0]}
+                            {val.givenName.charAt(0)}
                           </p>
                         </Stack>
                       )}
