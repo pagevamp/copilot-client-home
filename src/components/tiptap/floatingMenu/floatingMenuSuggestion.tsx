@@ -86,14 +86,6 @@ export const floatingMenuSuggestion = {
         },
       },
       {
-        title: 'Embed',
-        command: ({ editor, range }: { editor: Editor; range: any }) => {
-          const tiptapEditorUtils = new TiptapEditorUtils(editor)
-          tiptapEditorUtils.deleteRange(range)
-          tiptapEditorUtils.insertCodeBlock()
-        },
-      },
-      {
         title: 'Table',
         command: ({ editor, range }: { editor: Editor; range: any }) => {
           const tiptapEditorUtils = new TiptapEditorUtils(editor)
