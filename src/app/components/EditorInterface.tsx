@@ -45,6 +45,7 @@ import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
+import { defaultState } from '../../../defaultState'
 
 interface IEditorInterface {
   settings: ISettings | null
@@ -130,7 +131,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       CodeBlock,
       Code,
     ],
-    content: settings?.content || '',
+    content: settings?.content || defaultState,
   })
 
   // const [originalTemplate, setOriginalTemplate] = useState<string | undefined>(appState?.appState.originalTemplate)
