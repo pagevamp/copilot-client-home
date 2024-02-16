@@ -308,7 +308,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
             {!!appState?.appState.bannerImgUrl && bannerImage ? (
               <Image
                 className='w-full'
-                src={bannerImage || '/default_banner.png'}
+                src={bannerImage}
                 alt='banner image'
                 width={0}
                 height={0}
@@ -322,7 +322,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
             ) : (
               <Image
                 className='w-full'
-                src={'/default_banner.png'}
+                src={'/images/default_banner.png'}
                 alt='banner image'
                 width={0}
                 height={0}
