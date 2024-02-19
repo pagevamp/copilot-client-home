@@ -13,19 +13,19 @@ export const Footer = () => {
     appState?.setLoading(true)
     //get editor content
     const content = appState?.appState.editor?.getHTML()
+    //upload banner image
+    const imagePickerUtils = new ImagePickerUtils()
+    const imageFile = await imagePickerUtils.blobToFile(
+      appState?.appState.bannerImgUrl as Blob,
+      'bannerImg',
+    )
+    const data = await handleBannerImageUpload(
+      imageFile as File,
+      appState?.appState.token as string,
+    )
 
     let payload = {}
     if (appState?.appState.bannerImgId) {
-      //upload banner image
-      const imagePickerUtils = new ImagePickerUtils()
-      const imageFile = await imagePickerUtils.blobToFile(
-        appState?.appState.bannerImgUrl as Blob,
-        'bannerImg',
-      )
-      const data = await handleBannerImageUpload(
-        imageFile as File,
-        appState?.appState.token as string,
-      )
       payload = {
         backgroundColor: appState?.appState.editorColor,
         content: content,
