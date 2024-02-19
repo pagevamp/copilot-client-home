@@ -13,26 +13,15 @@ export const Footer = () => {
     appState?.setLoading(true)
     //get editor content
     const content = appState?.appState.editor?.getHTML()
-    //upload banner image
-    const imagePickerUtils = new ImagePickerUtils()
-    const imageFile = await imagePickerUtils.blobToFile(
-      appState?.appState.bannerImgUrl as Blob,
-      'bannerImg',
-    )
-    const data = await handleBannerImageUpload(
-      imageFile as File,
-      appState?.appState.token as string,
-    )
 
     let payload = {}
-    if (appState?.appState.bannerImgId) {
+    if (!appState?.appState.bannerImgUrl) {
       payload = {
-        backgroundColor: appState?.appState.editorColor,
+        backgroundColor: appState?.appState?.editorColor,
         content: content,
-        bannerImageId: data.id,
         token: appState?.appState.token,
+        bannerImageId: null,
       }
-    } else {
       await fetch(`/api/media`, {
         method: 'DELETE',
         body: JSON.stringify({
@@ -40,11 +29,53 @@ export const Footer = () => {
           token: appState?.appState?.token,
         }),
       })
+      try {
+        await fetch(`/api/settings?token=${appState?.appState?.token}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        })
+        const res = await fetch(
+          `/api/settings?token=${appState?.appState?.token}`,
+        )
+        const { data } = await res.json()
+        if (data) {
+          appState?.setOriginalTemplate(data.content)
+          appState?.setSettings(data)
+        }
+        appState?.setLoading(false)
+        appState?.toggleChangesCreated(false)
+        return
+      } catch (e) {
+        console.error(e)
+        appState?.setLoading(false)
+        return
+      }
+    }
+    if (
+      appState?.appState.bannerImgUrl !==
+      appState?.appState.settings?.bannerImage?.url
+    ) {
+      //upload banner image
+      const imagePickerUtils = new ImagePickerUtils()
+      const imageFile = await imagePickerUtils.blobToFile(
+        appState?.appState.bannerImgUrl as Blob,
+        'bannerImg',
+      )
+      const data = await handleBannerImageUpload(
+        imageFile as File,
+        appState?.appState.token as string,
+      )
+      payload = {
+        backgroundColor: appState?.appState.editorColor,
+        content: content,
+        bannerImageId: data?.id,
+        token: appState?.appState.token,
+      }
+    } else {
       payload = {
         backgroundColor: appState?.appState?.editorColor,
         content: content,
         token: appState?.appState.token,
-        bannerImageId: null,
       }
     }
     try {
