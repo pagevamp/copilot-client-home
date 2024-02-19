@@ -180,6 +180,14 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
   }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
+    if (!appState?.appState.settings?.content) {
+      if (appState?.appState.originalTemplate) {
+        appState?.toggleChangesCreated(true)
+      } else {
+        appState?.toggleChangesCreated(false)
+      }
+      return
+    }
     if (
       appState?.appState.settings &&
       editor &&
@@ -233,7 +241,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
 
       if (token) {
         const _settings = {
-          content: '',
+          content: defaultState,
           backgroundColor: '#ffffff',
           id: '',
           bannerImage: {
