@@ -13,19 +13,19 @@ export const Footer = () => {
     appState?.setLoading(true)
     //get editor content
     const content = appState?.appState.editor?.getHTML()
-    //upload banner image
-    const imagePickerUtils = new ImagePickerUtils()
-    const imageFile = await imagePickerUtils.blobToFile(
-      appState?.appState.bannerImgUrl as Blob,
-      'bannerImg',
-    )
-    const data = await handleBannerImageUpload(
-      imageFile as File,
-      appState?.appState.token as string,
-    )
 
     let payload = {}
     if (appState?.appState.bannerImgId) {
+      //upload banner image
+      const imagePickerUtils = new ImagePickerUtils()
+      const imageFile = await imagePickerUtils.blobToFile(
+        appState?.appState.bannerImgUrl as Blob,
+        'bannerImg',
+      )
+      const data = await handleBannerImageUpload(
+        imageFile as File,
+        appState?.appState.token as string,
+      )
       payload = {
         backgroundColor: appState?.appState.editorColor,
         content: content,
@@ -33,10 +33,18 @@ export const Footer = () => {
         token: appState?.appState.token,
       }
     } else {
+      await fetch(`/api/media`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          url: appState?.appState?.settings?.bannerImage?.url,
+          token: appState?.appState.token,
+        }),
+      })
       payload = {
         backgroundColor: appState?.appState.editorColor,
         content: content,
         token: appState?.appState.token,
+        bannerImageId: null,
       }
     }
     try {
@@ -69,6 +77,10 @@ export const Footer = () => {
         .setContent(appState?.appState.settings?.content as string)
         .run()
     }
+    appState?.setBannerImgUrl(
+      appState?.appState.settings?.bannerImage?.url || '',
+    )
+    appState?.setBannerImgId(appState?.appState.settings?.bannerImage?.id || '')
     appState?.toggleChangesCreated(false)
   }
 

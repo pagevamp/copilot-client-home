@@ -94,7 +94,6 @@ export const ImageResize = Image.extend<ImageOptions>({
         find: inputRegex,
         type: this.type,
         getAttributes: (match) => {
-          console.log('match', match)
           const [, , alt, src, title, height, width, isDraggable] = match
           return { src, alt, title, height, width, isDraggable }
         },
