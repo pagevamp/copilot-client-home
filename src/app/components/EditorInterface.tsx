@@ -47,6 +47,8 @@ import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
 import { defaultState } from '../../../defaultState'
 import Image from 'next/image'
+import { Box } from '@mui/material'
+import { Delete } from '@mui/icons-material'
 
 interface IEditorInterface {
   settings: ISettings | null
@@ -136,6 +138,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
   })
 
   const [bannerImage, setBannerImage] = useState<string>('')
+  const [bannerImageHovered, setBannerImageHovered] = useState(false)
 
   useEffect(() => {
     if (editor) {
@@ -180,6 +183,17 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
   }, [editor?.getHTML(), appState?.appState.readOnly])
 
   useEffect(() => {
+    if (editor && appState?.appState.settings?.content.includes(defaultState)) {
+      if (
+        appState?.appState.originalTemplate?.replace(/\s/g, '') !==
+        defaultState.replace(/\s/g, '')
+      ) {
+        appState?.toggleChangesCreated(true)
+      } else {
+        appState?.toggleChangesCreated(false)
+      }
+      return
+    }
     if (
       appState?.appState.settings &&
       editor &&
@@ -190,7 +204,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
           appState?.appState.settings?.content.toString() ||
         appState?.appState.settings?.backgroundColor !==
           appState?.appState.editorColor ||
-        appState?.appState.settings.bannerImage?.url !==
+        (appState?.appState.settings.bannerImage?.url || '') !==
           appState?.appState.bannerImgUrl
       ) {
         appState?.toggleChangesCreated(true)
@@ -233,12 +247,12 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
 
       if (token) {
         const _settings = {
-          content: '',
+          content: defaultState,
           backgroundColor: '#ffffff',
           id: '',
           bannerImage: {
             id: '',
-            url: '',
+            url: '/images/default_banner.png',
             filename: '',
             contentType: '',
             size: 0,
@@ -305,35 +319,41 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
               background: `${appState?.appState.editorColor}`,
             }}
           >
-            {!!appState?.appState.bannerImgUrl && bannerImage ? (
-              <Image
-                className='w-full'
-                src={bannerImage}
-                alt='banner image'
-                width={0}
-                height={0}
-                sizes='100vw'
-                style={{
-                  width: '100%',
-                  height: '25vh',
-                  objectFit: 'cover',
+            <Box
+              sx={{ position: 'relative' }}
+              onMouseEnter={() => setBannerImageHovered(true)}
+              onMouseLeave={() => setBannerImageHovered(false)}
+            >
+              {!!appState?.appState.bannerImgUrl && bannerImage && (
+                <Image
+                  className='w-full'
+                  src={bannerImage}
+                  alt='banner image'
+                  width={0}
+                  height={0}
+                  sizes='100vw'
+                  style={{
+                    width: '100%',
+                    height: '25vh',
+                    objectFit: 'cover',
+                  }}
+                />
+              )}
+              <Delete
+                sx={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                  display: bannerImageHovered ? 'block' : 'none',
+                  cursor: 'pointer',
+                  color: '#000',
+                }}
+                onClick={() => {
+                  appState?.setBannerImgId('')
+                  appState?.setBannerImgUrl('')
                 }}
               />
-            ) : (
-              <Image
-                className='w-full'
-                src={'/images/default_banner.png'}
-                alt='banner image'
-                width={0}
-                height={0}
-                sizes='100vw'
-                style={{
-                  width: '100%',
-                  height: '25vh',
-                  objectFit: 'cover',
-                }}
-              />
-            )}
+            </Box>
             <div
               className='px-14 py-350 max-w-xl'
               style={{
