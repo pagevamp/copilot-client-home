@@ -56,7 +56,7 @@ const SideBarInterface: FC<IEditorInterface> = ({
           )) as string,
         )
       } else {
-        setShowImage(appState?.appState.bannerImgUrl as string)
+        setShowImage(appState?.appState.bannerImgUrl || '')
       }
     })()
   }, [appState?.appState.bannerImgUrl])
