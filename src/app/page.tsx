@@ -52,7 +52,7 @@ export default async function Page({
     <div>
       <div className='flex flex-row'>
         <div className='relative w-full'>
-          <EditorInterface settings={null} token={token} />
+          <EditorInterface settings={settings} token={token} />
         </div>
         <div
           className='border-1 border-l border-slate-300 xl:hidden'
