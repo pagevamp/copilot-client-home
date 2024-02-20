@@ -78,15 +78,6 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       FloatingCommandExtension.configure({
         suggestion: floatingMenuSuggestion,
       }),
-      Mention.configure({
-        HTMLAttributes: {
-          class: 'autofill-pill',
-        },
-        suggestion: autofillMenuSuggestion,
-        renderLabel({ node }) {
-          return `${node.attrs.label ?? node.attrs.id}`
-        },
-      }),
       Placeholder.configure({
         placeholder: ({ node }) => {
           const headingPlaceholders: any = {
@@ -123,6 +114,15 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       ImageResize,
       Table.configure({
         resizable: true,
+      }),
+      Mention.configure({
+        HTMLAttributes: {
+          class: 'autofill-pill',
+        },
+        suggestion: autofillMenuSuggestion,
+        renderLabel({ node }) {
+          return `${node.attrs.label ?? node.attrs.id}`
+        },
       }),
       TableRow,
       TableCell,
@@ -346,7 +346,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
                   right: 10,
                   display: bannerImageHovered ? 'block' : 'none',
                   cursor: 'pointer',
-                  color: '#000',
+                  color: '#fff',
                 }}
                 onClick={() => {
                   appState?.setBannerImgId('')

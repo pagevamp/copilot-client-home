@@ -1,6 +1,7 @@
 'use client'
 
 import { When } from '@/components/hoc/When'
+import { apiUrl } from '@/config'
 import { useAppState } from '@/hooks/useAppState'
 import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
@@ -9,12 +10,60 @@ import { useEffect } from 'react'
 export const Footer = () => {
   const appState = useAppState()
 
+  const saveUtility = async (payload: any) => {
+    try {
+      await fetch(`/api/settings?token=${appState?.appState?.token}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      })
+      const res = await fetch(
+        `/api/settings?token=${appState?.appState?.token}`,
+      )
+      const { data } = await res.json()
+      if (data) {
+        appState?.setOriginalTemplate(data.content)
+        appState?.setSettings(data)
+      }
+      appState?.setLoading(false)
+      appState?.toggleChangesCreated(false)
+    } catch (e) {
+      console.error(e)
+      appState?.setLoading(false)
+    }
+  }
+
   const handleSave = async () => {
     appState?.setLoading(true)
     //get editor content
     const content = appState?.appState.editor?.getHTML()
 
     let payload = {}
+
+    if (
+      appState?.appState?.settings?.bannerImage?.url ===
+      '/images/default_banner.png'
+    ) {
+      const imagePickerUtils = new ImagePickerUtils()
+      const imageResponse = await fetch(`/images/default_banner.png`)
+      const imageBlob = await imageResponse.blob()
+      const imageFile = await imagePickerUtils.blobToFile(
+        imageBlob,
+        'bannerImg',
+      )
+      const data = await handleBannerImageUpload(
+        imageFile as File,
+        appState?.appState.token as string,
+      )
+      payload = {
+        backgroundColor: appState?.appState.editorColor,
+        content: content,
+        bannerImageId: data?.id,
+        token: appState?.appState.token,
+      }
+      saveUtility(payload)
+      return
+    }
+
     if (!appState?.appState.bannerImgUrl) {
       payload = {
         backgroundColor: appState?.appState?.editorColor,
@@ -29,28 +78,10 @@ export const Footer = () => {
           token: appState?.appState?.token,
         }),
       })
-      try {
-        await fetch(`/api/settings?token=${appState?.appState?.token}`, {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        })
-        const res = await fetch(
-          `/api/settings?token=${appState?.appState?.token}`,
-        )
-        const { data } = await res.json()
-        if (data) {
-          appState?.setOriginalTemplate(data.content)
-          appState?.setSettings(data)
-        }
-        appState?.setLoading(false)
-        appState?.toggleChangesCreated(false)
-        return
-      } catch (e) {
-        console.error(e)
-        appState?.setLoading(false)
-        return
-      }
+      saveUtility(payload)
+      return
     }
+
     if (
       appState?.appState.bannerImgUrl !==
       appState?.appState.settings?.bannerImage?.url
@@ -78,25 +109,7 @@ export const Footer = () => {
         token: appState?.appState.token,
       }
     }
-    try {
-      await fetch(`/api/settings?token=${appState?.appState?.token}`, {
-        method: 'PUT',
-        body: JSON.stringify(payload),
-      })
-      const res = await fetch(
-        `/api/settings?token=${appState?.appState?.token}`,
-      )
-      const { data } = await res.json()
-      if (data) {
-        appState?.setOriginalTemplate(data.content)
-        appState?.setSettings(data)
-      }
-      appState?.setLoading(false)
-      appState?.toggleChangesCreated(false)
-    } catch (e) {
-      console.error(e)
-      appState?.setLoading(false)
-    }
+    saveUtility(payload)
   }
 
   const handleCancel = async () => {
