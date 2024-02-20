@@ -14,13 +14,13 @@ const AutofillFields = () => {
   )
 
   useEffect(() => {
-    if (!appState?.appState.selectedClient && !appState?.appState.readOnly)
+    if (!appState?.appState?.selectedClient && !appState?.appState?.readOnly)
       return
     appState?.setClientCompanyName('')
     ;(async () => {
       appState?.setLoading(true)
       const res = await fetch(
-        `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}&token=${appState?.appState.token}`,
+        `/api/companies?companyId=${appState?.appState.selectedClient?.companyId}&token=${appState?.appState?.token}`,
       )
       const { data } = await res.json()
       if (data.name) {
@@ -30,42 +30,44 @@ const AutofillFields = () => {
       }
       appState?.setLoading(false)
     })()
-  }, [appState?.appState.selectedClient])
+  }, [appState?.appState?.selectedClient])
 
   return (
     <div className='p-5'>
       <p className='font-medium pb-5'>Autofill fields</p>
       <div className='flex flex-col gap-5'>
         {/* readonly mode */}
-        <When condition={appState?.appState.readOnly as boolean}>
+        <When condition={appState?.appState?.readOnly as boolean}>
           <AutofillTextStaticField
             labelName={'Given name'}
-            labelValues={appState?.appState.selectedClient?.givenName as string}
+            labelValues={
+              appState?.appState?.selectedClient?.givenName as string
+            }
           />
           <AutofillTextStaticField
             labelName={'Family name'}
             labelValues={
-              appState?.appState.selectedClient?.familyName as string
+              appState?.appState?.selectedClient?.familyName as string
             }
           />
           <AutofillTextStaticField
             labelName={'Email'}
-            labelValues={appState?.appState.selectedClient?.email as string}
+            labelValues={appState?.appState?.selectedClient?.email as string}
           />
           <AutofillTextStaticField
             labelName={'Company'}
             labelValues={
-              appState?.appState.selectedClientCompanyName
-                ? appState?.appState.selectedClientCompanyName
+              appState?.appState?.selectedClientCompanyName
+                ? appState?.appState?.selectedClientCompanyName
                 : ''
             }
           />
-          {appState?.appState.selectedClient &&
+          {appState?.appState?.selectedClient &&
             Object.keys(
-              (appState?.appState.selectedClient as IClient)?.customFields,
+              (appState?.appState?.selectedClient as IClient)?.customFields,
             ).length > 0 &&
             Object.entries(
-              (appState?.appState.selectedClient as IClient)?.customFields,
+              (appState?.appState?.selectedClient as IClient)?.customFields,
             ).map((value, key) => {
               return (
                 <AutofillTextReadonlyMode
