@@ -82,7 +82,11 @@ export default async function ClientPreviewPage({
       {settings?.bannerImage?.url && (
         <img
           className='w-full object-fill xl:object-cover'
-          src={settings?.bannerImage?.url || '/images/default_banner.png'}
+          src={
+            !_settings
+              ? '/images/default_banner.png'
+              : settings?.bannerImage.url
+          }
           alt='banner image'
           style={{
             height: '25vh',

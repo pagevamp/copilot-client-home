@@ -346,7 +346,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
                   right: 10,
                   display: bannerImageHovered ? 'block' : 'none',
                   cursor: 'pointer',
-                  color: '#000',
+                  color: '#fff',
                 }}
                 onClick={() => {
                   appState?.setBannerImgId('')
