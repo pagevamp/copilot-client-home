@@ -38,33 +38,28 @@ const AutofillFields = () => {
       <div className='flex flex-col gap-5'>
         {/* readonly mode */}
         <When condition={appState?.appState.readOnly as boolean}>
-          <AutofillTextReadonlyMode
-            label={`Given name: ${
-              appState?.appState.selectedClient?.givenName as string
-            }`}
+          <AutofillTextStaticField
+            labelName={'Given name'}
+            labelValues={appState?.appState.selectedClient?.givenName as string}
           />
-          <AutofillTextReadonlyMode
-            label={`Family name: ${
+          <AutofillTextStaticField
+            labelName={'Family name'}
+            labelValues={
               appState?.appState.selectedClient?.familyName as string
-            }`}
+            }
           />
-          <AutofillTextReadonlyMode
-            label={`Email: ${
-              appState?.appState.selectedClient?.email as string
-            }`}
+          <AutofillTextStaticField
+            labelName={'Email'}
+            labelValues={appState?.appState.selectedClient?.email as string}
           />
-          <AutofillTextReadonlyMode
-            label={`Company: ${
+          <AutofillTextStaticField
+            labelName={'Company'}
+            labelValues={
               appState?.appState.selectedClientCompanyName
                 ? appState?.appState.selectedClientCompanyName
                 : ''
-            }`}
+            }
           />
-          {/* <AutofillTextReadonlyMode */}
-          {/*   label={`Address: ${ */}
-          {/*     (appState?.appState.selectedClient?.address as string) || '' */}
-          {/*   }`} */}
-          {/* /> */}
           {appState?.appState.selectedClient &&
             Object.keys(
               (appState?.appState.selectedClient as IClient)?.customFields,
@@ -75,7 +70,8 @@ const AutofillFields = () => {
               return (
                 <AutofillTextReadonlyMode
                   key={key}
-                  label={`${value[0]}: ${value[1]}`}
+                  labelName={value[0]}
+                  labelValues={value[1]}
                 />
               )
             })}
@@ -135,8 +131,44 @@ const AutofillText = ({
   )
 }
 
-const AutofillTextReadonlyMode = ({ label }: { label: string }) => {
-  return <p className='text-new-gray hover:text-text cursor-pointer'>{label}</p>
+const AutofillTextStaticField = ({
+  labelName,
+  labelValues,
+}: {
+  labelName: string
+  labelValues: string
+}) => {
+  return (
+    <p className='text-new-gray hover:text-text cursor-pointer'>
+      {labelName}: {labelValues}
+    </p>
+  )
+}
+
+const AutofillTextReadonlyMode = ({
+  labelName,
+  labelValues,
+}: {
+  labelName: string
+  labelValues: string | string[]
+}) => {
+  const appState = useAppState()
+  const name = appState?.appState.customFields.find(
+    (el) => el.key === labelName,
+  )?.name
+  if (Array.isArray(labelValues)) {
+    return (
+      <p className='text-new-gray hover:text-text cursor-pointer'>
+        {name}: {labelValues.join(', ')}
+      </p>
+    )
+  } else {
+    return (
+      <p className='text-new-gray hover:text-text cursor-pointer'>
+        {name}: {labelValues}
+      </p>
+    )
+  }
 }
 
 /**
