@@ -10,11 +10,17 @@ import {
   CustomFieldResponseSchema,
   MeResponse,
   MeResponseSchema,
+  Token,
+  TokenSchema,
 } from '@/types/common'
 import { copilotAPIKey } from '@/config'
 
+export type SDK = typeof Copilot & {
+  getTokenPayload?: () => Promise<Token>
+}
+
 export class CopilotAPI {
-  copilot: typeof Copilot
+  copilot: SDK
 
   constructor(apiToken: string) {
     this.copilot = copilotApi({
@@ -26,6 +32,11 @@ export class CopilotAPI {
   async me(): Promise<MeResponse> {
     //updated method here
     return MeResponseSchema.parse(await this.copilot.getUserInfo())
+  }
+
+  // Get parsed payload from token
+  async getTokenPayload(): Promise<Token | undefined> {
+    return TokenSchema.parse(await this.copilot.getTokenPayload?.())
   }
 
   async getClient(clientId: string): Promise<ClientResponse> {
