@@ -11,7 +11,6 @@ export interface ISettings {
     createdById: string
   } | null
   createdById: string
-  workspaceId: string
 }
 
 export interface IClient {

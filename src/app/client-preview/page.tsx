@@ -52,7 +52,6 @@ export default async function ClientPreviewPage({
       createdById: '',
     },
     createdById: '',
-    workspaceId: '',
   }
 
   const _settings = await getSettings(token)
