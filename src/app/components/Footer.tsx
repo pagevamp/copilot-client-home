@@ -59,6 +59,7 @@ export const Footer = () => {
         content: content,
         bannerImageId: data?.id,
         token: appState?.appState.token,
+        // workspaceId:
       }
       saveUtility(payload)
       return

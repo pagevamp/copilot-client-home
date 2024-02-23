@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SettingService } from '@/app/api/settings/services/setting.service'
 import { SettingRequestSchema } from '@/types/setting'
-import { errorHandler, getCurrentUser } from '@/utils/common'
+import { errorHandler, getTokenPayload } from '@/utils/common'
 import { z } from 'zod'
 
 export async function GET(request: NextRequest) {
@@ -10,9 +10,17 @@ export async function GET(request: NextRequest) {
   if (!token) {
     return errorHandler('Missing token', 422)
   }
+
+  const payload = await getTokenPayload(z.string().parse(token))
+  if (!payload) {
+    return NextResponse.json(
+      { error: 'Failed to parse token payload' },
+      { status: 500 },
+    )
+  }
+
   const settingService = new SettingService()
-  const currentUser = await getCurrentUser(z.string().parse(token))
-  const setting = await settingService.findByUserId(currentUser.id)
+  const setting = await settingService.findByWorkspaceId(payload.workspaceId)
 
   const defaultSetting = {
     content: '',
@@ -27,20 +35,33 @@ export async function GET(request: NextRequest) {
       createdById: '',
     },
     createdById: '',
+    workspaceId: '',
   }
-  return NextResponse.json(
-    setting ? { data: setting } : { data: defaultSetting },
-  )
+
+  return NextResponse.json({ data: setting || defaultSetting })
 }
 
 export async function PUT(request: NextRequest) {
   const data = await request.json()
+
   const setting = SettingRequestSchema.safeParse(data)
   if (!setting.success) {
     return NextResponse.json(setting.error.issues)
   }
-  const settingService = new SettingService()
-  await settingService.save(setting.data)
 
-  return NextResponse.json({})
+  const payload = await getTokenPayload(z.string().parse(setting.data.token))
+  if (!payload) {
+    return NextResponse.json(
+      { error: 'Failed to parse token payload' },
+      { status: 500 },
+    )
+  }
+
+  const settingService = new SettingService()
+  await settingService.save({
+    ...setting.data,
+    workspaceId: payload.workspaceId,
+  })
+
+  return NextResponse.json({ message: 'Successfully saved new settings' })
 }
