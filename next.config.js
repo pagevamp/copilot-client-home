@@ -33,8 +33,8 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: 'outside-xa',
-    project: 'client-home',
+    org: process.env.NEXT_PUBLIC_SENTRY_ORG,
+    project: process.env.NEXT_PUBLIC_SENTRY_PROJECT,
   },
   {
     // For all available options, see:
