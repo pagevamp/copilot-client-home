@@ -154,18 +154,11 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       const _client = appState.appState.clientList.find(
         (el) => el.id === (appState.appState.selectedClient as IClient).id,
       )
-      let client: any
-      if (Object.keys(_client?.customFields as object).length === 0) {
-        client = {
-          ..._client,
-          company: appState?.appState.selectedClientCompanyName,
-        }
-      } else {
-        client = {
-          ..._client,
-          ..._client?.customFields,
-          company: appState?.appState.selectedClientCompanyName,
-        }
+      const client = {
+        ..._client,
+        ...(Object.keys(_client?.customFields as object).length &&
+          _client?.customFields),
+        company: appState?.appState.selectedClientCompanyName,
       }
       const c = template({ client })
       setTimeout(() => {
