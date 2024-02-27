@@ -98,12 +98,10 @@ const AutofillFields = () => {
               return (
                 <AutofillText
                   key={key}
-                  label={`client.customFields.${el.key}`}
+                  label={`client.${el.key}`}
                   handleClick={() => {
                     if (appState?.appState.readOnly) return
-                    tiptapEditorUtils.insertContent(
-                      `{{client.customFields.${el.key}}}`,
-                    )
+                    tiptapEditorUtils.insertContent(`{{client.${el.key}}}`)
                   }}
                 />
               )
