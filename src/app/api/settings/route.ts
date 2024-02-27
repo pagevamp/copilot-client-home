@@ -22,23 +22,7 @@ export async function GET(request: NextRequest) {
   const settingService = new SettingService()
   const setting = await settingService.findByWorkspaceId(payload.workspaceId)
 
-  const defaultSetting = {
-    content: '',
-    backgroundColor: '#ffffff',
-    id: '',
-    bannerImage: {
-      id: '',
-      url: '',
-      filename: '',
-      contentType: '',
-      size: 0,
-      createdById: '',
-    },
-    createdById: '',
-    workspaceId: '',
-  }
-
-  return NextResponse.json({ data: setting || defaultSetting })
+  return NextResponse.json({ data: setting || null })
 }
 
 export async function PUT(request: NextRequest) {
