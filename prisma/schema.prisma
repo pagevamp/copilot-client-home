@@ -26,13 +26,13 @@ model Setting {
 }
 
 model Media {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  url         String
-  filename    String
-  contentType String
-  size        Int
-  createdById String   @db.Uuid
-  createdAt   DateTime @default(now()) @db.Timestamptz()
-  updatedAt   DateTime @updatedAt @ignore @db.Timestamptz()
-  setting     Setting?
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url             String
+  filename        String
+  contentType     String
+  size            Int
+  createdById     String   @db.Uuid
+  createdAt       DateTime @default(now()) @db.Timestamptz()
+  updatedAt       DateTime @updatedAt @ignore @db.Timestamptz()
+  setting         Setting?
 }
