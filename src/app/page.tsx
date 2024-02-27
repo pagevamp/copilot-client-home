@@ -4,6 +4,7 @@ import SideBarInterface from './components/SideBarInterface'
 import { CopilotAPI } from '@/utils/copilotApiUtils'
 import { ClientsResponseSchema } from '@/types/common'
 import { IClient, ICustomField } from '@/types/interfaces'
+import Head from 'next/head'
 
 export const revalidate = 0
 
@@ -47,28 +48,39 @@ export default async function Page({
   const clientList = await listClients(token)
   const customFields = await getCustomFields(token)
   const settings = await getSettings(token)
+  const copilotClient = new CopilotAPI(token)
+  const workspace = await copilotClient.getWorkspaceInfo()
+  const font = workspace.font?.replaceAll(' ', '+')
 
   return (
-    <div>
-      <div className='flex flex-row'>
-        <div className='relative w-full'>
-          <EditorInterface settings={settings} token={token} />
-        </div>
-        <div
-          className='border-1 border-l border-slate-300 xl:hidden'
-          style={{
-            minWidth: '350px',
-            maxWidth: '350px',
-            wordWrap: 'break-word',
-            height: '100vh',
-          }}
-        >
-          <SideBarInterface
-            clientList={clientList}
-            customFields={customFields}
-          />
+    <>
+      <head>
+        <link
+          href={`https://fonts.googleapis.com/css2?family=${font}&display=swap`}
+          rel='stylesheet'
+        />
+      </head>
+      <div style={{ fontFamily: workspace.font }}>
+        <div className='flex flex-row'>
+          <div className='relative w-full'>
+            <EditorInterface settings={settings} token={token} />
+          </div>
+          <div
+            className='border-1 border-l border-slate-300 xl:hidden'
+            style={{
+              minWidth: '350px',
+              maxWidth: '350px',
+              wordWrap: 'break-word',
+              height: '100vh',
+            }}
+          >
+            <SideBarInterface
+              clientList={clientList}
+              customFields={customFields}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

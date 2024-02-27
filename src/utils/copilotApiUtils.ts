@@ -10,7 +10,9 @@ import {
   CustomFieldResponseSchema,
   MeResponse,
   MeResponseSchema,
+  WorkspaceInfoSchema,
 } from '@/types/common'
+import type { WorkspaceInfo } from '@/types/common'
 import { copilotAPIKey } from '@/config'
 
 export class CopilotAPI {
@@ -42,6 +44,10 @@ export class CopilotAPI {
     return CompanyResponseSchema.parse(
       await this.copilot.retrieveACompany({ id: companyId }),
     )
+  }
+
+  async getWorkspaceInfo(): Promise<WorkspaceInfo> {
+    return WorkspaceInfoSchema.parse(await this.copilot.getWorkspaceInfo())
   }
 
   async getCustomFields(): Promise<CustomFieldResponse> {
