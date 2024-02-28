@@ -2,15 +2,18 @@
 
 import { Stack, Typography } from '@mui/material'
 import { useEffect } from 'react'
+import * as Sentry from '@sentry/nextjs'
 
 export default function Error({
   error,
-  reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
   useEffect(() => {
+    const reportId = Sentry.captureException(error)
+
+    console.info('Error reported:', reportId)
     console.error(error)
   }, [error])
 
