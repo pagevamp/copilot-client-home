@@ -154,12 +154,24 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       const _client = appState.appState.clientList.find(
         (el) => el.id === (appState.appState.selectedClient as IClient).id,
       )
+      //add comma separator for custom fields
+      const customFields: any = _client?.customFields
+      for (const key in customFields) {
+        if (Array.isArray(customFields[key])) {
+          //element[0].toUpperCase() + element.substring(1) is a hack to capitalize the first string, however changes in SDK response
+          //is required.
+          customFields[key] = customFields[key].map(
+            (element: any) =>
+              ' ' + element[0].toUpperCase() + element.substring(1),
+          )
+        }
+      }
       const client = {
         ..._client,
-        ...(Object.keys(_client?.customFields as object).length &&
-          _client?.customFields),
+        ...(Object.keys(customFields as object).length && customFields),
         company: appState?.appState.selectedClientCompanyName,
       }
+
       const c = template({ client })
       setTimeout(() => {
         editor?.chain().focus().setContent(c).run()
