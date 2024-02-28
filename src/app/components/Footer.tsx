@@ -1,7 +1,6 @@
 'use client'
 
 import { When } from '@/components/hoc/When'
-import { apiUrl } from '@/config'
 import { useAppState } from '@/hooks/useAppState'
 import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
@@ -39,10 +38,7 @@ export const Footer = () => {
 
     let payload = {}
 
-    if (
-      appState?.appState?.settings?.bannerImage?.url ===
-      '/images/default_banner.png'
-    ) {
+    if (appState?.appState?.bannerImgUrl === '/images/default_banner.png') {
       const imagePickerUtils = new ImagePickerUtils()
       const imageResponse = await fetch(`/images/default_banner.png`)
       const imageBlob = await imageResponse.blob()

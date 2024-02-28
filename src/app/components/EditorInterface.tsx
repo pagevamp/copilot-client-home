@@ -188,7 +188,8 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     if (editor && appState?.appState.settings?.content.includes(defaultState)) {
       if (
         appState?.appState.originalTemplate?.replace(/\s/g, '') !==
-        defaultState.replace(/\s/g, '')
+          defaultState.replace(/\s/g, '') ||
+        appState?.appState.bannerImgUrl !== '/images/default_banner.png'
       ) {
         appState?.toggleChangesCreated(true)
       } else {
