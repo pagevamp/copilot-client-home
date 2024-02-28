@@ -69,3 +69,9 @@ export const CustomFieldResponseSchema = z.object({
     .nullable(),
 })
 export type CustomFieldResponse = z.infer<typeof CustomFieldResponseSchema>
+
+export const WorkspaceInfoSchema = z.object({
+  font: z.string(),
+})
+
+export type WorkspaceInfo = z.infer<typeof WorkspaceInfoSchema>

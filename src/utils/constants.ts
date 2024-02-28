@@ -4,3 +4,5 @@ export const staticAutofillValues = [
   '{{client.email}}',
   '{{client.company}}',
 ]
+
+export const defaultBannerImagePath = '/images/default_banner.png'
