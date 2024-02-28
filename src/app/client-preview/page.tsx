@@ -2,6 +2,7 @@ import Handlebars from 'handlebars'
 import { IClient, ISettings } from '@/types/interfaces'
 import ClientPreview from '../components/ClientPreview'
 import { apiUrl } from '@/config'
+import Image from 'next/image'
 import { defaultBannerImagePath } from '@/utils/constants'
 
 export const revalidate = 0
@@ -55,20 +56,20 @@ export default async function ClientPreviewPage({
     createdById: '',
   }
 
-  const _settings = await getSettings(token)
+  const defaultSetting = await getSettings(token)
 
-  if (_settings) {
-    settings = _settings
+  if (defaultSetting) {
+    settings = defaultSetting
   }
 
-  const _client = await getClient(clientId, token)
+  const defaultClient = await getClient(clientId, token)
 
-  const company = await getCompany(_client.companyId, token)
+  const company = await getCompany(defaultClient.companyId, token)
 
   const template = Handlebars?.compile(settings?.content)
 
   //add comma separator for custom fields
-  const customFields: any = _client?.customFields
+  const customFields: any = defaultClient?.customFields
   for (const key in customFields) {
     if (Array.isArray(customFields[key])) {
       //element[0].toUpperCase() + element.substring(1) is a hack to capitalize the first string, however changes in SDK response
@@ -79,12 +80,15 @@ export default async function ClientPreviewPage({
     }
   }
   const client = {
-    ..._client,
-    ...(Object.keys(customFields as object).length && customFields),
+    ...defaultClient,
     company: company.name,
   }
 
   const htmlContent = template({ client })
+
+  const bannerImgUrl = !defaultSetting
+    ? '/images/default_banner.png'
+    : settings?.bannerImage?.url
 
   return (
     <div
@@ -94,12 +98,17 @@ export default async function ClientPreviewPage({
       }}
     >
       {settings?.bannerImage?.url && (
-        <img
-          className='w-full object-fill xl:object-cover'
-          src={!_settings ? defaultBannerImagePath : settings?.bannerImage.url}
+        <Image
+          className='w-full'
+          src={bannerImgUrl || '/images/default_banner.png'}
           alt='banner image'
+          width={0}
+          height={0}
+          sizes='100vw'
           style={{
+            width: '100%',
             height: '25vh',
+            objectFit: 'cover',
           }}
         />
       )}
