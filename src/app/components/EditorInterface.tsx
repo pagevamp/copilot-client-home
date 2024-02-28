@@ -49,6 +49,7 @@ import { defaultState } from '../../../defaultState'
 import Image from 'next/image'
 import { Box } from '@mui/material'
 import { Delete } from '@mui/icons-material'
+import { defaultBannerImagePath } from '@/utils/constants'
 
 interface IEditorInterface {
   settings: ISettings | null
@@ -189,7 +190,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       if (
         appState?.appState.originalTemplate?.replace(/\s/g, '') !==
           defaultState.replace(/\s/g, '') ||
-        appState?.appState.bannerImgUrl !== '/images/default_banner.png'
+        appState?.appState.bannerImgUrl !== defaultBannerImagePath
       ) {
         appState?.toggleChangesCreated(true)
       } else {
@@ -255,7 +256,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
           id: '',
           bannerImage: {
             id: '',
-            url: '/images/default_banner.png',
+            url: defaultBannerImagePath,
             filename: '',
             contentType: '',
             size: 0,
