@@ -55,29 +55,27 @@ export default async function ClientPreviewPage({
     createdById: '',
   }
 
-  const _settings = await getSettings(token)
+  const defaultSetting = await getSettings(token)
 
-  if (_settings) {
-    settings = _settings
+  if (defaultSetting) {
+    settings = defaultSetting
   }
 
-  const _client = await getClient(clientId, token)
+  const defaultClient = await getClient(clientId, token)
 
-  const company = await getCompany(_client.companyId, token)
+  const company = await getCompany(defaultClient.companyId, token)
 
   const template = Handlebars?.compile(settings?.content)
   const client = {
-    ..._client,
+    ...defaultClient,
     company: company.name,
   }
 
   const htmlContent = template({ client })
 
-  const bannerImgUrl = !_settings
+  const bannerImgUrl = !defaultSetting
     ? '/images/default_banner.png'
     : settings?.bannerImage?.url
-
-  console.log(settings?.bannerImage?.url)
 
   return (
     <div
