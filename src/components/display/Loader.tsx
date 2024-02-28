@@ -9,7 +9,7 @@ const LoaderComponent = () => {
         left: '50%',
         color: '#000',
       }}
-      size={60}
+      size={40}
     />
   )
 }
