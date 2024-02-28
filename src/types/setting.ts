@@ -15,5 +15,6 @@ export const SettingResponseSchema = z.object({
   content: z.string().nullable(),
   createdById: z.string().uuid(),
   bannerImage: MediaResponseSchema.nullable(),
+  workspaceId: z.string(),
 })
 export type SettingResponse = z.infer<typeof SettingResponseSchema>

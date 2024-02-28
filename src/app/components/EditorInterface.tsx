@@ -156,6 +156,8 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       )
       const client = {
         ..._client,
+        ...(Object.keys(_client?.customFields as object).length &&
+          _client?.customFields),
         company: appState?.appState.selectedClientCompanyName,
       }
       const c = template({ client })

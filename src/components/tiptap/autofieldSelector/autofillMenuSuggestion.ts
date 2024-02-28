@@ -25,7 +25,7 @@ export const autofillMenuSuggestion = {
   items: async ({ query }: any) => {
     return [
       ...staticAutofillValues,
-      ...customFields.map((el: any) => `{{client.customFields.${el.key}}}`),
+      ...customFields.map((el: any) => `{{client.${el.key}}}`),
     ]
 
       .filter((item: any) =>

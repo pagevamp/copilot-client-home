@@ -10,11 +10,11 @@ import { PrismaClient } from '@prisma/client'
 export class SettingService {
   private prismaClient: PrismaClient = DBClient.getInstance()
 
-  async findByUserId(createdById: string): Promise<SettingResponse | null> {
+  async findByWorkspaceId(
+    workspaceId: string,
+  ): Promise<SettingResponse | null> {
     const setting = await this.prismaClient.setting.findFirst({
-      where: {
-        createdById: createdById,
-      },
+      where: { workspaceId },
       include: {
         bannerImage: true,
       },
@@ -26,20 +26,25 @@ export class SettingService {
     return SettingResponseSchema.parse(setting)
   }
 
-  async save(requestData: SettingRequest): Promise<void> {
+  async save(
+    requestData: SettingRequest & { workspaceId: string },
+  ): Promise<void> {
     const currentUser = await getCurrentUser(requestData.token)
-    const settingByUser = await this.prismaClient.setting.findFirst({
+
+    const settingByWorkspaceId = await this.prismaClient.setting.findFirst({
       where: {
-        createdById: currentUser.id,
+        workspaceId: requestData.workspaceId,
       },
     })
-    if (!settingByUser) {
+
+    if (!settingByWorkspaceId) {
       await this.prismaClient.setting.create({
         data: {
           bannerImageId: requestData.bannerImageId,
           backgroundColor: requestData.backgroundColor,
           content: requestData.content,
           createdById: currentUser.id,
+          workspaceId: requestData.workspaceId,
         },
       })
 
@@ -48,7 +53,7 @@ export class SettingService {
 
     await this.prismaClient.setting.update({
       where: {
-        id: settingByUser.id,
+        id: settingByWorkspaceId.id,
       },
       data: {
         bannerImageId: requestData.bannerImageId,

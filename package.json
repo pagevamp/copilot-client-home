@@ -5,11 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "clean-build": "rm -r .next/ && next build",
     "start": "next start",
     "lint": "next lint",
     "eslint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
+    "lint:check": "eslint \"{src,test}/**/*.{ts,tsx}\"",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
+    "prettier:check": "prettier --check \"{src,test}/**/*.{ts,tsx}\"",
+    "prettier:fix": "prettier --write .",
     "prepare": "husky install",
     "lint-staged": "npx lint-staged",
     "postinstall": "prisma generate"
@@ -23,6 +26,7 @@
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@prisma/client": "^5.6.0",
+    "@sentry/nextjs": "^7.102.1",
     "@tippyjs/react": "^4.2.6",
     "@tiptap/extension-gapcursor": "^2.1.12",
     "@tiptap/extension-hard-break": "^2.1.13",
