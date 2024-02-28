@@ -5,10 +5,12 @@ import { useAppState } from '@/hooks/useAppState'
 import { defaultBannerImagePath } from '@/utils/constants'
 import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export const Footer = () => {
   const appState = useAppState()
+
+  const [saving, setSaving] = useState(false)
 
   const saveUtility = async (payload: any) => {
     try {
@@ -24,16 +26,16 @@ export const Footer = () => {
         appState?.setOriginalTemplate(data.content)
         appState?.setSettings(data)
       }
-      appState?.setLoading(false)
+      setSaving(false)
       appState?.toggleChangesCreated(false)
     } catch (e) {
       console.error(e)
-      appState?.setLoading(false)
+      setSaving(false)
     }
   }
 
   const handleSave = async () => {
-    appState?.setLoading(true)
+    setSaving(true)
     //get editor content
     const content = appState?.appState.editor?.getHTML()
 
@@ -153,7 +155,7 @@ export const Footer = () => {
           className='bg-new-dark py-1 px-3 text-white text-[13px] rounded'
           onClick={handleSave}
         >
-          Save changes
+          {saving ? 'Saving' : 'Save Changes'}
         </button>
       </div>
     </When>
