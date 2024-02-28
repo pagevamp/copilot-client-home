@@ -2,6 +2,7 @@ import Handlebars from 'handlebars'
 import { IClient, ISettings } from '@/types/interfaces'
 import ClientPreview from '../components/ClientPreview'
 import { apiUrl } from '@/config'
+import Image from 'next/image'
 
 export const revalidate = 0
 
@@ -72,6 +73,12 @@ export default async function ClientPreviewPage({
 
   const htmlContent = template({ client })
 
+  const bannerImgUrl = !_settings
+    ? '/images/default_banner.png'
+    : settings?.bannerImage?.url
+
+  console.log(settings?.bannerImage?.url)
+
   return (
     <div
       className={`overflow-y-auto overflow-x-hidden max-h-screen w-full`}
@@ -80,16 +87,17 @@ export default async function ClientPreviewPage({
       }}
     >
       {settings?.bannerImage?.url && (
-        <img
-          className='w-full object-fill xl:object-cover'
-          src={
-            !_settings
-              ? '/images/default_banner.png'
-              : settings?.bannerImage.url
-          }
+        <Image
+          className='w-full'
+          src={bannerImgUrl || '/images/default_banner.png'}
           alt='banner image'
+          width={0}
+          height={0}
+          sizes='100vw'
           style={{
+            width: '100%',
             height: '25vh',
+            objectFit: 'cover',
           }}
         />
       )}
