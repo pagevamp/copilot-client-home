@@ -2,6 +2,7 @@ import Handlebars from 'handlebars'
 import { IClient, ISettings } from '@/types/interfaces'
 import ClientPreview from '../components/ClientPreview'
 import { apiUrl } from '@/config'
+import { defaultBannerImagePath } from '@/utils/constants'
 
 export const revalidate = 0
 
@@ -95,11 +96,7 @@ export default async function ClientPreviewPage({
       {settings?.bannerImage?.url && (
         <img
           className='w-full object-fill xl:object-cover'
-          src={
-            !_settings
-              ? '/images/default_banner.png'
-              : settings?.bannerImage.url
-          }
+          src={!_settings ? defaultBannerImagePath : settings?.bannerImage.url}
           alt='banner image'
           style={{
             height: '25vh',
