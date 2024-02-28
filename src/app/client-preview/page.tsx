@@ -65,8 +65,21 @@ export default async function ClientPreviewPage({
   const company = await getCompany(_client.companyId, token)
 
   const template = Handlebars?.compile(settings?.content)
+
+  //add comma separator for custom fields
+  const customFields: any = _client?.customFields
+  for (const key in customFields) {
+    if (Array.isArray(customFields[key])) {
+      //element[0].toUpperCase() + element.substring(1) is a hack to capitalize the first string, however changes in SDK response
+      //is required.
+      customFields[key] = customFields[key].map(
+        (element: any) => ' ' + element[0].toUpperCase() + element.substring(1),
+      )
+    }
+  }
   const client = {
     ..._client,
+    ...(Object.keys(customFields as object).length && customFields),
     company: company.name,
   }
 
