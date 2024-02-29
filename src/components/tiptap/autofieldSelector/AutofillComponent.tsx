@@ -3,8 +3,8 @@ import React from 'react'
 
 export const AutofillComponent = () => {
   return (
-    <NodeViewWrapper className='autofill-pill' as='span'>
-      <NodeViewContent as='span' className='content' />
+    <NodeViewWrapper className='pill-extension' as='span'>
+      <NodeViewContent as='span' />
     </NodeViewWrapper>
   )
 }

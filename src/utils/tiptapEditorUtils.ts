@@ -145,8 +145,7 @@ export class TiptapEditorUtils {
     this.editor
       .chain()
       .focus()
-      .setParagraph()
-      .insertContent(`<autofill>${content}</autofill>`)
+      .insertContent(`<autofill>${content}</autofill> `)
       .run()
   }
 

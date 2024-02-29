@@ -88,7 +88,6 @@ const AutofillFields = () => {
                 label={el.replaceAll('{{', '').replaceAll('}}', '')}
                 handleClick={() => {
                   if (appState?.appState.readOnly) return
-                  // tiptapEditorUtils.insertContent(`${el}`)
                   tiptapEditorUtils.insertAutofill(`${el}`)
                 }}
               />
@@ -102,8 +101,7 @@ const AutofillFields = () => {
                   label={`client.${el.key}`}
                   handleClick={() => {
                     if (appState?.appState.readOnly) return
-                    // tiptapEditorUtils.insertContent(`{{client.${el.key}}}`)
-                    tiptapEditorUtils.insertAutofill(`${el}`)
+                    tiptapEditorUtils.insertAutofill(`{{client.${el.key}}}`)
                   }}
                 />
               )
