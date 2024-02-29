@@ -96,6 +96,8 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
       }),
       Link.extend({
         exitable: true,
+      }).configure({
+        autolink: false,
       }),
       OrderedList.configure({
         itemTypeName: 'listItem',
