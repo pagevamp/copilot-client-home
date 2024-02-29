@@ -141,6 +141,15 @@ export class TiptapEditorUtils {
       .run()
   }
 
+  insertAutofill(content: string) {
+    this.editor
+      .chain()
+      .focus()
+      .setParagraph()
+      .insertContent(`<autofill>${content}</autofill>`)
+      .run()
+  }
+
   getSelectedText() {
     const { view, state } = this.editor
     const { from, to } = view.state.selection
