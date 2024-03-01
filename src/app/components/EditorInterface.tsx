@@ -151,8 +151,6 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
     }
   }, [appState?.appState.readOnly, editor])
 
-  console.log(appState?.appState.customFields)
-
   useEffect(() => {
     if (appState?.appState.readOnly) {
       const template = Handlebars?.compile(
