@@ -170,7 +170,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
           appState?.appState.customFields.some((field) => field.key === key)
         ) {
           // Map the values to their corresponding labels
-          customFields[key] = customFields[key].map((value: any) => {
+          customFields[key] = customFields[key].map((value: string[]) => {
             const option: any = (appState?.appState?.customFields as any)
               .find((field: any) => field.key === key)
               .options.find((opt: any) => opt.key === value)
