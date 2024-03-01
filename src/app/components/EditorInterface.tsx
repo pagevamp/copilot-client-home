@@ -50,6 +50,7 @@ import Image from 'next/image'
 import { Box } from '@mui/material'
 import { Delete } from '@mui/icons-material'
 import { defaultBannerImagePath } from '@/utils/constants'
+import { AutofillExtension } from '@/components/tiptap/autofieldSelector/ext_autofill'
 
 interface IEditorInterface {
   settings: ISettings | null
@@ -63,6 +64,7 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
 
   const editor = useEditor({
     extensions: [
+      AutofillExtension,
       Document,
       Paragraph,
       Heading,
