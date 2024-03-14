@@ -1,11 +1,11 @@
 import { exec } from 'node:child_process'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import * as fs from 'fs'
 import { unlink } from 'node:fs'
 import path from 'node:path'
 
-export function GET() {
+export function GET(request: NextRequest) {
   if (!process.env.POSTGRES_URL_NON_POOLING) {
     return NextResponse.json(
       { error: 'No database URL found' },
@@ -15,14 +15,21 @@ export function GET() {
     )
   }
 
-  // @todo Authenticate
+  const authHeader = request.headers.get('authorization')
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return NextResponse.json('Unauthorized', {
+      status: 401,
+    })
+  }
 
-  const backupFileName = `client_home_${new Date().toISOString()}.sql`
+  const currentDateTime = new Date().toISOString()
+  const dateTime = currentDateTime.split('T')
+  const backupFileName = `client_home_${dateTime[0]}_${dateTime[1]}_backup.sql`
+  const localFilePath = path.join(process.cwd(), `/${backupFileName}`)
+
+  console.log(`Performing database backup with filename ${backupFileName}`)
   exec(
-    `pg_dump ${process.env.POSTGRES_URL_NON_POOLING}  > ${path.join(
-      process.cwd(),
-      `/${backupFileName}`,
-    )}`,
+    `pg_dump ${process.env.POSTGRES_URL_NON_POOLING}  > ${localFilePath}`,
     async (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`)
@@ -40,22 +47,27 @@ export function GET() {
       }
 
       try {
-        const blob = await put(
-          `backups/client_home_${new Date().toISOString()}`,
+        await put(
+          `backups/${backupFileName}`,
           fs.readFileSync(backupFileName),
+          {
+            access: 'public',
+          },
         )
-        console.log(blob)
 
-        unlink(backupFileName, (err) => {
+        console.log(`Database backup successful for filename ${backupFileName}`)
+
+        unlink(localFilePath, (err) => {
           if (err) {
             console.error('Error deleting backup file', err)
           }
+          console.log(
+            `File cleanup was successful for filename ${backupFileName}`,
+          )
         })
-
-        console.log(`Database backup successful, file: ${backupFileName}`)
-        return NextResponse.json({ error: 'Database backup successful' })
       } catch (e) {
         console.error('Error when uploading or deleting backup to storage', e)
+
         return NextResponse.json(
           { error: 'Failed to upload or delete backup' },
           {
@@ -66,5 +78,7 @@ export function GET() {
     },
   )
 
-  return NextResponse.json({ error: 'Database backup successful' })
+  return NextResponse.json({
+    message: 'Backing up the database, please check log for more detail',
+  })
 }
