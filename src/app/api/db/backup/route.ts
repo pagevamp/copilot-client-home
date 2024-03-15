@@ -25,7 +25,7 @@ export function GET(request: NextRequest) {
   const currentDateTime = new Date().toISOString()
   const dateTime = currentDateTime.split('T')
   const backupFileName = `client_home_${dateTime[0]}_${dateTime[1]}_backup.sql`
-  const localFilePath = path.join(process.cwd(), `/${backupFileName}`)
+  const localFilePath = `/tmp/${backupFileName}`
 
   console.log(`Performing database backup with filename ${backupFileName}`)
   exec(
