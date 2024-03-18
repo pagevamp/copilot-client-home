@@ -20,7 +20,7 @@ runs:
       id: npm-cache
 
     - name: Install dependencies
-      run: yarn ci
+      run: yarn install
       shell: sh
       if: steps.npm-cache.outputs.cache-hit != 'true'
 
