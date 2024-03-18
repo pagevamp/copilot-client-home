@@ -40,7 +40,7 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@canary
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=${{ inputs.environment }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel env pull --yes --environment=${{ inputs.environment }} --token=${{ secrets.VERCEL_TOKEN }} .env
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Run prisma migration
