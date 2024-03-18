@@ -1,0 +1,49 @@
+name: Deploy App
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: choice
+        default: "preview"
+        options:
+          - preview
+          - production
+      deploy:
+        description: "Deploy App"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Job Info
+        run: |
+          echo "deploying ${{ github.ref_name }} to ${{ inputs.environment }}"
+          echo "deploying app: ${{ inputs.deploy }}"
+
+  deploy-app:
+    name: Install Vercel CLI
+    if: ${{ inputs.deploy == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - name: Install Vercel CLI
+        run: npm install --global vercel@canary
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=${{ inputs.environment }} --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Run prisma migration
+        run: npx prisma migrate deploy
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --prod=${{ inputs.environment == 'production' }}

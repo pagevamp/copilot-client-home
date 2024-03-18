@@ -1,0 +1,30 @@
+name: Setup Node and install npm packages
+description: Setup node, install packages, and use the cache if possible
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.0.0
+        cache: "yarn"
+        cache-dependency-path: ./yarn.json
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          */node_modules
+        key: node_modules-${{ hashFiles('yarn.lock') }}
+      id: npm-cache
+
+    - name: Install dependencies
+      run: yarn ci
+      shell: sh
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+
+    - name: Post install
+      run: yarn postinstall
+      shell: sh
+      if: steps.npm-cache.outputs.cache-hit == 'true'
