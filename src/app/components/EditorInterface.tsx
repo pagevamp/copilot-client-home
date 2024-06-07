@@ -33,7 +33,8 @@ import FloatingCommandExtension from '@/components/tiptap/floatingMenu/floatingC
 import Hardbreak from '@tiptap/extension-hard-break'
 import { floatingMenuSuggestion } from '@/components/tiptap/floatingMenu/floatingMenuSuggestion'
 import { autofillMenuSuggestion } from '@/components/tiptap/autofieldSelector/autofillMenuSuggestion'
-import { ImageResize } from '@/components/tiptap/image/image'
+// import { ImageResize } from '@/components/tiptap/image/image'
+import { UploadImage } from '@/components/tiptap/image/image1'
 
 import ControlledBubbleMenu from '@/components/tiptap/bubbleMenu/ControlledBubbleMenu'
 import BubbleMenuContainer from '@/components/tiptap/bubbleMenu/BubbleMenu'
@@ -45,6 +46,7 @@ import { IClient, ISettings } from '@/types/interfaces'
 import LoaderComponent from '@/components/display/Loader'
 import { ImagePickerUtils } from '@/utils/imagePickerUtils'
 import BubbleLinkInput from '@/components/tiptap/linkInput/BubbleLinkInput'
+import { handleBannerImageUpload } from '@/utils/handleBannerImageUpload'
 
 interface IEditorInterface {
   settings: ISettings | null
@@ -116,7 +118,22 @@ const EditorInterface = ({ settings, token }: IEditorInterface) => {
           class: 'list-disc',
         },
       }),
-      ImageResize,
+      UploadImage.configure({
+        uploadFn: async (file: File) => {
+          const token = new URLSearchParams(document.location.search).get(
+            'token',
+          )
+          if (file && token) {
+            const data = await handleBannerImageUpload(file, token)
+            console.log('data', data)
+            // if (data.contentType === 'application/pdf') {
+            //do something
+            // } else {
+            return data.url
+            // }
+          }
+        },
+      }),
       Table.configure({
         resizable: true,
       }),

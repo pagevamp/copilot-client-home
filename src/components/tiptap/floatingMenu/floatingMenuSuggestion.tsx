@@ -70,19 +70,21 @@ export const floatingMenuSuggestion = {
         command: async ({ editor, range }: { editor: Editor; range: any }) => {
           const tiptapEditorUtils = new TiptapEditorUtils(editor)
           tiptapEditorUtils.deleteRange(range)
-          const imagePickerUtils = new ImagePickerUtils()
-          const file = await imagePickerUtils.selectImageFromLocalDrive()
-          const token = new URLSearchParams(document.location.search).get(
-            'token',
-          )
-          if (file && token) {
-            const data = await handleBannerImageUpload(file, token)
-            if (data.contentType === 'application/pdf') {
-              tiptapEditorUtils.insertPdf(data.filename, data.url)
-            } else {
-              tiptapEditorUtils.setImage(data.url as string)
-            }
-          }
+          tiptapEditorUtils.setImage('')
+          // tiptapEditorUtils.deleteRange(range)
+          // const imagePickerUtils = new ImagePickerUtils()
+          // const file = await imagePickerUtils.selectImageFromLocalDrive()
+          // const token = new URLSearchParams(document.location.search).get(
+          //   'token',
+          // )
+          // if (file && token) {
+          //   const data = await handleBannerImageUpload(file, token)
+          //   if (data.contentType === 'application/pdf') {
+          //     tiptapEditorUtils.insertPdf(data.filename, data.url)
+          //   } else {
+          //     tiptapEditorUtils.setImage(data.url as string)
+          //   }
+          // }
         },
       },
       {
